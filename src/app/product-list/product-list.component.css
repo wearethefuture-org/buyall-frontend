@@ -1,0 +1,40 @@
+.example-card {
+    max-width: 300px;
+    box-shadow: 0 4px 8 px 0 rgba(0, 0, 0, 0.2);
+    padding: 36px;
+    text-align: center;
+    background-color: #f1f1f1;
+  }
+
+.img{
+  max-width: 250px;
+  max-height: 250px;
+}
+.column {
+    float: left;
+    width: 25%;
+    padding: 30px 10px 10px;
+  }
+  /* Remove extra left and right margins, due to padding */
+.row {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 800px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 300px;
+  }
+}
+
+/*
+Copyright Google LLC. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/
