@@ -1,6 +1,6 @@
 # buyall-frontend
 
-# First commi
+# First commit
 
 # baranovskyi commit
 
