@@ -1,6 +1,6 @@
 # buyall-frontend
 
-# First commit conflict
+# Laaa
 
 # baranovskyi commit
 
