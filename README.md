@@ -1,7 +1,8 @@
 # buyall-frontend
 
-# First commit
+# First commit conflict
 
 # baranovskyi commit
 
 # ChngYrNick commit
+
