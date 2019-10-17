@@ -1,5 +1,11 @@
 # buyall-frontend
 
+# Laaa 
+
+# baranovskyi commit
+
+# ChngYrNick commit
+
 # First commit
 
 
@@ -10,5 +16,4 @@ cd buyall-frontend
 npm install -g @angular/cli
 
 ng serve
-
 
