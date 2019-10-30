@@ -1,20 +1,31 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { ProductListComponent } from "./product-list/product-list.component";
+import { NotFoundComponent } from './not-found/not-found.component';
+import { CartComponent } from './cart/cart.component';
 
 const routes: Routes = [
   {
-    path: "",
-    component: ProductListComponent
+    path: '',
+    loadChildren: "./shop.module#ShopModule"
+  },
+  { 
+    path: 'cart', 
+    component: CartComponent
+  },
+  { 
+    path: 'not-found',  
+    component: NotFoundComponent
   },
   {
-    path: "category",
-    loadChildren: "../app/category/category.module#CategoryModule"
-  }
+    path: '**', 
+    redirectTo: '/not-found'
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes),
+  ],
   exports: [RouterModule],
   providers: []
 })

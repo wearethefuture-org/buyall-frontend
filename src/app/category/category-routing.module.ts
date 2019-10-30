@@ -6,7 +6,6 @@ import {  CategoryComponent} from './category.component'
 
 const routes: Routes = [
     { path: "", component: CategoryComponent},
-
 ];
 
 @NgModule({
