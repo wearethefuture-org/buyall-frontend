@@ -1,10 +1,11 @@
 # buyall-frontend
 
-# conflict 546
+# Laaa 
 
 # baranovskyi commit
 
 # ChngYrNick commit
 
-commit from DrozhzhynY
+# lazy-loading
+
 
