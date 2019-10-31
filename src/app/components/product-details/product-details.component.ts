@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 //import { products } from '../products';
-import { CartService } from 'src/app/cart.service';
+import { CartService } from 'src/app/core/services/cart.service';
+import { ProductsService } from 'src/app/core/services/products.service';
+import { Subscription } from 'rxjs';
+import { Product } from 'src/app/core/interfaces';
 
 @Component({
   selector: 'app-product-details',
@@ -10,18 +12,34 @@ import { CartService } from 'src/app/cart.service';
   styleUrls: ['./product-details.component.css']
 })
 
-export class ProductDetailsComponent implements OnInit {
+export class ProductDetailsComponent implements OnInit, OnDestroy {
+  sub_params: Subscription 
+  sub_product: Subscription 
   product;
 
-  constructor(private route: ActivatedRoute, private cartService: CartService) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private cartService: CartService,
+    private productsService: ProductsService
+  ) {}
 
   ngOnInit() {  
-    //this.products = this.cartService.getProductsList(); 
-    this.cartService.getProductsList().subscribe(( products: any[])=>{
-      this.route.paramMap.subscribe(params => {
-        this.product = products[+params.get('id')];
+    this.sub_params = this.route.params.subscribe(params => {
+      // product id
+      const id = +params['id'] 
+
+      // get product data
+      this.sub_product = this.productsService.getProductById(id)
+      .subscribe((product: Product) => {
+        this.product = product
       })
     })
+  }
+
+  ngOnDestroy() {
+    // prevent memory leak
+    this.sub_product.unsubscribe()
+    this.sub_params.unsubscribe()
   }
 
   addToCart(product) {
