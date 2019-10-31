@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ProductListComponent } from 'src/app/components/product-list/product-list.component';
-import { CategoryComponent } from 'src/app/components/category/category.component';
 import { ProductDetailsComponent } from 'src/app/components/product-details/product-details.component';
 
 
@@ -12,8 +11,8 @@ const routes: Routes = [
       component: ProductListComponent 
     },
     {
-      path: 'shop',
-      component: CategoryComponent
+      path: 'category',
+      loadChildren: "../category/category.module#CategoryModule"
     },
     {
       path: 'products/:id', 

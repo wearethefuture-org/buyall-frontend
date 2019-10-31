@@ -6,6 +6,11 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'shop',
+    pathMatch: 'full'
+  },
+  {
+    path: 'shop',
     loadChildren: "./modules/shop/shop.module#ShopModule"
   },
   { 

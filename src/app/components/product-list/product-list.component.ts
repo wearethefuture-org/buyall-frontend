@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit, OnDestroy {
+export class ProductListComponent implements OnInit {
   products;
 
   constructor(
@@ -22,11 +22,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // get products
     this.products = this.productsService.getProductsList() 
-  }
-
-  ngOnDestroy() {
-    // prevent memory leak
-    this.products.unsubscribe()
   }
 
   addToCart(product) {
