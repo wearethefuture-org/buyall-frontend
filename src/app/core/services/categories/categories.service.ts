@@ -10,11 +10,11 @@ export class CategoriesService {
 
   constructor(private http: HttpClient) { }
 
-  getCategoryById(id: number): Observable<Product> {
-    return this.http.get<Product>(`http://localhost:3004/category/${id}`) 
+  getCategoryById(id: number) {
+    return this.http.get(`http://localhost:3004/category/${id}`) 
   }
 
-  getCategoriesList(): Observable<Product[]> {
-    return this.http.get<Product[]>('http://localhost:3004/categories');
+  getCategoriesList() {
+    return this.http.get('http://localhost:3004/categories');
   }
 }
