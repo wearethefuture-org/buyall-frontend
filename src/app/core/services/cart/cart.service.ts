@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
+import { BaseService } from '../base/base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CartService {
+export class CartService extends BaseService {
   items = [];
 
-  constructor(){}
+  constructor() {super()}
   addToCart(product) {
     this.items.push(product);
   }
