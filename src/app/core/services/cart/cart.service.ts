@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { BaseService } from '../base/base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CartService {
+export class CartService extends BaseService {
   items = [];
 
-  constructor( private http: HttpClient){}
+  constructor() {super()}
   addToCart(product) {
     this.items.push(product);
   }
@@ -19,9 +19,5 @@ export class CartService {
   clearCart() {
     this.items = [];
     return this.items;
-  }
-
-  getProductsList() {
-    return this.http.get('/assets/products.json');
   }
 }

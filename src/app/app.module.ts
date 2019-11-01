@@ -6,9 +6,9 @@ import { AppRoutingModule } from ".//app-routing.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { AppComponent } from './app.component';
-import { TopBarComponent } from './top-bar/top-bar.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { CartComponent } from './cart/cart.component';
+import { TopBarComponent } from './components/top-bar/top-bar.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { CartComponent } from './components/cart/cart.component';
 
 @NgModule({
   imports: [
