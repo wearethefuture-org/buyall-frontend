@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 //import { products } from '../products';
 import { CartService } from 'src/app/core/services/cart/cart.service';
 import { Subscription } from 'rxjs';
-import { Product } from 'src/app/core/interfaces';
 import { ProductsService } from 'src/app/core/services/products/products.service';
+import { IProduct } from 'src/app/core/interfaces/product';
 
 @Component({
   selector: 'app-product-details',
@@ -13,8 +13,8 @@ import { ProductsService } from 'src/app/core/services/products/products.service
 })
 
 export class ProductDetailsComponent implements OnInit, OnDestroy {
-  sub_params: Subscription 
-  sub_product: Subscription 
+  subParams: Subscription 
+  subProduct: Subscription 
   product;
 
   constructor(
@@ -24,22 +24,22 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {  
-    this.sub_params = this.route.params.subscribe(params => {
+    this.subParams = this.route.params.subscribe(params => {
       // product id
       const id = +params['id'] 
 
       // get product data
-      this.sub_product = this.productsService.getProductById(id)
-      .subscribe((product: Product) => {
-        this.product = product
-      })
+      this.subProduct = this.productsService.getProductById(id)
+        .subscribe((product: IProduct) => {
+          this.product = product
+        })
     })
   }
 
   ngOnDestroy() {
     // prevent memory leak
-    this.sub_product.unsubscribe()
-    this.sub_params.unsubscribe()
+    this.subProduct.unsubscribe()
+    this.subParams.unsubscribe()
   }
 
   addToCart(product) {

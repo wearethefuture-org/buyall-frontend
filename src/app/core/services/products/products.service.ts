@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Product } from '../../interfaces';
+import { IProduct } from '../../interfaces/product';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +9,11 @@ import { Product } from '../../interfaces';
 export class ProductsService {
   constructor(private http: HttpClient){}
 
-  getProductById(id: number): Observable<Product> {
-    return this.http.get<Product>(`http://localhost:3004/product/${id}`) 
+  getProductById(id: number): Observable<IProduct> {
+    return this.http.get<IProduct>(`http://localhost:3004/product/${id}`) 
   }
 
-  getProductsList(): Observable<Product[]> {
-    return this.http.get<Product[]>('http://localhost:3004/products');
+  getProductsList(): Observable<IProduct[]> {
+    return this.http.get<IProduct[]>('http://localhost:3004/products');
   }
 }
