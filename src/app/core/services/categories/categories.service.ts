@@ -8,16 +8,16 @@ import { ECategoryUrls } from '../../enums/category.e';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoriesService extends BaseService{
+export class CategoriesService extends BaseService {
 
-  constructor(private http: HttpClient) {super()}
+  constructor(private http: HttpClient) { super(); }
 
-  getCategoryById(id: number): Observable<ICategory>{
+  getCategoryById(id: number): Observable<ICategory> {
     const url = this.apiUrl + ECategoryUrls.categoryById + id;
-    return this.http.get<ICategory>(url) 
+    return this.http.get<ICategory>(url);
   }
 
-  getCategoriesList(): Observable<ICategory[]>{
+  getCategoriesList(): Observable<ICategory[]> {
     const url = this.apiUrl + ECategoryUrls.categoryList;
     return this.http.get<ICategory[]>(url);
   }

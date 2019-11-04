@@ -9,11 +9,11 @@ import { EProductUrls } from '../../enums/product.e';
   providedIn: 'root'
 })
 export class ProductsService extends BaseService {
-  constructor(private http: HttpClient) {super()}
+  constructor(private http: HttpClient) { super(); }
 
   getProductById(id: number): Observable<IProduct> {
     const url = this.apiUrl + EProductUrls.productById + id;
-    return this.http.get<IProduct>(url) 
+    return this.http.get<IProduct>(url);
   }
 
   getProductsList(): Observable<IProduct[]> {

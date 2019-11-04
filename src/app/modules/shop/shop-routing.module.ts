@@ -8,15 +8,15 @@ import { ProductDetailsComponent } from 'src/app/components/product-details/prod
 const routes: Routes = [
     {
       path: '',
-      component: ProductListComponent 
+      component: ProductListComponent
     },
     {
       path: 'category',
-      loadChildren: "../category/category.module#CategoryModule"
+      loadChildren: '../category/category.module#CategoryModule'
     },
     {
-      path: 'products/:id', 
-      component: ProductDetailsComponent 
+      path: 'products/:id',
+      component: ProductDetailsComponent
     },
 ];
 

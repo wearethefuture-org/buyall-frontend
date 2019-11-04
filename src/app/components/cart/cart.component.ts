@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/core/services/cart/cart.service';
+import { IProduct } from 'src/app/core/interfaces/product';
 
 
 @Component({
@@ -8,14 +9,14 @@ import { CartService } from 'src/app/core/services/cart/cart.service';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  items;
+  items: IProduct[];
   constructor(private cartService: CartService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.items = this.cartService.getItems();
   }
 
-  clearCart(){
+  clearCart(): IProduct[] {
     this.items = this.cartService.clearCart();
     return this.items;
   }
