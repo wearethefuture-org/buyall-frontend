@@ -13,6 +13,10 @@ const routes: Routes = [
     path: 'shop',
     loadChildren: "./modules/shop/shop.module#ShopModule"
   },
+  {
+    path: 'auth',
+    loadChildren: "./modules/auth/auth.module#AuthModule"
+  },
   { 
     path: 'cart', 
     component: CartComponent
