@@ -15,14 +15,9 @@
     font-size: 30px;
 }
 
-.top {
+.register-form div{
     display: flex;
-    justify-content: space-between;
-}
-
-.bottom mat-form-field {
-    margin-top: 10px;
-    width: 100%;
+    justify-content: space-around;
 }
 
 .register-form button[type=submit] {

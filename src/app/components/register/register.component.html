@@ -15,12 +15,20 @@
                 </mat-form-field>
             </div>
 
-            <div class="bottom">
+            <div>
                 <mat-form-field>
                     <input matInput placeholder="Email">
                     <mat-icon matSuffix>mail</mat-icon>
                 </mat-form-field>
 
+                <mat-form-field>
+                    <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div>
                 <mat-form-field>
                     <input matInput placeholder="Password">
                     <mat-icon matSuffix>lock</mat-icon>
