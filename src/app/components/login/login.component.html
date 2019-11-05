@@ -1,1 +1,25 @@
-<p>login works!</p>
+<mat-card class="login-card">
+    <mat-card-content class="login-card__content">
+        <h2 class="login-card__title">Sign in</h2>
+
+        <form class="login-form">
+            <mat-form-field>
+                <input matInput placeholder="Email">
+                <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput placeholder="Password">
+                <mat-icon matSuffix>lock</mat-icon>
+            </mat-form-field>
+
+            <button mat-button type="submit">Login</button>
+
+            <div class="login-form__forgot">
+                <a [routerLink]="['/auth', 'forgot']">
+                    Forgot Password?
+                </a>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>
