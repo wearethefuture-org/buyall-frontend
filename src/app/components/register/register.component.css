@@ -1,0 +1,33 @@
+.register-card {
+    width: 600px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.register-card__content {
+    padding: 40px;
+    text-align: center;
+}
+
+.register-card__title {
+    font-size: 30px;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bottom mat-form-field {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.register-form button[type=submit] {
+    margin-top: 20px;
+    box-sizing: border-box;
+    padding: 10px 40%;
+    font-size: 20px;
+}

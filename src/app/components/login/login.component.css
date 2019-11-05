@@ -6,13 +6,13 @@
     transform: translate(-50%, -50%);
 }
 
-.login-card__title {
-    font-size: 30px;
-}
-
 .login-card__content {
     padding: 40px;
     text-align: center;
+}
+
+.login-card__title {
+    font-size: 30px;
 }
 
 .login-form__forgot {
@@ -25,7 +25,6 @@
 }
 
 .login-form button[type=submit] {
-    position: relative;
     margin-top: 20px;
     box-sizing: border-box;
     padding-left: 45%;

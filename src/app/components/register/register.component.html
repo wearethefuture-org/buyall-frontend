@@ -1,1 +1,38 @@
-<p>register works!</p>
+<mat-card class="register-card">
+    <mat-card-content class="register-card__content">
+        <h2 class="register-card__title">Sign in</h2>
+
+        <form class="register-form">
+            <div class="top">
+                <mat-form-field>
+                    <input matInput placeholder="First name">
+                    <mat-icon matSuffix>person</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput placeholder="Last name">
+                    <mat-icon matSuffix>person</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div class="bottom">
+                <mat-form-field>
+                    <input matInput placeholder="Email">
+                    <mat-icon matSuffix>mail</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput placeholder="Password">
+                    <mat-icon matSuffix>lock</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput placeholder="Confirm password">
+                    <mat-icon matSuffix>vpn_key</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <button mat-button type="submit">Register</button>
+        </form>
+    </mat-card-content>
+</mat-card>
