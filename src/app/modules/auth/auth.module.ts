@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
+import { ForgotPasswordComponent } from 'src/app/components/forgot-password/forgot-password.component';
 
 
 
@@ -17,6 +18,7 @@ import {MatIconModule} from '@angular/material/icon';
   declarations: [
     LoginComponent,
     RegisterComponent,
+    ForgotPasswordComponent,
     ConfirmRegistrationComponent
   ],
   imports: [
