@@ -1,11 +1,11 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { CategoryComponent } from 'src/app/components/category/category.component';
 
 
 const routes: Routes = [
-    { 
-        path: "", 
+    {
+        path: '',
         component: CategoryComponent
     },
 ];

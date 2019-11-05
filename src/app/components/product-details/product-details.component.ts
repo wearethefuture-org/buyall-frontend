@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-//import { products } from '../products';
+import { ActivatedRoute, Params } from '@angular/router';
 import { CartService } from 'src/app/core/services/cart/cart.service';
 import { Subscription } from 'rxjs';
 import { ProductsService } from 'src/app/core/services/products/products.service';
@@ -13,36 +12,33 @@ import { IProduct } from 'src/app/core/interfaces/product';
 })
 
 export class ProductDetailsComponent implements OnInit, OnDestroy {
-  subParams: Subscription 
-  subProduct: Subscription 
-  product;
+  subParams: Subscription;
+  subProduct: Subscription;
+  product: IProduct;
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private cartService: CartService,
     private productsService: ProductsService
   ) {}
 
-  ngOnInit() {  
-    this.subParams = this.route.params.subscribe(params => {
-      // product id
-      const id = +params['id'] 
+  ngOnInit(): void {
+    this.subParams = this.route.params.subscribe((params: Params) => {
+      const id = +params.id;
 
-      // get product data
       this.subProduct = this.productsService.getProductById(id)
         .subscribe((product: IProduct) => {
-          this.product = product
-        })
-    })
+          this.product = product;
+        });
+    });
   }
 
-  ngOnDestroy() {
-    // prevent memory leak
-    this.subProduct.unsubscribe()
-    this.subParams.unsubscribe()
+  ngOnDestroy(): void {
+    this.subProduct.unsubscribe();
+    this.subParams.unsubscribe();
   }
 
-  addToCart(product) {
+  addToCart(product: IProduct): void {
     window.alert('Your product has been added to the cart!');
     this.cartService.addToCart(product);
   }
