@@ -6,12 +6,14 @@ const ConfirmFieldMatchValidator = (first: string, second: string): ValidatorFn 
     const secondFormControl = control.get(`${second}`);
 
     if (firstFormControl.value === secondFormControl.value) {
-      secondFormControl.setErrors({MathField: false})
-      return null;
+      const errors = secondFormControl.errors ? Object.assign(secondFormControl.errors, {MathField: false}) : {matchField: false};
+      secondFormControl.setErrors(errors)
     } else {
-      secondFormControl.setErrors({MathField: true})
-      return {MathField: true};
+      const errors = secondFormControl.errors ? Object.assign(secondFormControl.errors, {MathField: true}) : {matchField: true};
+      secondFormControl.setErrors(errors)
     }
+
+    return null;
   }
 }
 
