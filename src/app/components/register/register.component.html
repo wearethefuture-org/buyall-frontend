@@ -1,4 +1,4 @@
-<mat-card class="register-card">
+<mat-card class="register-card" *ngIf="!emailVerification">
     <mat-card-content class="register-card__content">
         <h2 class="register-card__title">Sign up</h2>
 
@@ -40,17 +40,21 @@
                     <mat-error *ngIf="email.errors?.email && (email.touched || submitted)">
                         Email is invalid.
                     </mat-error>
+                    <mat-error *ngIf="email.errors?.emailTaken && (email.touched || submitted)">
+                        Email is taken.
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput formControlName="datePicker" [matDatepicker]="picker" placeholder="Choose a date">
+                    <input matInput formControlName="dateBirthday" [matDatepicker]="picker" placeholder="Choose a date">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
 
-                    <mat-error *ngIf="datePicker.errors?.matDatepickerParse && (datePicker.touched || submitted)">
+                    <mat-error *ngIf="dateBirthday.errors?.matDatepickerParse && (dateBirthday.touched || submitted)">
                         Date is invalid.
                     </mat-error>
-                    <mat-error *ngIf="datePicker.errors?.required && (datePicker.touched || submitted) && !datePicker.errors?.matDatepickerParse">
+                    <mat-error *ngIf="dateBirthday.errors?.required && (dateBirthday.touched || submitted) && 
+                    !dateBirthday.errors?.matDatepickerParse">
                         Date is required.
                     </mat-error>
                 </mat-form-field>
@@ -85,4 +89,8 @@
             <button mat-button type="submit">Register</button>
         </form>
     </mat-card-content>
+</mat-card>
+
+<mat-card class="verification-card" *ngIf="emailVerification">
+    Verify your email address
 </mat-card>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import ConfirmFieldMatchValidator from 'src/app/core/validators/confirm-field-match.validator';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 
 @Component({
@@ -11,9 +12,11 @@ import ConfirmFieldMatchValidator from 'src/app/core/validators/confirm-field-ma
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted: boolean;
+  emailVerification: boolean = false;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -23,15 +26,25 @@ export class RegisterComponent implements OnInit {
       email: [null, Validators.compose([Validators.required, Validators.email])],
       password: [null, Validators.compose([Validators.required, Validators.minLength(6)])],
       confirmPassword: [null, Validators.compose([Validators.required])],
-      datePicker: [null, Validators.compose([Validators.required])]
+      dateBirthday: [null, Validators.compose([Validators.required])]
     }, {
       validators: [ConfirmFieldMatchValidator('password', 'confirmPassword')]
     })
-    console.log(this.registerForm.statusChanges)
   }
 
   onRegisterSubmit() {
     this.submitted = true;
+
+    if (this.registerForm.valid) {
+      this.authService.register(this.registerForm.value)
+        .subscribe(res => {
+          this.emailVerification = true;
+        }, err => {
+          if (err.Error = "User already has registered.") {
+            this.registerForm.get('email').setErrors({emailTaken: true})
+          }
+        }) 
+    }
   }
 
   get firstName() {
@@ -54,7 +67,7 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.get('confirmPassword');
   }
 
-  get datePicker() {
-    return this.registerForm.get('datePicker');
+  get dateBirthday() {
+    return this.registerForm.get('dateBirthday');
   }
 }
