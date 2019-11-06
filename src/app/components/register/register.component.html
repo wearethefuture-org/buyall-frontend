@@ -1,24 +1,37 @@
 <mat-card class="register-card">
     <mat-card-content class="register-card__content">
-        <h2 class="register-card__title">Sign in</h2>
+        <h2 class="register-card__title">Sign up</h2>
 
-        <form class="register-form">
+        <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
             <div class="top">
                 <mat-form-field>
-                    <input matInput placeholder="First name">
+                    <input matInput placeholder="First name" formControlName="firstName">
                     <mat-icon matSuffix>person</mat-icon>
+
+                    <mat-error *ngIf="firstName.errors?.required && firstName.touched">First name is required.</mat-error>
+                    <mat-error *ngIf="firstName.errors?.maxlength && firstName.touched">
+                        First name must be no more than {{ firstName.errors.maxlength.requiredLength }}  characters.
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput placeholder="Last name">
+                    <input matInput placeholder="Last name" formControlName="lastName">
                     <mat-icon matSuffix>person</mat-icon>
+
+                    <mat-error *ngIf="lastName.errors?.required && lastName.touched">Last name is required.</mat-error>
+                    <mat-error *ngIf="lastName.errors?.maxlength && lastName.touched">
+                        Last name must be no more than {{ lastName.errors.maxlength.requiredLength }}  characters.
+                    </mat-error>
                 </mat-form-field>
             </div>
 
             <div>
                 <mat-form-field>
-                    <input matInput placeholder="Email">
+                    <input matInput placeholder="Email" formControlName="email">
                     <mat-icon matSuffix>mail</mat-icon>
+
+                    <mat-error *ngIf="email.errors?.required && email.touched">Email is required.</mat-error>
+                    <mat-error *ngIf="email.errors?.email && email.touched">Email is invalid.</mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
@@ -30,12 +43,17 @@
 
             <div>
                 <mat-form-field>
-                    <input matInput placeholder="Password">
+                    <input matInput placeholder="Password" formControlName="password" type="password">
                     <mat-icon matSuffix>lock</mat-icon>
+
+                    <mat-error *ngIf="password.errors?.required && password.touched">Password is required.</mat-error>
+                    <mat-error *ngIf="password.errors?.minlength && password.touched">
+                        Password must be at least {{ password.errors.minlength.requiredLength }} characters long.
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput placeholder="Confirm password">
+                    <input matInput placeholder="Confirm password" formControlName="confirmPassword" type="password">
                     <mat-icon matSuffix>vpn_key</mat-icon>
                 </mat-form-field>
             </div>

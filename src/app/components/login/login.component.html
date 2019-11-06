@@ -6,6 +6,7 @@
             <mat-form-field>
                 <input matInput placeholder="Email" type="email" formControlName="email">
                 <mat-icon matSuffix>person</mat-icon>
+
                 <mat-error *ngIf="email.errors?.required && email.touched">Email is required.</mat-error>
                 <mat-error *ngIf="email.errors?.email && email.touched">Email is invalid.</mat-error>
             </mat-form-field>
@@ -13,6 +14,7 @@
             <mat-form-field>
                 <input matInput placeholder="Password" type="password" formControlName="password">
                 <mat-icon matSuffix>lock</mat-icon>
+
                 <mat-error *ngIf="password.errors?.required && password.touched">Password is required.</mat-error>
                 <mat-error *ngIf="password.errors?.minlength && password.touched">
                     Password must be at least {{ password.errors.minlength.requiredLength }} characters long.
