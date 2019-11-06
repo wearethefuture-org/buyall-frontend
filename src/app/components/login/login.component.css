@@ -13,6 +13,7 @@
 
 .login-card__title {
     font-size: 30px;
+    margin: 0;
 }
 
 .login-form__forgot {

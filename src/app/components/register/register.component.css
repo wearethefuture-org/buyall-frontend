@@ -15,7 +15,7 @@
     font-size: 30px;
 }
 
-.register-form div{
+.register-form div {
     display: flex;
     justify-content: space-around;
 }

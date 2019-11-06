@@ -9,9 +9,10 @@ import { ForgotPasswordComponent } from 'src/app/components/forgot-password/forg
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule, MatInputModule, MatNativeDateModule } from '@angular/material';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatSelectModule} from '@angular/material/select';
-import {MatIconModule} from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 
@@ -31,7 +32,9 @@ import {MatIconModule} from '@angular/material/icon';
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSelectModule
+    MatSelectModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class AuthModule { }
