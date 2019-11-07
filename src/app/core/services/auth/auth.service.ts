@@ -47,4 +47,9 @@ export class AuthService extends BaseService {
     this.user = user; 
     localStorage.setItem('user', JSON.stringify(user));
   }
+
+  logOut() {
+    this.user = null;
+    localStorage.removeItem('user');
+  }
 }

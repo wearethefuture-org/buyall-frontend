@@ -6,15 +6,18 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
   templateUrl: './top-bar.component.html',
   styleUrls: ['./top-bar.component.css']
 })
-export class TopBarComponent implements OnInit {
-  isAuth: boolean;
+export class TopBarComponent {
 
   constructor(
     private authService: AuthService
   ) { }
 
-  ngOnInit() {
-    this.isAuth = this.authService.isAuth();
+  onLogOut() {
+    this.authService.logOut();
+  }
+
+  get isAuth() {
+    return this.authService.isAuth();
   }
 }
 
