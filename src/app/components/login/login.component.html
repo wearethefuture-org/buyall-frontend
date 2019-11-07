@@ -7,18 +7,20 @@
                 <input matInput placeholder="Email" type="email" formControlName="email">
                 <mat-icon matSuffix>person</mat-icon>
 
-                <mat-error *ngIf="email.errors?.required && email.touched">Email is required.</mat-error>
-                <mat-error *ngIf="email.errors?.email && email.touched">Email is invalid.</mat-error>
+                <mat-error *ngIf="email.errors?.required && (email.touched || submitted)">Email is required.</mat-error>
+                <mat-error *ngIf="email.errors?.email && (email.touched || submitted)">Email is invalid.</mat-error>
+                <mat-error *ngIf="email.errors?.Unregistered && (email.touched || submitted)">Email is unregistered.</mat-error>
             </mat-form-field>
 
             <mat-form-field>
                 <input matInput placeholder="Password" type="password" formControlName="password">
                 <mat-icon matSuffix>lock</mat-icon>
 
-                <mat-error *ngIf="password.errors?.required && password.touched">Password is required.</mat-error>
-                <mat-error *ngIf="password.errors?.minlength && password.touched">
+                <mat-error *ngIf="password.errors?.required && (password.touched || submitted)">Password is required.</mat-error>
+                <mat-error *ngIf="password.errors?.minlength && (password.touched || submitted)">
                     Password must be at least {{ password.errors.minlength.requiredLength }} characters long.
                 </mat-error>
+                <mat-error *ngIf="password.errors?.BadPassword && (password.touched || submitted)">Bad password.</mat-error>
             </mat-form-field>
 
             <button mat-button type="submit">Login</button>

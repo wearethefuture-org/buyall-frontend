@@ -20,6 +20,16 @@ export class AuthService extends BaseService {
     return this.http.post(url, user);
   }
 
+  login(email: string, password: string) {
+    const body = {
+      email,
+      password
+    };
+
+    const url = this.apiUrl + EAuthUrls.login;
+    return this.http.post(url, body);
+  }
+
   verifyEmail(key: string) {
     const url = this.apiUrl + EAuthUrls.confirmEmail;
     return this.http.post(url, {key});
@@ -27,5 +37,9 @@ export class AuthService extends BaseService {
 
   isAuth() {
     return !!this.user;
+  }
+
+  setUser(user: IUser) {
+    this.user = user; 
   }
 }

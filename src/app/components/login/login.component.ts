@@ -1,16 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { IUser } from 'src/app/core/interfaces/user';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
+  submitted: boolean;
+  loginSub: Subscription;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -20,9 +28,30 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  ngOnDestroy() {
+    this.loginSub.unsubscribe();
+  }
+
   onLoginSubmit() {
-    console.log((this.loginForm))
-    console.log((this.password.errors))
+    this.submitted = true;
+
+    if (this.loginForm.valid) {
+      const email = this.loginForm.get('email').value;
+      const password = this.loginForm.get('password').value;
+
+      this.authService.login(email, password)
+        .subscribe((user: IUser) => {
+          this.authService.setUser(user);
+          this.router.navigate(['/']);
+        }, err => {
+          if (err.error.Error === 'User is unregistered') {
+            this.loginForm.get('email').setErrors({Unregistered: true})
+          }
+          if (err.error.Error === 'Bad password') {
+            this.loginForm.get('password').setErrors({BadPassword: true})
+          }
+        })
+    }
   }
 
   get email() {
