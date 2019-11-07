@@ -30,6 +30,10 @@ export class AuthService extends BaseService {
     return this.http.post(url, body);
   }
 
+  autoLogin() {
+    this.user = JSON.parse(localStorage.getItem('user'));
+  }
+
   verifyEmail(key: string) {
     const url = this.apiUrl + EAuthUrls.confirmEmail;
     return this.http.post(url, {key});
@@ -41,6 +45,6 @@ export class AuthService extends BaseService {
 
   setUser(user: IUser) {
     this.user = user; 
-    console.log(this.user)
+    localStorage.setItem('user', JSON.stringify(user));
   }
 }
