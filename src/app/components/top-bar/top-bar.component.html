@@ -10,7 +10,8 @@
 <a [routerLink]="['/contact']">
   <h1>Contact Us</h1>
 </a>
-<a [routerLink]="['/auth', 'login']">
+
+<!-- <a [routerLink]="['/auth', 'login']">
   <h1>Login</h1>
 </a>
 <a [routerLink]="['/auth', 'register']">
@@ -18,7 +19,21 @@
 </a>
 <a [routerLink]="['/cart']" class="button fancy-button">
   <i class="material-icons">shopping_cart</i>Checkout
-</a>
+</a> -->
+
+<div class="user" [matMenuTriggerFor]="menu">
+  <mat-icon class="user-icon">person</mat-icon>
+  <span>
+    Dory
+  </span>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Profile</button>
+    <button mat-menu-item>LogOut</button>
+  </mat-menu>
+</div>
+
+
 
 <!-- 
 Copyright Google LLC. All Rights Reserved.

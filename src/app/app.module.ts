@@ -4,6 +4,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from ".//app-routing.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import {MatSelectModule} from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button';
+import { MatMenuModule} from '@angular/material/menu';
+import {MatIconModule} from '@angular/material/icon';
 
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
@@ -18,6 +22,10 @@ import { CartComponent } from './components/cart/cart.component';
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule
   ],
   declarations: [
     AppComponent,

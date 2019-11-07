@@ -1,4 +1,17 @@
+.user {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
 
+.user-icon {
+    color: #fff;
+}
+
+.user span {
+    color: #fff;
+    margin-left: 10px;
+}
 
 /*
 Copyright Google LLC. All Rights Reserved.
