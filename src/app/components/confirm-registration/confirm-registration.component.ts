@@ -12,7 +12,6 @@ export class ConfirmRegistrationComponent implements OnInit, OnDestroy {
   subParams: Subscription;
   subVerification: Subscription;
   loadding: boolean = true;
-  verified: boolean;
 
   constructor(
     private authService: AuthService,
@@ -30,16 +29,9 @@ export class ConfirmRegistrationComponent implements OnInit, OnDestroy {
 
       this.subVerification = this.authService.verifyEmail(key)
         .subscribe(res => {
-          console.log(res)
           this.loadding = false;
-          if (res) {
-            this.verified = true;
-          } 
         }, err => {
-          if (err = 'User has already confirmed mail') {
-            this.loadding = false;
-            this.verified = false;
-          }
+          this.router.navigate(['not-found'])
         })
     })
   }

@@ -2,10 +2,6 @@
     <mat-spinner class="loader"></mat-spinner>
 </div>
 
-<mat-card class="verification-card" *ngIf="verified && !loadding">
+<mat-card class="verification-card" *ngIf="!loadding">
     Your email has been verified
-</mat-card>
-
-<mat-card class="verification-card" *ngIf="!verified && !loadding">
-    Email are already verified
 </mat-card>
