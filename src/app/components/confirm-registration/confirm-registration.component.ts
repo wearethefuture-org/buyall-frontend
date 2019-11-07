@@ -1,19 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EVerificationStatus } from 'src/app/core/enums/verification-status.e';
 
 @Component({
   selector: 'app-confirm-registration',
   templateUrl: './confirm-registration.component.html',
   styleUrls: ['./confirm-registration.component.css']
 })
-export class ConfirmRegistrationComponent implements OnInit {
+export class ConfirmRegistrationComponent implements OnInit, OnDestroy {
   subParams: Subscription;
   subVerification: Subscription;
   loadding: boolean = true;
-  verified: number;
+  verified: boolean;
 
   constructor(
     private authService: AuthService,
@@ -32,19 +31,21 @@ export class ConfirmRegistrationComponent implements OnInit {
       this.subVerification = this.authService.verifyEmail(key)
         .subscribe(res => {
           console.log(res)
-
           this.loadding = false;
           if (res) {
-            this.verified = EVerificationStatus.confirmed;
-          } else {
-            this.verified = EVerificationStatus.unconfirmed;
-          }
+            this.verified = true;
+          } 
         }, err => {
           if (err = 'User has already confirmed mail') {
             this.loadding = false;
-            this.verified = EVerificationStatus.alreadyConfirmed;
+            this.verified = false;
           }
         })
     })
+  }
+
+  ngOnDestroy() {
+    this.subParams.unsubscribe();
+    this.subVerification.unsubscribe();
   }
 }

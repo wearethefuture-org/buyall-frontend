@@ -41,5 +41,6 @@ export class AuthService extends BaseService {
 
   setUser(user: IUser) {
     this.user = user; 
+    console.log(this.user)
   }
 }

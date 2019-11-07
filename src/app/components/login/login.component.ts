@@ -29,7 +29,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.loginSub.unsubscribe();
+    if (this.loginSub) {
+      this.loginSub.unsubscribe();
+    }
   }
 
   onLoginSubmit() {
@@ -39,7 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       const email = this.loginForm.get('email').value;
       const password = this.loginForm.get('password').value;
 
-      this.authService.login(email, password)
+      this.loginSub = this.authService.login(email, password)
         .subscribe((user: IUser) => {
           this.authService.setUser(user);
           this.router.navigate(['/']);
