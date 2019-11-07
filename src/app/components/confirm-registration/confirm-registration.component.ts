@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EVerificationStatus } from 'src/app/core/enums/verification-status.e';
 
 @Component({
@@ -17,10 +17,15 @@ export class ConfirmRegistrationComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    if (!this.authService.isAuth()) {
+      this.router.navigate(['auth', 'login']);
+    }
+
     this.subParams = this.route.params.subscribe(params => {
       const key = params['key'];
 
