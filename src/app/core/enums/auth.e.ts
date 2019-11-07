@@ -1,6 +1,8 @@
 export enum EAuthUrls {
     register = '/auth/register',
     login = '/auth/login',
-    changePasswordKey = '/auth/sendForgot',
+    sendEmail = '/auth/sendForgot',
+    sendKey = '/auth/checkKey',
+    changePassword = '/auth/changePassword',
     confirmEmail = '/auth/confirm'
 }

@@ -1,44 +1,121 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { EForgotPasswordStages } from 'src/app/core/enums/forgot-password-stages.e';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent implements OnInit {
-  changePasswordForm: FormGroup;
+export class ForgotPasswordComponent implements OnInit, OnDestroy {
+  sendEmailForm: FormGroup;
+  sendKeyForm: FormGroup;
+  sendPasswordForm: FormGroup;
+  subEmail: Subscription;
+  subKey: Subscription;
+  subPassword: Subscription;
   submitted: boolean;
+  stage: number = this.sendEmailStage;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.changePasswordForm = this.fb.group({
+    this.sendEmailForm = this.fb.group({
       email: [null, Validators.compose([Validators.required, Validators.email])]
+    })
+
+    this.sendKeyForm = this.fb.group({
+      key: [null, Validators.compose([Validators.required])]
+    })
+
+    this.sendPasswordForm = this.fb.group({
+      password: [null, Validators.compose([Validators.required, Validators.minLength(6)])]
     })
   }
 
-  onChangePasswordSubmit() {
+  ngOnDestroy() {
+    if (this.subEmail) {
+      this.subEmail.unsubscribe();
+    }
+    if (this.subKey) {
+      this.subKey.unsubscribe();
+    }
+    if (this.subPassword) {
+      this.subPassword.unsubscribe();
+    }
+  }
+
+  onSendEmail() {
     this.submitted = true;
 
-    if (this.changePasswordForm.valid) {
-      const email = this.changePasswordForm.get('email').value;
-      this.authService.sendChangePasswordKey(email)
+    if (this.sendEmailForm.valid) {
+      this.subEmail = this.authService.sendChangePasswordEmail(this.email.value)
         .subscribe(res => {
-          console.log(res);
+          this.stage = this.sendKeyStage;
+          this.submitted = false;
         }, err => {
           if (err.error.Error === "Bad user email") {
-            this.changePasswordForm.get('email').setErrors({badEmail: true})
+            this.email.setErrors({badEmail: true});
           }
         })
     }
   }
 
+  onSendKey() {
+    this.submitted = true;
+
+    if (this.sendKeyForm.valid) {
+      this.subKey = this.authService.sendChangePasswordKey(this.email.value, this.key.value)
+        .subscribe(res => {
+          if (res) {
+            this.stage = this.changePasswordStage; 
+            this.submitted = false;
+          } else {
+            this.key.setErrors({badKey: true});
+          }
+        })
+    }
+  }
+
+  onSendPassword() {
+    this.submitted = true;
+
+    this.subPassword = this.authService.changePassword(this.email.value, this.key.value, this.password.value)
+      .subscribe(res => {
+        if (res) {
+          this.router.navigate(['auth', 'login']);
+        } 
+      })
+  }
+
   get email() {
-    return this.changePasswordForm.get('email');
+    return this.sendEmailForm.get('email');
+  }
+
+  get key() {
+    return this.sendKeyForm.get('key');
+  }
+
+  get password() {
+    return this.sendPasswordForm.get('password');
+  }
+
+  get sendEmailStage(): EForgotPasswordStages {
+    return EForgotPasswordStages.sendEmail;
+  }
+
+  get sendKeyStage(): EForgotPasswordStages {
+    return EForgotPasswordStages.sendKey;
+  }
+
+  get changePasswordStage(): EForgotPasswordStages {
+    return EForgotPasswordStages.changePassword;
   }
 }

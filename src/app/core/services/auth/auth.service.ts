@@ -21,13 +21,11 @@ export class AuthService extends BaseService {
   }
 
   login(email: string, password: string) {
-    const body = {
+    const url = this.apiUrl + EAuthUrls.login;
+    return this.http.post(url, {
       email,
       password
-    };
-
-    const url = this.apiUrl + EAuthUrls.login;
-    return this.http.post(url, body);
+    });
   }
 
   autoLogin() {
@@ -39,9 +37,26 @@ export class AuthService extends BaseService {
     return this.http.post(url, {key});
   }
 
-  sendChangePasswordKey(email: string) {
-    const url = this.apiUrl + EAuthUrls.changePasswordKey;
+  sendChangePasswordEmail(email: string) {
+    const url = this.apiUrl + EAuthUrls.sendEmail;
     return this.http.post(url, {email});
+  }
+
+  sendChangePasswordKey(email: string, key: string) {
+    const url = this.apiUrl + EAuthUrls.sendKey;
+    return this.http.post(url, {
+      email,
+      key
+    });
+  }
+
+  changePassword(email: string, key: string, password: string) {
+    const url = this.apiUrl + EAuthUrls.changePassword;
+    return this.http.post(url, {
+      email,
+      key,
+      password
+    });
   }
 
   isAuth() {
