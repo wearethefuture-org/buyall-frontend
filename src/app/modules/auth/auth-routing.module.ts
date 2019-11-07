@@ -13,14 +13,14 @@ const routes: Routes = [
   },
   {
     path: 'register',
-    component: RegisterComponent 
+    component: RegisterComponent
   },
   {
     path: 'forgot',
     component: ForgotPasswordComponent
   },
   {
-    path: 'confirm',
+    path: 'confirm/:key',
     component: ConfirmRegistrationComponent 
   }
 ];

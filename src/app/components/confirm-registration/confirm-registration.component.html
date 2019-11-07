@@ -1,1 +1,15 @@
-<p>confirm-registration works!</p>
+<div class="loader-wrapper" *ngIf="loadding">
+    <mat-spinner class="loader"></mat-spinner>
+</div>
+
+<mat-card class="verification-card" *ngIf="verified == EVerificationStatus.confirmed && !loadding">
+    Your email has been verified
+</mat-card>
+
+<mat-card class="verification-card" *ngIf="verified == EVerificationStatus.unconfirmed && !loadding">
+    Bad verify key
+</mat-card>
+
+<mat-card class="verification-card" *ngIf="verified == EVerificationStatus.alreadyConfirmed && !loadding">
+    Mail is already confirmed
+</mat-card>

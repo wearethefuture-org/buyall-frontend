@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import ConfirmFieldMatchValidator from 'src/app/core/validators/confirm-field-match.validator';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -9,10 +10,11 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   submitted: boolean;
   emailVerification: boolean = false;
+  subRegister: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -32,15 +34,19 @@ export class RegisterComponent implements OnInit {
     })
   }
 
+  ngOnDestroy() {
+    this.subRegister.unsubscribe();
+  }
+
   onRegisterSubmit() {
     this.submitted = true;
 
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value)
+      this.subRegister = this.authService.register(this.registerForm.value)
         .subscribe(res => {
           this.emailVerification = true;
         }, err => {
-          if (err.Error = "User already has registered.") {
+          if (err.Error = "User already has registered") {
             this.registerForm.get('email').setErrors({emailTaken: true})
           }
         }) 

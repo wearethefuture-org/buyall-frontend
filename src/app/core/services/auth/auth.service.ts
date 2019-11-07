@@ -19,4 +19,9 @@ export class AuthService extends BaseService {
     const url = this.apiUrl + EAuthUrls.register;
     return this.http.post(url, user);
   }
+
+  verifyEmail(key: string) {
+    const url = this.apiUrl + EAuthUrls.confirmEmail;
+    return this.http.post(url, {key});
+  }
 }
