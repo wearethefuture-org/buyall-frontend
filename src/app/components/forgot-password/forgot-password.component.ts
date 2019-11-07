@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -11,7 +12,8 @@ export class ForgotPasswordComponent implements OnInit {
   submitted: boolean;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -22,6 +24,18 @@ export class ForgotPasswordComponent implements OnInit {
 
   onChangePasswordSubmit() {
     this.submitted = true;
+
+    if (this.changePasswordForm.valid) {
+      const email = this.changePasswordForm.get('email').value;
+      this.authService.sendChangePasswordKey(email)
+        .subscribe(res => {
+          console.log(res);
+        }, err => {
+          if (err.error.Error === "Bad user email") {
+            this.changePasswordForm.get('email').setErrors({badEmail: true})
+          }
+        })
+    }
   }
 
   get email() {

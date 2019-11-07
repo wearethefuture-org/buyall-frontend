@@ -39,6 +39,11 @@ export class AuthService extends BaseService {
     return this.http.post(url, {key});
   }
 
+  sendChangePasswordKey(email: string) {
+    const url = this.apiUrl + EAuthUrls.changePasswordKey;
+    return this.http.post(url, {email});
+  }
+
   isAuth() {
     return !!this.user;
   }
