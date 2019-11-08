@@ -9,7 +9,7 @@ import { ForgotPasswordComponent } from 'src/app/components/forgot-password/forg
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent 
+    component: LoginComponent
   },
   {
     path: 'register',
@@ -21,7 +21,7 @@ const routes: Routes = [
   },
   {
     path: 'confirm/:key',
-    component: ConfirmRegistrationComponent 
+    component: ConfirmRegistrationComponent
   }
 ];
 

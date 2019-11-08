@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { IUser } from 'src/app/core/interfaces/user';
 import { Router } from '@angular/router';
@@ -21,20 +21,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loginForm = this.fb.group({
-      'email': [null, Validators.compose([Validators.required, Validators.email])],
-      'password': [null, Validators.compose([Validators.required, Validators.minLength(6)])]
-    })
+      email: [null, Validators.compose([Validators.required, Validators.email])],
+      password: [null, Validators.compose([Validators.required, Validators.minLength(6)])]
+    });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.loginSub) {
       this.loginSub.unsubscribe();
     }
   }
 
-  onLoginSubmit() {
+  onLoginSubmit(): void {
     this.submitted = true;
 
     if (this.loginForm.valid) {
@@ -45,22 +45,22 @@ export class LoginComponent implements OnInit, OnDestroy {
         .subscribe((user: IUser) => {
           this.authService.setUser(user);
           this.router.navigate(['/']);
-        }, err => {
-          if (err.error.Error === 'User is unregistered') {
-            this.loginForm.get('email').setErrors({Unregistered: true})
+        }, (err: any) => {
+          if (err.error === 'User is unregistered') {
+            this.loginForm.get('email').setErrors({Unregistered: true});
           }
-          if (err.error.Error === 'Bad password') {
-            this.loginForm.get('password').setErrors({BadPassword: true})
+          if (err.error === 'Bad password') {
+            this.loginForm.get('password').setErrors({BadPassword: true});
           }
-        })
+        });
     }
   }
 
-  get email() {
+  get email(): AbstractControl {
     return this.loginForm.get('email');
   }
 
-  get password() {
+  get password(): AbstractControl {
     return this.loginForm.get('password');
   }
 }

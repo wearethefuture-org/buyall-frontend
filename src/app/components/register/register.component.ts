@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import ConfirmFieldMatchValidator from 'src/app/core/validators/confirm-field-match.validator';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Subscription } from 'rxjs';
+import { IUser } from 'src/app/core/interfaces/user';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,15 +15,15 @@ import { Subscription } from 'rxjs';
 export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup;
   submitted: boolean;
-  emailVerification: boolean = false;
   subRegister: Subscription;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.registerForm = this.fb.group({
       firstName: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
       lastName: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
@@ -31,49 +33,50 @@ export class RegisterComponent implements OnInit, OnDestroy {
       dateBirthday: [null, Validators.compose([Validators.required])]
     }, {
       validators: [ConfirmFieldMatchValidator('password', 'confirmPassword')]
-    })
+    });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subRegister.unsubscribe();
   }
 
-  onRegisterSubmit() {
+  onRegisterSubmit(): void {
     this.submitted = true;
 
     if (this.registerForm.valid) {
       this.subRegister = this.authService.register(this.registerForm.value)
-        .subscribe(res => {
-          this.emailVerification = true;
-        }, err => {
-          if (err.Error = "User already has registered") {
-            this.registerForm.get('email').setErrors({emailTaken: true})
+        .subscribe((user: IUser) => {
+          this.authService.setUser(user);
+          this.router.navigate(['/']);
+        }, (err: any) => {
+          if (err.error === 'User already has registered') {
+            this.email.setErrors({emailTaken: true});
           }
-        }) 
+        });
     }
   }
 
-  get firstName() {
+  get firstName(): AbstractControl {
     return this.registerForm.get('firstName');
   }
 
-  get lastName() {
+  get lastName(): AbstractControl {
     return this.registerForm.get('lastName');
   }
 
-  get email() {
+  get email(): AbstractControl {
     return this.registerForm.get('email');
   }
 
-  get password() {
+  get password(): AbstractControl {
     return this.registerForm.get('password');
   }
 
-  get confirmPassword() {
+  get confirmPassword(): AbstractControl {
     return this.registerForm.get('confirmPassword');
   }
 
-  get dateBirthday() {
+  get dateBirthday(): AbstractControl {
     return this.registerForm.get('dateBirthday');
   }
 }

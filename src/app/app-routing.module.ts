@@ -1,5 +1,5 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { CartComponent } from './components/cart/cart.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
@@ -11,22 +11,22 @@ const routes: Routes = [
   },
   {
     path: 'shop',
-    loadChildren: "./modules/shop/shop.module#ShopModule"
+    loadChildren: './modules/shop/shop.module#ShopModule'
   },
   {
     path: 'auth',
-    loadChildren: "./modules/auth/auth.module#AuthModule"
+    loadChildren: './modules/auth/auth.module#AuthModule'
   },
-  { 
-    path: 'cart', 
+  {
+    path: 'cart',
     component: CartComponent
   },
-  { 
-    path: 'not-found',  
+  {
+    path: 'not-found',
     component: NotFoundComponent
   },
   {
-    path: '**', 
+    path: '**',
     redirectTo: '/not-found'
   },
 ];

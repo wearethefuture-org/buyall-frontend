@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 @Component({
@@ -12,18 +12,11 @@ export class TopBarComponent {
     private authService: AuthService
   ) { }
 
-  onLogOut() {
+  onLogOut(): void {
     this.authService.logOut();
   }
 
-  get isAuth() {
+  get isAuth(): boolean {
     return this.authService.isAuth();
   }
 }
-
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
-*/

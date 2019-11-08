@@ -14,7 +14,7 @@ const ConfirmFieldMatchValidator = (first: string, second: string): ValidatorFn 
     }
 
     return null;
-  }
-}
+  };
+};
 
 export default ConfirmFieldMatchValidator;

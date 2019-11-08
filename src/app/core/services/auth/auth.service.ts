@@ -15,60 +15,60 @@ export class AuthService extends BaseService {
     private http: HttpClient
   ) { super(); }
 
-  register(user: IUser): Observable<any> {
+  register(user: IUser): Observable<IUser> {
     const url = this.apiUrl + EAuthUrls.register;
-    return this.http.post(url, user);
+    return this.http.post<IUser>(url, user);
   }
 
-  login(email: string, password: string) {
+  login(email: string, password: string): Observable<IUser> {
     const url = this.apiUrl + EAuthUrls.login;
-    return this.http.post(url, {
+    return this.http.post<IUser>(url, {
       email,
       password
     });
   }
 
-  autoLogin() {
+  autoLogin(): void {
     this.user = JSON.parse(localStorage.getItem('user'));
   }
 
-  verifyEmail(key: string) {
+  verifyEmail(key: string): Observable<boolean> {
     const url = this.apiUrl + EAuthUrls.confirmEmail;
-    return this.http.post(url, {key});
+    return this.http.post<boolean>(url, {key});
   }
 
-  sendChangePasswordEmail(email: string) {
+  sendChangePasswordEmail(email: string): Observable<boolean> {
     const url = this.apiUrl + EAuthUrls.sendEmail;
-    return this.http.post(url, {email});
+    return this.http.post<boolean>(url, {email});
   }
 
-  sendChangePasswordKey(email: string, key: string) {
+  sendChangePasswordKey(email: string, key: string): Observable<boolean> {
     const url = this.apiUrl + EAuthUrls.sendKey;
-    return this.http.post(url, {
+    return this.http.post<boolean>(url, {
       email,
       key
     });
   }
 
-  changePassword(email: string, key: string, password: string) {
+  changePassword(email: string, key: string, password: string): Observable<boolean> {
     const url = this.apiUrl + EAuthUrls.changePassword;
-    return this.http.post(url, {
+    return this.http.post<boolean>(url, {
       email,
       key,
       password
     });
   }
 
-  isAuth() {
+  isAuth(): boolean {
     return !!this.user;
   }
 
-  setUser(user: IUser) {
-    this.user = user; 
+  setUser(user: IUser): void {
+    this.user = user;
     localStorage.setItem('user', JSON.stringify(user));
   }
 
-  logOut() {
+  logOut(): void {
     this.user = null;
     localStorage.removeItem('user');
   }

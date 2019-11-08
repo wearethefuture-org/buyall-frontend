@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { EForgotPasswordStages } from 'src/app/core/enums/forgot-password-stages.e';
 import { Subscription } from 'rxjs';
@@ -26,21 +26,21 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     private router: Router
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.sendEmailForm = this.fb.group({
       email: [null, Validators.compose([Validators.required, Validators.email])]
-    })
+    });
 
     this.sendKeyForm = this.fb.group({
       key: [null, Validators.compose([Validators.required])]
-    })
+    });
 
     this.sendPasswordForm = this.fb.group({
       password: [null, Validators.compose([Validators.required, Validators.minLength(6)])]
-    })
+    });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     if (this.subEmail) {
       this.subEmail.unsubscribe();
     }
@@ -52,58 +52,58 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSendEmail() {
+  onSendEmail(): void {
     this.submitted = true;
 
     if (this.sendEmailForm.valid) {
       this.subEmail = this.authService.sendChangePasswordEmail(this.email.value)
-        .subscribe(res => {
+        .subscribe((res: boolean) => {
           this.stage = this.sendKeyStage;
           this.submitted = false;
-        }, err => {
-          if (err.error.Error === "Bad user email") {
+        }, (err: any) => {
+          if (err.error === 'Bad user email') {
             this.email.setErrors({badEmail: true});
           }
-        })
+        });
     }
   }
 
-  onSendKey() {
+  onSendKey(): void {
     this.submitted = true;
 
     if (this.sendKeyForm.valid) {
       this.subKey = this.authService.sendChangePasswordKey(this.email.value, this.key.value)
-        .subscribe(res => {
+        .subscribe((res: boolean) => {
           if (res) {
-            this.stage = this.changePasswordStage; 
+            this.stage = this.changePasswordStage;
             this.submitted = false;
           } else {
             this.key.setErrors({badKey: true});
           }
-        })
+        });
     }
   }
 
-  onSendPassword() {
+  onSendPassword(): void {
     this.submitted = true;
 
     this.subPassword = this.authService.changePassword(this.email.value, this.key.value, this.password.value)
-      .subscribe(res => {
+      .subscribe((res: boolean) => {
         if (res) {
           this.router.navigate(['auth', 'login']);
-        } 
-      })
+        }
+      });
   }
 
-  get email() {
+  get email(): AbstractControl {
     return this.sendEmailForm.get('email');
   }
 
-  get key() {
+  get key(): AbstractControl {
     return this.sendKeyForm.get('key');
   }
 
-  get password() {
+  get password(): AbstractControl {
     return this.sendPasswordForm.get('password');
   }
 

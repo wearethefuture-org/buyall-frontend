@@ -11,7 +11,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ConfirmRegistrationComponent implements OnInit, OnDestroy {
   subParams: Subscription;
   subVerification: Subscription;
-  loadding: boolean = true;
 
   constructor(
     private authService: AuthService,
@@ -19,24 +18,23 @@ export class ConfirmRegistrationComponent implements OnInit, OnDestroy {
     private router: Router
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     if (!this.authService.isAuth()) {
       this.router.navigate(['auth', 'login']);
     }
 
-    this.subParams = this.route.params.subscribe(params => {
-      const key = params['key'];
+    this.subParams = this.route.params.subscribe((params: any) => {
+      const key = params.key;
 
       this.subVerification = this.authService.verifyEmail(key)
-        .subscribe(res => {
-          this.loadding = false;
-        }, err => {
-          this.router.navigate(['not-found'])
-        })
-    })
+        .subscribe((res: boolean) => {
+        }, (err: any) => {
+          this.router.navigate(['not-found']);
+        });
+    });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subParams.unsubscribe();
     this.subVerification.unsubscribe();
   }
