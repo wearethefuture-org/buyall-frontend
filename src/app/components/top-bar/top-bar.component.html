@@ -1,7 +1,7 @@
 <a [routerLink]="['/']">
   <h1>My Store</h1>
 </a>
-<a [routerLink]="['/shop/category']">
+<a [routerLink]="['/shop', 'category']">
   <h1>Category</h1>
 </a>
 <a [routerLink]="['/about']">
@@ -10,5 +10,27 @@
 <a [routerLink]="['/contact']">
   <h1>Contact Us</h1>
 </a>
+
+<a [routerLink]="['/auth', 'login']" *ngIf="!isAuth">
+  <h1>Login</h1>
+</a>
+
+<a [routerLink]="['/auth', 'register']" *ngIf="!isAuth">
+  <h1>Register</h1>
+</a>
+
 <a [routerLink]="['/cart']" class="button fancy-button">
-  <i class="material-icons">shopping_cart</i>Checkout</a>
+  <i class="material-icons">shopping_cart</i>Checkout
+</a>
+
+<div class="user" [matMenuTriggerFor]="menu" *ngIf="isAuth">
+  <mat-icon class="user-icon">person</mat-icon>
+  <span>
+    Dory
+  </span>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Profile</button>
+    <button mat-menu-item (click)="onLogOut()">LogOut</button>
+  </mat-menu>
+</div>

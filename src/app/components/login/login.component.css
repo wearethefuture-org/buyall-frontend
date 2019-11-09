@@ -1,0 +1,33 @@
+.login-card {
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-card__content {
+    padding: 40px;
+    text-align: center;
+}
+
+.login-card__title {
+    font-size: 30px;
+    margin: 0;
+}
+
+.login-form__forgot {
+    margin-top: 20px;
+}
+
+.login-form mat-form-field {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.login-form button[type=submit] {
+    margin-top: 20px;
+    box-sizing: border-box;
+    padding-left: 45%;
+    padding-right: 45%;
+}

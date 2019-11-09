@@ -14,6 +14,10 @@ const routes: Routes = [
     loadChildren: './modules/shop/shop.module#ShopModule'
   },
   {
+    path: 'auth',
+    loadChildren: './modules/auth/auth.module#AuthModule'
+  },
+  {
     path: 'cart',
     component: CartComponent
   },

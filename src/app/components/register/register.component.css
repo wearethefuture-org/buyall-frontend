@@ -1,0 +1,36 @@
+.register-card {
+    width: 600px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.register-card__content {
+    padding: 40px;
+    text-align: center;
+}
+
+.register-card__title {
+    font-size: 30px;
+    margin: 0 0 15px 0;
+}
+
+.register-form div {
+    display: flex;
+    justify-content: space-around;
+}
+
+.register-form button[type=submit] {
+    margin-top: 20px;
+    box-sizing: border-box;
+    padding: 10px 40%;
+    font-size: 20px;
+}
+
+.verification-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
