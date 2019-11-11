@@ -61,7 +61,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
           this.stage = this.sendKeyStage;
           this.submitted = false;
         }, (err: any) => {
-          if (err.error === 'Bad user email') {
+          if (err.error === 'Email is unregistered') {
             this.email.setErrors({badEmail: true});
           }
         });

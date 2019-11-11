@@ -37,7 +37,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subRegister.unsubscribe();
+    if (this.subRegister) {
+      this.subRegister.unsubscribe();
+    }
   }
 
   onRegisterSubmit(): void {
@@ -49,7 +51,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.authService.setUser(user);
           this.router.navigate(['/']);
         }, (err: any) => {
-          if (err.error === 'User already has registered') {
+          if (err.error === 'User has already registered') {
             this.email.setErrors({emailTaken: true});
           }
         });
