@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { IUser } from 'src/app/core/interfaces/user';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -42,14 +41,15 @@ export class LoginComponent implements OnInit, OnDestroy {
       const password = this.loginForm.get('password').value;
 
       this.loginSub = this.authService.login(email, password)
-        .subscribe((user: IUser) => {
-          this.authService.setUser(user);
+        .subscribe((data: any) => {
+          this.authService.setUser(data.user);
+          this.authService.setToken(data.token);
           this.router.navigate(['/']);
         }, (err: any) => {
-          if (err.error === 'User is unregistered') {
+          if (err === 'User is unregistered') {
             this.loginForm.get('email').setErrors({Unregistered: true});
           }
-          if (err.error === 'Bad password') {
+          if (err === 'Bad password') {
             this.loginForm.get('password').setErrors({BadPassword: true});
           }
         });

@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 import ConfirmFieldMatchValidator from 'src/app/core/validators/confirm-field-match.validator';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Subscription } from 'rxjs';
-import { IUser } from 'src/app/core/interfaces/user';
 import { Router } from '@angular/router';
 
 
@@ -47,8 +46,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     if (this.registerForm.valid) {
       this.subRegister = this.authService.register(this.registerForm.value)
-        .subscribe((user: IUser) => {
-          this.authService.setUser(user);
+        .subscribe((data: any) => {
+          this.authService.setUser(data.user);
+          this.authService.setToken(data.token);
           this.router.navigate(['/']);
         }, (err: any) => {
           if (err.error === 'User has already registered') {
