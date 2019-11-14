@@ -12,7 +12,6 @@ import * as moment from 'moment';
 export class AuthService extends BaseService {
   token: object;
   user: IUser;
-
   constructor(
     public router: Router,
     http: HttpClient
