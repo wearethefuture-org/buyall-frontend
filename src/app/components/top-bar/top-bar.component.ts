@@ -7,7 +7,6 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
   styleUrls: ['./top-bar.component.css']
 })
 export class TopBarComponent {
-
   constructor(
     private authService: AuthService
   ) { }
