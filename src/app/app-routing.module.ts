@@ -4,6 +4,8 @@ import { CartComponent } from './components/cart/cart.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import {ContactUsComponent} from './components/contact-us/contact-us.component';
 import {AboutComponent} from './components/about/about.component';
+import { TopbarLayoutComponent } from './components/layouts/topbar-layout/topbar-layout.component';
+import { SidebarLayoutComponent } from './components/layouts/sidebar-layout/sidebar-layout.component';
 
 
 const routes: Routes = [
@@ -14,27 +16,58 @@ const routes: Routes = [
   },
   {
     path: 'shop',
+    component: TopbarLayoutComponent,
     loadChildren: './modules/shop/shop.module#ShopModule'
   },
   {
     path: 'auth',
+    component: TopbarLayoutComponent,
     loadChildren: './modules/auth/auth.module#AuthModule'
   },
   {
+    path: 'admin',
+    component: SidebarLayoutComponent,
+    loadChildren: './modules/admin/admin.module#AdminModule'
+  },
+  {
     path: 'cart',
-    component: CartComponent
+    component: TopbarLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: CartComponent
+      }
+    ]
   },
   {
     path: 'about',
-    component: AboutComponent
+    component: TopbarLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: AboutComponent
+      }
+    ]
   },
   {
     path: 'contact',
-    component: ContactUsComponent
+    component: TopbarLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: ContactUsComponent
+      }
+    ]
   },
   {
     path: 'not-found',
-    component: NotFoundComponent
+    component: TopbarLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: NotFoundComponent
+      }
+    ]
   },
   {
     path: '**',

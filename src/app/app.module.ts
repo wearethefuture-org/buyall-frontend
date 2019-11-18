@@ -16,6 +16,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ContactUsComponent } from './components/contact-us/contact-us.component';
 import { AboutComponent } from './components/about/about.component';
+import { TopbarLayoutComponent } from './components/layouts/topbar-layout/topbar-layout.component';
+import { SidebarLayoutComponent } from './components/layouts/sidebar-layout/sidebar-layout.component';
 
 @NgModule({
   imports: [
@@ -36,7 +38,9 @@ import { AboutComponent } from './components/about/about.component';
     NotFoundComponent,
     CartComponent,
     ContactUsComponent,
-    AboutComponent
+    AboutComponent,
+    TopbarLayoutComponent,
+    SidebarLayoutComponent
   ],
   bootstrap: [ AppComponent ]
 })
