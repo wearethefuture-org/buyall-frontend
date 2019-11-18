@@ -1,11 +1,17 @@
 /* Global Styles */
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 * {
   font-family: 'Roboto', Arial, sans-serif;
   color: #616161;
-  box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+*, 
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
@@ -19,7 +25,7 @@ body {
 }
 
 router-outlet + *  {
-  padding: 0 16px;
+  /* padding: 0 16px; */
 }
 
 /* Text */

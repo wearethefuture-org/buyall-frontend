@@ -1,3 +1,12 @@
-<p>sidebar-layout works!</p>
 
-<router-outlet></router-outlet>
+<div class="wrapper">
+    <app-sidebar></app-sidebar>
+
+    <!-- Main panel -->
+    <div class="main-panel">
+        <div style="height: 100%;">
+                <router-outlet></router-outlet>
+        </div>
+    </div>
+    <!-- ./ Main panel -->
+</div>

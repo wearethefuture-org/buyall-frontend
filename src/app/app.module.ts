@@ -18,6 +18,7 @@ import { ContactUsComponent } from './components/contact-us/contact-us.component
 import { AboutComponent } from './components/about/about.component';
 import { TopbarLayoutComponent } from './components/layouts/topbar-layout/topbar-layout.component';
 import { SidebarLayoutComponent } from './components/layouts/sidebar-layout/sidebar-layout.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { SidebarLayoutComponent } from './components/layouts/sidebar-layout/side
     ContactUsComponent,
     AboutComponent,
     TopbarLayoutComponent,
-    SidebarLayoutComponent
+    SidebarLayoutComponent,
+    SidebarComponent
   ],
   bootstrap: [ AppComponent ]
 })
