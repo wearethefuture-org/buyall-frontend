@@ -24,13 +24,27 @@ export class BaseService {
 
     return this.http.get(this.apiUrl + (options || ''), {
       headers: this.headers
-    });
+    }).pipe(catchError(this.catchError.bind(this)));
   }
 
   public post(data?: object, options?: string): Observable<any> {
     this.setHeaders(options);
 
     return this.http.post<any>(this.apiUrl + (options || ''), data, {headers: this.headers})
+            .pipe(catchError(this.catchError.bind(this)));
+  }
+
+  public put(data?: object, options?: string): Observable<any> {
+    this.setHeaders(options);
+
+    return this.http.put<any>(this.apiUrl + (options || ''), data, {headers: this.headers})
+            .pipe(catchError(this.catchError.bind(this)));
+  }
+
+  public delete(options?: string): Observable<any> {
+    this.setHeaders(options);
+
+    return this.http.delete<any>(this.apiUrl + (options || ''), {headers: this.headers})
             .pipe(catchError(this.catchError.bind(this)));
   }
 
@@ -44,8 +58,14 @@ export class BaseService {
   }
 
   protected catchError(err: any): any {
-    if (err.status > 400 && err.status < 500) {
+    if (err.status === 401) {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
       this.router.navigate(['/auth', 'login']);
+    }
+
+    if (err.status === 403) {
+      this.router.navigate(['/']);
     }
 
     return observableThrowError(err.error || {});

@@ -6,6 +6,11 @@
     padding: 30px;
     height: 100%;
     display: flex;
+    flex-direction: column;
+}
+
+.table-wrapper {
+    display: flex;
     justify-content: center;
 }
 
@@ -13,7 +18,7 @@
   border-collapse: collapse;
   margin: 25px 0;
   font-size: 0.9em;
-  min-width: 400px;
+  width: 100%;
   border-radius: 5px 5px 0 0;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -76,4 +81,52 @@
     background-color: #ef8157;
     color: #fff;
     border-radius: 3px;
+}
+
+.create-btn {
+  border-radius: 5px;
+  width: 150px;
+}
+
+.close {
+  background-color: red;
+  color: white;
+  opacity: 0.5;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  padding-left: 4px;
+}
+
+mat-icon {
+  font-family: 'Material Icons';
+  position: relative;
+  top: 5px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form > div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+form div mat-form-field {
+  margin-right: 20px;
+}
+
+form div:last-of-type {
+  align-items: center;
+  justify-content: left;
+  padding-left: 63px;
+}
+
+.mat-calendar {
+  position: absolute !important;
+  z-index: 99999 !important;
 }

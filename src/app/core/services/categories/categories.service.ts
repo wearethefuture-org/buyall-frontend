@@ -23,4 +23,16 @@ export class CategoriesService extends BaseService {
   getCategoriesList(): Observable<ICategory[]> {
     return this.get(ECategoryUrls.categoryList);
   }
+
+  createCategory(category) {
+    return this.post(category, ECategoryUrls.create);
+  }
+
+  deleteCategory(id: number) {
+    return this.delete(ECategoryUrls.delete + id);
+  }
+
+  editCategory(category: ICategory, id: number) {
+    return this.put(category, ECategoryUrls.update + id);
+  }
 }

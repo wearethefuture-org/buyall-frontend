@@ -5,6 +5,12 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { ManageUserPageComponent } from 'src/app/components/manage-user-page/manage-user-page.component';
 import { ManageCategoriesPageComponent } from 'src/app/components/manage-categories-page/manage-categories-page.component';
 import { ManageSubcategoriesPageComponent } from 'src/app/components/manage-subcategories-page/manage-subcategories-page.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatIconModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -15,7 +21,17 @@ import { ManageSubcategoriesPageComponent } from 'src/app/components/manage-subc
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatSelectModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class AdminModule { }
