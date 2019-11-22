@@ -20,15 +20,15 @@ export class UserService extends BaseService {
     return this.get(EUsersUrls.userList);
   }
 
-  createUser(user: IUser) {
+  createUser(user: IUser): Observable<IUser> {
     return this.post(user, EUsersUrls.create);
   }
 
-  editUser(user: IUser, id: number) {
+  editUser(user: IUser, id: number): Observable<boolean> {
     return this.put(user, EUsersUrls.update + id);
   }
 
-  deleteUser(id: number) {
+  deleteUser(id: number): Observable<boolean> {
     return this.delete(EUsersUrls.delete + id);
   }
 }

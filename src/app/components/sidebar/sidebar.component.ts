@@ -13,10 +13,10 @@ export class SidebarComponent implements OnInit {
     private authService: AuthService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  get user() {
+  get user(): IUser {
     return this.authService.getUser();
   }
 }

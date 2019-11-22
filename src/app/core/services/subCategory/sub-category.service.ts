@@ -19,11 +19,15 @@ export class SubCategoryService extends BaseService {
     return this.get(ESubCategoryUrls.subCategoryList);
   }
 
-  createCategory(subCategory) {
+  createSubCategory(subCategory: ISubCategory): Observable<ISubCategory> {
     return this.post(subCategory, ESubCategoryUrls.create);
   }
 
-  deleteCategory(id: number) {
+  deleteSubCategory(id: number): Observable<boolean> {
     return this.delete(ESubCategoryUrls.delete + id);
+  }
+
+  editSubCategory(subCategory: ISubCategory, id: number): Observable<boolean> {
+    return this.put(subCategory, ESubCategoryUrls.update + id);
   }
 }

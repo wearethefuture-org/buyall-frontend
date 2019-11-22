@@ -9,7 +9,7 @@ export class TopbarLayoutComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }

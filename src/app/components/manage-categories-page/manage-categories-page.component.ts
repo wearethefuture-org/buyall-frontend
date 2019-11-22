@@ -16,13 +16,15 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
   editedCategoryId: number = undefined;
   subCreateCategory: Subscription;
   subEditCategory: Subscription;
+  subDeleteCategory: Subscription;
+  subGetCategoriesList: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private categoriesService: CategoriesService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.createCategoryForm = this.fb.group({
       name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
       description: [null, Validators.compose([Validators.required, Validators.maxLength(255)])]
@@ -33,44 +35,42 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
       description: [null, Validators.compose([Validators.required, Validators.maxLength(255)])]
     });
 
-    this.categoriesService.getCategoriesList()
-      .subscribe(categories => {
+    this.subGetCategoriesList = this.categoriesService.getCategoriesList()
+      .subscribe((categories: ICategory[]) => {
         this.categories = categories;
-      })
+      });
   }
 
-  ngOnDestroy() {
-    if (this.subCreateCategory) {
-      this.subCreateCategory.unsubscribe();
+  onCategoryCreate(): void {
+    // need refactoring if block
+    // alert if category is created
+    if (this.createCategoryForm.valid) {
+      this.subCreateCategory = this.categoriesService.createCategory(this.createCategoryForm.value)
+        .subscribe((category: ICategory) => {
+          this.categories.push(category);
+          this.createCategoryForm.reset();
+        });
     }
-
-    if (this.subEditCategory) {
-      this.subEditCategory.unsubscribe();
-    }
   }
 
-  onCategoryCreate() {
-    this.categoriesService.createCategory(this.createCategoryForm.value)
-      .subscribe(category => {
-        this.categories.push(category);
-        this.createCategoryForm.reset();
-      })
-  }
-
-  onCategoryDelete(category: ICategory) {
-    this.categoriesService.deleteCategory(category.id)
-      .subscribe(res => {
+  onCategoryDelete(category: ICategory): void {
+    // delete categories on serve with sub categories
+    // alert if category is deleted
+    this.subDeleteCategory = this.categoriesService.deleteCategory(category.id)
+      .subscribe((res: boolean) => {
         if (res) {
-          this.categories = this.categories.filter(c => {
-            return c.id != category.id;
-          }) 
+          this.categories = this.categories.filter((c: ICategory) => {
+            return c.id !== category.id;
+          });
         }
-      })
+      });
   }
 
-  onInviteEdit(id: number) {
+  onInviteEdit(id: number): void {
+    // look agly create component category-list-item where manage changes
     this.editedCategoryId = id;
 
+    // need refactoring
     const {
       name,
       description
@@ -82,13 +82,35 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  onUserEdit() {
-    this.categoriesService.editCategory(this.editCategoryForm.value, this.categories[this.editedCategoryId].id)
-      .subscribe(res => {
-        if (res) {
-          this.editCategoryForm.value.id = this.categories[this.editedCategoryId].id;
-          this.categories[this.editedCategoryId] = this.editCategoryForm.value;
-        }
-      })
+  onCategoryEdit(): void {
+    // need refactoring if block
+    // add alert if category is edited
+    if (this.editCategoryForm.valid) {
+      this.subEditCategory = this.categoriesService.editCategory(this.editCategoryForm.value, this.categories[this.editedCategoryId].id)
+        .subscribe((res: boolean) => {
+          if (res) {
+            this.editCategoryForm.value.id = this.categories[this.editedCategoryId].id;
+            this.categories[this.editedCategoryId] = this.editCategoryForm.value;
+          }
+        });
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.subCreateCategory) {
+      this.subCreateCategory.unsubscribe();
+    }
+
+    if (this.subEditCategory) {
+      this.subEditCategory.unsubscribe();
+    }
+
+    if (this.subDeleteCategory) {
+      this.subDeleteCategory.unsubscribe();
+    }
+
+    if (this.subGetCategoriesList) {
+      this.subGetCategoriesList.unsubscribe();
+    }
   }
 }

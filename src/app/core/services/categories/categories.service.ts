@@ -24,15 +24,15 @@ export class CategoriesService extends BaseService {
     return this.get(ECategoryUrls.categoryList);
   }
 
-  createCategory(category) {
+  createCategory(category: ICategory): Observable<ICategory> {
     return this.post(category, ECategoryUrls.create);
   }
 
-  deleteCategory(id: number) {
+  deleteCategory(id: number): Observable<boolean> {
     return this.delete(ECategoryUrls.delete + id);
   }
 
-  editCategory(category: ICategory, id: number) {
+  editCategory(category: ICategory, id: number): Observable<boolean> {
     return this.put(category, ECategoryUrls.update + id);
   }
 }

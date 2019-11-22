@@ -18,8 +18,10 @@ export class ManageUserPageComponent implements OnInit, OnDestroy {
   createUserForm: FormGroup;
   editUserForm: FormGroup;
   editedUserId: number = undefined;
+  subGetUserList: Subscription;
   subCreateUser: Subscription;
   subEditUser: Subscription;
+  subDeleteUser: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -27,7 +29,7 @@ export class ManageUserPageComponent implements OnInit, OnDestroy {
     private fb: FormBuilder
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.createUserForm = this.fb.group({
       firstName: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
       lastName: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
@@ -48,69 +50,72 @@ export class ManageUserPageComponent implements OnInit, OnDestroy {
       role: ['user', Validators.compose([Validators.required])],
       disabled: [false, Validators.compose([Validators.required])]
     });
-    
-    this.userService.getUserList()
+
+    this.subGetUserList = this.userService.getUserList()
       .pipe(
         map((users: IUser[]) => {
           users.map((user: IUser) => {
-            user.dateBirthday = moment(user.dateBirthday).format("YYYY-MM-DD");
+            user.dateBirthday = moment(user.dateBirthday).format('YYYY-MM-DD');
             return user;
-          })
-          return users
+          });
+          return users;
         })
       )
       .subscribe((users: IUser[]) => {
         this.users = users;
-      })
+      });
   }
 
-  ngOnDestroy() {
-    if (this.subCreateUser) {
-      this.subCreateUser.unsubscribe();
-    }
-
-    if (this.subEditUser) {
-      this.subEditUser.unsubscribe();
-    }
-  }
-
-  onUserDelete(user: IUser) {
-    this.userService.deleteUser(user.id)
-      .subscribe(res => {
+  onUserDelete(user: IUser): void {
+    // delete user when he have forgot and confrim keys on serve
+    // add alert user is deleated
+    this.subDeleteUser = this.userService.deleteUser(user.id)
+      .subscribe((res: boolean) => {
         if (res) {
-          this.users = this.users.filter(u => {
-            return u.id != user.id;
-          }) 
-        }
-      })
-  }
-
-  onUserCreate() {
-    if (this.createUserForm.valid) {
-      this.userService.createUser(this.createUserForm.value) 
-        .subscribe(user => {
-          if (user) {
-            user.dateBirthday = moment(user.dateBirthday).format("YYYY-MM-DD");
-            this.users.push(user);
-            this.createUserForm.reset();
-          }
-        })
-    }
-  }
-
-  onUserEdit() {
-    this.userService.editUser(this.editUserForm.value, this.users[this.editedUserId].id)
-      .subscribe(res => {
-        if (res) {
-          this.editUserForm.value.id = this.users[this.editedUserId].id;
-          this.users[this.editedUserId] = this.editUserForm.value;
+          this.users = this.users.filter((u: IUser) => {
+            return u.id !== user.id;
+          }) ;
         }
       });
   }
 
-  onInviteEdit(id: number) {
+  onUserCreate(): void {
+    // need refactoring if block
+    // add alert email is taking
+    // add alert user is created
+    if (this.createUserForm.valid) {
+      this.subCreateUser = this.userService.createUser(this.createUserForm.value)
+        .subscribe((user: IUser) => {
+          if (user) {
+            user.dateBirthday = moment(user.dateBirthday).format('YYYY-MM-DD');
+            this.users.push(user);
+            this.createUserForm.reset();
+          }
+        });
+    }
+  }
+
+  onUserEdit(): void {
+    // refactoring 121 line form must contain hidden input with id or something else
+    // add alert user is edited
+    // add alert user can not be edited because email is taken
+    // need refactoring if block
+    if (this.editUserForm.valid) {
+      this.subEditUser = this.userService.editUser(this.editUserForm.value, this.users[this.editedUserId].id)
+        .subscribe((res: boolean) => {
+          if (res) {
+            this.editUserForm.value.id = this.users[this.editedUserId].id;
+            this.users[this.editedUserId] = this.editUserForm.value;
+          }
+        });
+    }
+  }
+
+  onInviteEdit(id: number): void {
+    // look agly create component user-list-item where manage changes
     this.editedUserId = id;
 
+    // need refactoring
     const {
       firstName,
       lastName,
@@ -132,7 +137,25 @@ export class ManageUserPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  get userRole() {
+  get userRole(): string {
     return this.authService.getUser().role;
+  }
+
+  ngOnDestroy(): void {
+    if (this.subCreateUser) {
+      this.subCreateUser.unsubscribe();
+    }
+
+    if (this.subEditUser) {
+      this.subEditUser.unsubscribe();
+    }
+
+    if (this.subDeleteUser) {
+      this.subDeleteUser.unsubscribe();
+    }
+
+    if (this.subGetUserList) {
+      this.subGetUserList.unsubscribe();
+    }
   }
 }
