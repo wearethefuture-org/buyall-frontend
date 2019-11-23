@@ -3,32 +3,15 @@
         Create new category
     </button>
 
-    <div class="table-wrapper">
-        <table class="content-table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let category of categories;let i = index">
-                    <td>{{ category.id }}</td>
-                    <td>{{ category.name }}</td>
-                    <td>{{ category.description }}</td>
-                    <td>
-                        <i class="material-icons btn btn-icon btn-success" (click)="onInviteEdit(i)" data-toggle="modal" data-target="#editCategoryModal">edit</i>
-
-                        <i class="material-icons btn btn-icon btn-danger" (click)="onCategoryDelete(category)">
-                            delete
-                        </i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <app-admin-table
+        *ngIf="categories"
+        [headers]="tableHeaders"
+        [body]="categories" 
+        (editEmmiter)="showEditModal($event)" 
+        (deleteEmmiter)="onCategoryDelete($event)" 
+        [canDelete]="true"
+        [canEdit]="true"
+    ></app-admin-table>
 </div>
 
 <div id="createCategoryModal" class="modal fade" role="dialog">
@@ -60,7 +43,7 @@
     </div>
 </div>
 
-<div id="editCategoryModal" class="modal fade" role="dialog">
+<div id="editCategoryModal" class="modal fade" role="dialog" #editModal>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -69,6 +52,7 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="editCategoryForm">
+                    <input formControlName="id" type="hidden">
                     <div>
                         <mat-form-field>
                             <input matInput placeholder="Name" formControlName="name">

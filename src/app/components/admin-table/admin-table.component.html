@@ -1,0 +1,24 @@
+<div class="table-wrapper">
+    <table class="content-table">
+        <thead>
+            <tr>
+                <th *ngFor="let header of headers">{{ header }}</th>
+                <th *ngIf="canDelete || canEdit">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of body">
+                <td *ngFor="let header of headers ">{{ item[header] }}</td>
+                <td *ngIf="canDelete || canEdit">
+                    <i class="material-icons btn btn-icon btn-success" (click)="editEmmiter.emit(item)" *ngIf="canEdit">
+                        edit
+                    </i>
+
+                    <i class="material-icons btn btn-icon btn-danger" (click)="deleteEmmiter.emit(item)" *ngIf="canDelete">
+                        delete
+                    </i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

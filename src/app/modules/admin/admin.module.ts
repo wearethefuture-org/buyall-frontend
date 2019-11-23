@@ -10,6 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, MatIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AdminTableComponent } from 'src/app/components/admin-table/admin-table.component';
 
 
 
@@ -17,7 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [
     ManageUserPageComponent,
     ManageCategoriesPageComponent,
-    ManageSubcategoriesPageComponent
+    ManageSubcategoriesPageComponent,
+    AdminTableComponent
   ],
   imports: [
     CommonModule,

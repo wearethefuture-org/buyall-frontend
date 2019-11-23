@@ -3,34 +3,15 @@
         Create new sub category
     </button>
 
-    <div class="table-wrapper">
-        <table class="content-table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Category id</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let subCategory of subCategories;let i = index">
-                    <td>{{ subCategory.id }}</td>
-                    <td>{{ subCategory.categoryId }}</td>
-                    <td>{{ subCategory.name }}</td>
-                    <td>{{ subCategory.description }}</td>
-                    <td>
-                        <i class="material-icons btn btn-icon btn-success" (click)="onInviteEdit(i)" data-toggle="modal" data-target="#editSubCategoryModal">edit</i>
-
-                        <i class="material-icons btn btn-icon btn-danger" (click)="onSubCategoryDelete(subCategory)">
-                            delete
-                        </i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <app-admin-table
+        *ngIf="subCategories"
+        [headers]="tableHeaders"
+        [body]="tableBody"
+        (editEmmiter)="showEditModal($event)" 
+        (deleteEmmiter)="onSubCategoryDelete($event)" 
+        [canDelete]="true"
+        [canEdit]="true"
+    ></app-admin-table>
 </div>
 
 <div id="createSubCategoryModal" class="modal fade" role="dialog">

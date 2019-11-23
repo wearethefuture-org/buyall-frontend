@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ICategory } from 'src/app/core/interfaces/category';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CategoriesService } from 'src/app/core/services/categories/categories.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-manage-categories-page',
@@ -10,10 +11,10 @@ import { CategoriesService } from 'src/app/core/services/categories/categories.s
   styleUrls: ['./manage-categories-page.component.css']
 })
 export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
+  @ViewChild('editModal', {static: false}) editModal: ElementRef;
   categories: ICategory[];
   createCategoryForm: FormGroup;
   editCategoryForm: FormGroup;
-  editedCategoryId: number = undefined;
   subCreateCategory: Subscription;
   subEditCategory: Subscription;
   subDeleteCategory: Subscription;
@@ -31,11 +32,21 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
     });
 
     this.editCategoryForm = this.fb.group({
+      id: [null],
       name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
       description: [null, Validators.compose([Validators.required, Validators.maxLength(255)])]
     });
 
     this.subGetCategoriesList = this.categoriesService.getCategoriesList()
+      .pipe(map((categories: ICategory[]) => {
+        return categories.map((category: ICategory) => {
+          delete category.subCategories;
+          delete category.createdAt;
+          delete category.updatedAt;
+
+          return category;
+        });
+      }))
       .subscribe((categories: ICategory[]) => {
         this.categories = categories;
       });
@@ -66,34 +77,32 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  onInviteEdit(id: number): void {
-    // look agly create component category-list-item where manage changes
-    this.editedCategoryId = id;
-
-    // need refactoring
-    const {
-      name,
-      description
-    } = this.categories[id];
-
-    this.editCategoryForm.setValue({
-      name,
-      description
-    });
-  }
-
   onCategoryEdit(): void {
     // need refactoring if block
     // add alert if category is edited
     if (this.editCategoryForm.valid) {
-      this.subEditCategory = this.categoriesService.editCategory(this.editCategoryForm.value, this.categories[this.editedCategoryId].id)
+      this.subEditCategory = this.categoriesService.editCategory(this.editCategoryForm.value, this.editCategoryForm.value.id)
         .subscribe((res: boolean) => {
           if (res) {
-            this.editCategoryForm.value.id = this.categories[this.editedCategoryId].id;
-            this.categories[this.editedCategoryId] = this.editCategoryForm.value;
+            this.categories = this.categories.map((category: ICategory) => {
+              if (category.id === this.editCategoryForm.value.id) {
+                return this.editCategoryForm.value;
+              } 
+              return category;
+            })
           }
         });
     }
+  }
+
+  showEditModal(category: ICategory): void {
+    this.editCategoryForm.setValue(category); 
+    // $(this.editModal.nativeElement).modal('show'); 
+    // $(this.editModal.nativeElement).show(); 
+  }
+
+  get tableHeaders(): string[] {
+    return Object.keys(this.categories[0]);
   }
 
   ngOnDestroy(): void {

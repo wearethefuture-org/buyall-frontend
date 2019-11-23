@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CategoriesService } from 'src/app/core/services/categories/categories.service';
 import { ICategory } from 'src/app/core/interfaces/category';
+import { map } from 'rxjs/operators';
 
 /* ************************************************
       Display name of category instead of id
@@ -33,7 +34,6 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-
     this.createSubCategoryForm = this.fb.group({
       name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
       categoryId: [null, Validators.compose([Validators.required])],
@@ -47,6 +47,14 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
     });
 
     this.subGetSubCategoriesList = this.subCategoriesService.getSubCategoriesList()
+      .pipe(map((subCategories: ISubCategory[]) => {
+        return subCategories.map((subCategory: ISubCategory) => {
+          delete subCategory.createdAt;
+          delete subCategory.updatedAt;
+
+          return subCategory;
+        });
+      }))
       .subscribe((subCategories: ISubCategory[]) => {
         this.subCategories = subCategories;
       });
@@ -71,6 +79,8 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   }
 
   onSubCategoryDelete(subCategory: ISubCategory): void {
+    console.log(subCategory);
+    
     // add alert sub category is deleated
     this.subDeleteSubCategory = this.subCategoriesService.deleteSubCategory(subCategory.id)
       .subscribe((res: boolean) => {
@@ -80,24 +90,6 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
           });
         }
       });
-  }
-
-  onInviteEdit(id: number): void {
-    // look agly create component subCategory-list-item where manage changes
-    this.editedSubCategoryId = id;
-
-    // need refactoring
-    const {
-      name,
-      categoryId,
-      description
-    } = this.subCategories[id];
-
-    this.editSubCategoryForm.setValue({
-      name,
-      categoryId,
-      description
-    });
   }
 
   onSubCategoryEdit(): void {
@@ -118,6 +110,42 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
           }
         });
     }
+  }
+
+  showEditModal(subCategory: ISubCategory): void {
+    this.editSubCategoryForm.setValue(subCategory); 
+    // $(this.editModal.nativeElement).modal('show'); 
+    // $(this.editModal.nativeElement).show(); 
+  }
+
+
+  get tableHeaders(): string[] {
+    const example = Object.assign({}, this.subCategories[0]);
+    delete example.categoryId;
+
+    const keys = Object.keys(example);
+    keys.push('category name');
+
+    return keys;
+  }
+
+  get tableBody() {
+    return this.subCategories.map((subCategory: any) => {
+      subCategory = Object.assign({}, subCategory);
+
+      if (!this.categories) {
+        return subCategory;
+      }
+
+      this.categories.map(c => {
+        if (c.id === subCategory.categoryId) {
+          subCategory['category name'] = c.name;
+        }
+        return c;
+      });
+
+      return subCategory;
+    })
   }
 
   ngOnDestroy(): void {

@@ -7,4 +7,7 @@ export interface IUser {
     role: string,
     disabled: boolean,
     dateBirthday: string
+    password: string,
+    createdAt: string,
+    updatedAt: string
 }

@@ -3,42 +3,15 @@
         Create new user
     </button>
 
-    <div class="table-wrapper">
-        <table class="content-table">
-            <thead>
-                <tr>
-                <th>Id</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Status</th>
-                <th>Disabled</th>
-                <th>Birthday date</th>
-                <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let user of users;let i = index">
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastName }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.role }}</td>
-                    <td>{{ user.status }}</td>
-                    <td>{{ user.disabled }}</td>
-                    <td>{{ user.dateBirthday }}</td>
-                    <td>
-                        <i class="material-icons btn btn-icon btn-success" (click)="onInviteEdit(i)" data-toggle="modal" data-target="#editUserModal">edit</i>
-
-                        <i class="material-icons btn btn-icon btn-danger" (click)="onUserDelete(user)" *ngIf="userRole === 'superadmin'">
-                            delete
-                        </i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <app-admin-table 
+        *ngIf="users" 
+        [headers]="tableHeaders" 
+        [body]="users" 
+        (editEmmiter)="showEditModal($event)" 
+        (deleteEmmiter)="onUserDelete($event)" 
+        [canDelete]="userRole === 'superadmin'"
+        [canEdit]="true"
+    ></app-admin-table>
 </div>
 
 <div id="createUserModal" class="modal fade" role="dialog">
@@ -150,7 +123,7 @@
     </div>
 </div>
 
-<div id="editUserModal" class="modal fade" role="dialog">
+<div id="editUserModal" class="modal fade" role="dialog" #editModal>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -159,6 +132,7 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="editUserForm">
+                    <input formControlName="id" type="hidden">
                     <div>
                         <mat-form-field>
                             <input matInput placeholder="First name" formControlName="firstName">

@@ -3,4 +3,6 @@ export interface ISubCategory {
     categoryId: number,
     name: string,
     description: string
+    createdAt: string,
+    updatedAt: string
 }
