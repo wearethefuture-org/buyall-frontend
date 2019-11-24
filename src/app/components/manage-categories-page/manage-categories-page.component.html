@@ -3,6 +3,8 @@
         Create new category
     </button>
 
+    <button id="editModalToggle" data-toggle="modal" data-target="#editCategoryModal" #editModalToggler></button>
+
     <app-admin-table
         *ngIf="categories"
         [headers]="tableHeaders"
@@ -27,9 +29,7 @@
                         <mat-form-field>
                             <input matInput placeholder="Name" formControlName="name">
                         </mat-form-field>
-                    </div>
 
-                    <div>
                         <mat-form-field>
                             <textarea matInput placeholder="Description" formControlName="description"></textarea>
                         </mat-form-field>
@@ -58,9 +58,7 @@
                             <input matInput placeholder="Name" formControlName="name">
                             <mat-icon matSuffix>person</mat-icon>
                         </mat-form-field>
-                    </div>
 
-                    <div>
                         <mat-form-field>
                             <textarea matInput placeholder="Description" formControlName="description"></textarea>
                         </mat-form-field>

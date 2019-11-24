@@ -9,15 +9,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./admin-table.component.css']
 })
 export class AdminTableComponent implements OnInit {
-  @Input() canDelete: boolean = false;
-  @Input() canEdit: boolean = false;
+  @Input() canDelete: boolean;
+  @Input() canEdit: boolean;
   @Input() headers: string[];
   @Input() body: object[];
-  @Output() editEmmiter = new EventEmitter<string>();
-  @Output() deleteEmmiter = new EventEmitter<string>();
+  @Output() editEmmiter: EventEmitter<string> = new EventEmitter<string>();
+  @Output() deleteEmmiter: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 }

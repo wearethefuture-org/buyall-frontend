@@ -3,6 +3,8 @@
         Create new user
     </button>
 
+    <button id="editModalToggle" data-toggle="modal" data-target="#editUserModal" #editModalToggler></button>
+
     <app-admin-table 
         *ngIf="users" 
         [headers]="tableHeaders" 
@@ -64,9 +66,9 @@
                         </mat-form-field>
 
                         <mat-form-field>
-                            <input matInput formControlName="dateBirthday" [matDatepicker]="picker" placeholder="Choose a date">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
+                            <input matInput formControlName="dateBirthday" [matDatepicker]="createPicker" placeholder="Choose a date">
+                            <mat-datepicker-toggle matSuffix [for]="createPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #createPicker></mat-datepicker>
 
                             <mat-error *ngIf="createUserForm.get('dateBirthday').errors?.required && (createUserForm.get('dateBirthday').touched) && 
                             !createUserForm.get('dateBirthday').errors?.matDatepickerParse">
@@ -123,7 +125,7 @@
     </div>
 </div>
 
-<div id="editUserModal" class="modal fade" role="dialog" #editModal>
+<div id="editUserModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -154,7 +156,7 @@
                         <mat-form-field>
                             <input matInput formControlName="dateBirthday" [matDatepicker]="editPicker" placeholder="Choose a date">
                             <mat-datepicker-toggle matSuffix [for]="editPicker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-datepicker #editPicker></mat-datepicker>
                         </mat-form-field>
                     </div>
 

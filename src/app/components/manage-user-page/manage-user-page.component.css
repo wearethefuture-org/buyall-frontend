@@ -2,6 +2,10 @@
     font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
 
+#editModalToggle {
+  display: none;
+}
+
 .content {
     padding: 30px;
     height: 100%;

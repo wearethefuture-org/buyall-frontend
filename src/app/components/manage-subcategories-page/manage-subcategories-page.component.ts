@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ISubCategory } from 'src/app/core/interfaces/subCategory';
 import { SubCategoryService } from 'src/app/core/services/subCategory/sub-category.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { CategoriesService } from 'src/app/core/services/categories/categories.service';
 import { ICategory } from 'src/app/core/interfaces/category';
 import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 /* ************************************************
       Display name of category instead of id
@@ -16,6 +17,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./manage-subcategories-page.component.css']
 })
 export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
+  @ViewChild('editModalToggler', {static: false}) editModalToggler: ElementRef;
   categories: ICategory[];
   subCategories: ISubCategory[];
   createSubCategoryForm: FormGroup;
@@ -28,6 +30,7 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   subDeleteSubCategory: Subscription;
 
   constructor(
+    private toastr: ToastrService,
     private fb: FormBuilder,
     private categoriesService: CategoriesService,
     private subCategoriesService: SubCategoryService
@@ -41,6 +44,7 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
     });
 
     this.editSubCategoryForm = this.fb.group({
+      id: [null],
       name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
       categoryId: [null, Validators.compose([Validators.required])],
       description: [null, Validators.compose([Validators.required, Validators.maxLength(255)])]
@@ -67,21 +71,19 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   }
 
   onSubCategoryCreate(): void {
-    // add alert sub category is created
-    // need refactoring if block
-    if (this.createSubCategoryForm.valid) {
-      this.subCreateSubCategory = this.subCategoriesService.createSubCategory(this.createSubCategoryForm.value)
-        .subscribe((subCategory: ISubCategory) => {
-          this.subCategories.push(subCategory);
-          this.createSubCategoryForm.reset();
-        });
+    if (this.createSubCategoryForm.invalid) {
+      this.toastr.error('Invalid credentials');
+      return;
     }
+
+    this.subCreateSubCategory = this.subCategoriesService.createSubCategory(this.createSubCategoryForm.value)
+      .subscribe((subCategory: ISubCategory) => {
+        this.subCategories.push(subCategory);
+        this.createSubCategoryForm.reset();
+      });
   }
 
   onSubCategoryDelete(subCategory: ISubCategory): void {
-    console.log(subCategory);
-    
-    // add alert sub category is deleated
     this.subDeleteSubCategory = this.subCategoriesService.deleteSubCategory(subCategory.id)
       .subscribe((res: boolean) => {
         if (res) {
@@ -93,59 +95,31 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   }
 
   onSubCategoryEdit(): void {
-    // refactoring 124 line form must contain hidden input with id or something else
-    // add alert sub category is edited
-    // need refactoring if block
-    // change edit sub category instead of category
-
-    if (this.editSubCategoryForm.valid) {
-      this.subEditSubCategory = this.subCategoriesService.editSubCategory(
-        this.editSubCategoryForm.value,
-        this.subCategories[this.editedSubCategoryId].id
-      )
-        .subscribe((res: boolean) => {
-          if (res) {
-            this.editSubCategoryForm.value.id = this.subCategories[this.editedSubCategoryId].id;
-            this.subCategories[this.editedSubCategoryId] = this.editSubCategoryForm.value;
-          }
-        });
+    if (this.editSubCategoryForm.invalid) {
+      this.toastr.error('Invalid credentials');
+      return;
     }
+
+    this.subEditSubCategory = this.subCategoriesService.editSubCategory(
+      this.editSubCategoryForm.value,
+      this.subCategories[this.editedSubCategoryId].id
+    )
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.editSubCategoryForm.value.id = this.subCategories[this.editedSubCategoryId].id;
+          this.subCategories[this.editedSubCategoryId] = this.editSubCategoryForm.value;
+        }
+      });
   }
 
   showEditModal(subCategory: ISubCategory): void {
-    this.editSubCategoryForm.setValue(subCategory); 
-    // $(this.editModal.nativeElement).modal('show'); 
-    // $(this.editModal.nativeElement).show(); 
+    this.editSubCategoryForm.setValue(subCategory);
+    this.editModalToggler.nativeElement.click();
   }
 
 
   get tableHeaders(): string[] {
-    const example = Object.assign({}, this.subCategories[0]);
-    delete example.categoryId;
-
-    const keys = Object.keys(example);
-    keys.push('category name');
-
-    return keys;
-  }
-
-  get tableBody() {
-    return this.subCategories.map((subCategory: any) => {
-      subCategory = Object.assign({}, subCategory);
-
-      if (!this.categories) {
-        return subCategory;
-      }
-
-      this.categories.map(c => {
-        if (c.id === subCategory.categoryId) {
-          subCategory['category name'] = c.name;
-        }
-        return c;
-      });
-
-      return subCategory;
-    })
+    return Object.keys(this.subCategories[0]);
   }
 
   ngOnDestroy(): void {

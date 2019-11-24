@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,11 +24,12 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
     MatSelectModule,
     MatButtonModule,
     MatMenuModule,

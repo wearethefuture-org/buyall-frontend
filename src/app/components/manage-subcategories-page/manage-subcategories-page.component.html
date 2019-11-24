@@ -3,10 +3,12 @@
         Create new sub category
     </button>
 
+    <button id="editModalToggle" data-toggle="modal" data-target="#editSubCategoryModal" #editModalToggler></button>
+
     <app-admin-table
         *ngIf="subCategories"
         [headers]="tableHeaders"
-        [body]="tableBody"
+        [body]="subCategories"
         (editEmmiter)="showEditModal($event)" 
         (deleteEmmiter)="onSubCategoryDelete($event)" 
         [canDelete]="true"
@@ -59,6 +61,7 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="editSubCategoryForm">
+                    <input formControlName="id" type="hidden">
                     <div>
                         <mat-form-field>
                             <input matInput placeholder="Name" formControlName="name">

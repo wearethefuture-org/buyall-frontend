@@ -2,6 +2,10 @@
     font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
 
+#editModalToggle {
+  display: none;
+}
+
 .content {
     padding: 30px;
     height: 100%;
@@ -114,19 +118,9 @@ form > div {
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 form div mat-form-field {
   margin-right: 20px;
-}
-
-form div:last-of-type {
-  align-items: center;
-  justify-content: left;
-  padding-left: 63px;
-}
-
-.mat-calendar {
-  position: absolute !important;
-  z-index: 99999 !important;
 }

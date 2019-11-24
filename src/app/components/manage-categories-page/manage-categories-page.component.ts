@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CategoriesService } from 'src/app/core/services/categories/categories.service';
 import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-manage-categories-page',
@@ -11,7 +12,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./manage-categories-page.component.css']
 })
 export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
-  @ViewChild('editModal', {static: false}) editModal: ElementRef;
+  @ViewChild('editModalToggler', {static: false}) editModalToggler: ElementRef;
   categories: ICategory[];
   createCategoryForm: FormGroup;
   editCategoryForm: FormGroup;
@@ -21,6 +22,7 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
   subGetCategoriesList: Subscription;
 
   constructor(
+    private toastr: ToastrService,
     private fb: FormBuilder,
     private categoriesService: CategoriesService
   ) { }
@@ -53,20 +55,19 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
   }
 
   onCategoryCreate(): void {
-    // need refactoring if block
-    // alert if category is created
-    if (this.createCategoryForm.valid) {
-      this.subCreateCategory = this.categoriesService.createCategory(this.createCategoryForm.value)
-        .subscribe((category: ICategory) => {
-          this.categories.push(category);
-          this.createCategoryForm.reset();
-        });
+    if (this.editCategoryForm.invalid) {
+      this.toastr.error('Invalid credentials');
+      return;
     }
+
+    this.subCreateCategory = this.categoriesService.createCategory(this.createCategoryForm.value)
+      .subscribe((category: ICategory) => {
+        this.categories.push(category);
+        this.createCategoryForm.reset();
+      });
   }
 
   onCategoryDelete(category: ICategory): void {
-    // delete categories on serve with sub categories
-    // alert if category is deleted
     this.subDeleteCategory = this.categoriesService.deleteCategory(category.id)
       .subscribe((res: boolean) => {
         if (res) {
@@ -78,27 +79,27 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
   }
 
   onCategoryEdit(): void {
-    // need refactoring if block
-    // add alert if category is edited
-    if (this.editCategoryForm.valid) {
-      this.subEditCategory = this.categoriesService.editCategory(this.editCategoryForm.value, this.editCategoryForm.value.id)
-        .subscribe((res: boolean) => {
-          if (res) {
-            this.categories = this.categories.map((category: ICategory) => {
-              if (category.id === this.editCategoryForm.value.id) {
-                return this.editCategoryForm.value;
-              } 
-              return category;
-            })
-          }
-        });
+    if (this.editCategoryForm.invalid) {
+      this.toastr.error('Invalid credentials');
+      return;
     }
+
+    this.subEditCategory = this.categoriesService.editCategory(this.editCategoryForm.value, this.editCategoryForm.value.id)
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.categories = this.categories.map((category: ICategory) => {
+            if (category.id === this.editCategoryForm.value.id) {
+              return this.editCategoryForm.value;
+            }
+            return category;
+          });
+        }
+      });
   }
 
   showEditModal(category: ICategory): void {
-    this.editCategoryForm.setValue(category); 
-    // $(this.editModal.nativeElement).modal('show'); 
-    // $(this.editModal.nativeElement).show(); 
+    this.editCategoryForm.setValue(category);
+    this.editModalToggler.nativeElement.click();
   }
 
   get tableHeaders(): string[] {

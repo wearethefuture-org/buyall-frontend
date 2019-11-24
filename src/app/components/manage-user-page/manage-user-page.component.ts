@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-manage-user-page',
@@ -13,7 +14,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./manage-user-page.component.css']
 })
 export class ManageUserPageComponent implements OnInit, OnDestroy {
-  @ViewChild('editModal', {static: false}) editModal: ElementRef;
+  @ViewChild('editModalToggler', {static: false}) editModalToggler: ElementRef;
   users: IUser[];
   createUserForm: FormGroup;
   editUserForm: FormGroup;
@@ -23,6 +24,7 @@ export class ManageUserPageComponent implements OnInit, OnDestroy {
   subDeleteUser: Subscription;
 
   constructor(
+    private toastr: ToastrService,
     private authService: AuthService,
     private userService: UserService,
     private fb: FormBuilder
@@ -70,8 +72,6 @@ export class ManageUserPageComponent implements OnInit, OnDestroy {
   }
 
   onUserDelete(user: IUser): void {
-    // delete user when he have forgot and confrim keys on serve
-    // add alert user is deleated
     this.subDeleteUser = this.userService.deleteUser(user.id)
       .subscribe((res: boolean) => {
         if (res) {
@@ -83,44 +83,43 @@ export class ManageUserPageComponent implements OnInit, OnDestroy {
   }
 
   onUserCreate(): void {
-    // need refactoring if block
-    // add alert email is taking
-    // add alert user is created
-    if (this.createUserForm.valid) {
-      this.subCreateUser = this.userService.createUser(this.createUserForm.value)
-        .subscribe((user: IUser) => {
-          if (user) {
-            user.dateBirthday = moment(user.dateBirthday).format('YYYY-MM-DD');
-            this.users.push(user);
-            this.createUserForm.reset();
-          }
-        });
+    if (this.createUserForm.invalid) {
+      this.toastr.error('Invalid credentials');
+      return;
     }
+
+    this.subCreateUser = this.userService.createUser(this.createUserForm.value)
+      .subscribe((user: IUser) => {
+        if (user) {
+          user.dateBirthday = moment(user.dateBirthday).format('YYYY-MM-DD');
+          this.users.push(user);
+          this.createUserForm.reset();
+        }
+      });
   }
 
   onUserEdit(): void {
-    // add alert user is edited
-    // add alert user can not be edited because email is taken
-    // need refactoring if block
-    if (this.editUserForm.valid) {
-      this.subEditUser = this.userService.editUser(this.editUserForm.value, this.editUserForm.value.id)
-        .subscribe((res: boolean) => {
-          if (res) {
-            this.users = this.users.map((user: IUser) => {
-              if (user.id === this.editUserForm.value.id) {
-                return this.editUserForm.value;
-              } 
-              return user;
-            })
-          }
-        });
+    if (this.editUserForm.invalid) {
+      this.toastr.error('Invalid credentials');
+      return;
     }
+
+    this.subEditUser = this.userService.editUser(this.editUserForm.value, this.editUserForm.value.id)
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.users = this.users.map((user: IUser) => {
+            if (user.id === this.editUserForm.value.id) {
+              return this.editUserForm.value;
+            }
+            return user;
+          });
+        }
+      });
   }
 
-  showEditModal(user: IUser) {
+  showEditModal(user: IUser): void {
     this.editUserForm.setValue(user);
-    // $(this.editModal.nativeElement).modal('show'); 
-    // $(this.editModal.nativeElement).show(); 
+    this.editModalToggler.nativeElement.click();
   }
 
   get userRole(): string {

@@ -145,6 +145,14 @@ app-top-bar h1 {
   background-color: #EEEEEE;
 }
 
+.modal {
+  z-index: 101;
+}
+
+.modal-backdrop {
+  z-index: 100;
+}
+
 
 /*
 Copyright Google LLC. All Rights Reserved.
