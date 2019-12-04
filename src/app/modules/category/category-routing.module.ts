@@ -7,11 +7,11 @@ import { CategoriesListComponent } from 'src/app/components/categories-list/cate
 const routes: Routes = [
     {
         path: '',
-        component: CategoryComponent
+        component: CategoriesListComponent
     },
     {
-        path: 'all',
-        component: CategoriesListComponent
+        path: ':id',
+        component: CategoryComponent
     }
 ];
 

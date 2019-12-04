@@ -20,8 +20,6 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
     this.subCategories = this.categoriesService.getCategoriesList()
       .subscribe((categories: ICategory[]) => {
         this.categories = categories;
-        console.log(categories);
-        
       });
   }
 
