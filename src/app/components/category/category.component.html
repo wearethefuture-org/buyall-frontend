@@ -1,5 +1,9 @@
 <div class="wrapper" *ngIf="category">
-    <div class="thumbnail" *ngFor="let subCategory of category.subCategories">
+    <div 
+        class="thumbnail" 
+        *ngFor="let subCategory of category.subCategories" 
+        [routerLink]="['/shop/sub-category', subCategory.id]"
+    >
         <img src="https://video.rozetka.com.ua/img_superportal/sport-i-uvlechenija/1.4.png" alt="...">
 
         <div class="caption">
@@ -7,4 +11,3 @@
         </div>
     </div>
 </div>
-

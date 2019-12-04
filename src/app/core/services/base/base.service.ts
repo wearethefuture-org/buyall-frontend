@@ -3,7 +3,6 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError as observableThrowError } from 'rxjs';
-import { EAuthUrls } from '../../enums/auth.e';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -35,7 +34,7 @@ export class BaseService {
   }
 
   protected setHeaders(url: string): void {
-    if (url !== EAuthUrls.login && url !== EAuthUrls.register) {
+    if (url !== '/auth/login'&& url !== '/auth/register') {
       let token = JSON.parse(localStorage.getItem('token'));
       
       token = token ? token.token : '';

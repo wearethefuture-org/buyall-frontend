@@ -28,12 +28,12 @@ export class CategoryComponent implements OnInit, OnDestroy {
         .subscribe((category: ICategory) => {
           if (!category) this.router.navigate(['/shop/category']);
 
-          this.category = category; 
+          this.category = category;
         });
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subParams.unsubscribe();
     this.subCategories.unsubscribe();
   }

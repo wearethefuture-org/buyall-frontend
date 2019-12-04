@@ -12,6 +12,6 @@ const makePagination = (page: number, amountOfPages: number, dotsDistance: numbe
     if (page <= amountOfPages - dotsDistance) pages.push('...', amountOfPages);
 
     return pages;
-}
+};
 
 export default makePagination;

@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { BaseService } from '../base/base.service';
 import { Observable } from 'rxjs';
 import { ICategory } from '../../interfaces/category';
-import { ECategoryUrls } from '../../enums/category.e';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -17,10 +16,10 @@ export class CategoriesService extends BaseService {
   ) { super(router, http); }
 
   getCategoryById(id: number): Observable<ICategory> {
-    return this.get(ECategoryUrls.categoryById + id);
+    return this.get(`/category/${id}`);
   }
 
   getCategoriesList(): Observable<ICategory[]> {
-    return this.get(ECategoryUrls.categoryList);
+    return this.get('/categories');
   }
 }

@@ -22,8 +22,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
   page: number = 1;
   pages: any[] = [];
   limit: number = 10;
-  canPrev: boolean = true;
-  canNext: boolean = true;
 
   constructor(
     private cartService: CartService,
@@ -43,7 +41,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
         this.router.navigate([], {queryParams: {page: 1}});
       }
       this.page = +params.page;
-      this.canPrev = !(this.page == 1);
 
       const offset = this.page * this.limit - this.limit;
 
@@ -57,8 +54,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
           if (this.page > amountOfPages) {
             this.router.navigate([], {queryParams: {page: amountOfPages}});
           }
-
-          this.canNext = this.page != amountOfPages;
         });
     });
 

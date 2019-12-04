@@ -16,14 +16,14 @@ export class CategoriesListComponent implements OnInit, OnDestroy {
     private categoriesService: CategoriesService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.subCategories = this.categoriesService.getCategoriesList()
       .subscribe((categories: ICategory[]) => {
         this.categories = categories;
       });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subCategories.unsubscribe();
   }
 }

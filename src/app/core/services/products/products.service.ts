@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { IProduct } from '../../interfaces/product';
 import { BaseService } from '../base/base.service';
-import { EProductUrls } from '../../enums/product.e';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -16,11 +15,11 @@ export class ProductsService extends BaseService {
   ) { super(router, http); }
 
   getProductById(id: number): Observable<IProduct> {
-    return this.get(EProductUrls.productById + id);
+    return this.get(`/product/${id}`);
   }
 
   getProductsList(offset: number = undefined, limit: number = undefined): Observable<IProduct[]> {
-    let url = `${EProductUrls.productList}?`;
+    let url = '/products?';
 
     if (offset) url += `offset=${offset}&`;
 

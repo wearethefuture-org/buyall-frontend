@@ -32,15 +32,19 @@
 
 </div> -->
 
+
 <div class="wrapper">
     <aside class="list-group">
-        <a class="list-group-item active">
+        <a class="list-group-item active" [routerLink]="['/shop/category']">
             Categories
         </a>
 
-        <a class="list-group-item" *ngFor="let category of categories;let i = index">
+        <a 
+            class="list-group-item" 
+            *ngFor="let category of categories;let i = index" 
+        >
             <div>
-                <span>{{ category.name }}</span>
+                <span [routerLink]="['/shop/category', category.id]">{{ category.name }}</span>
                 <mat-icon 
                     *ngIf="category.subCategories.length > 0"
                     data-toggle="collapse" [attr.data-target]="'#subCategories' + i"
@@ -51,7 +55,7 @@
 
             <ul class="collapse" id="subCategories{{i}}" *ngIf="category.subCategories.length > 0">
                 <li *ngFor="let subCategory of category.subCategories">
-                    <a>
+                    <a [routerLink]="['/shop/sub-category', subCategory.id]">
                         {{ subCategory.name }}
                     </a>
                 </li>
@@ -60,87 +64,13 @@
     </aside>
 
     <main>
-        <div class="products">
-            <div class="thumbnail" *ngFor="let product of products">
-                <div class="inner">
+        <app-products [products]="products" *ngIf="products"></app-products>
 
-                    <div class="img-wrapper">
-                        <img src="https://i1.rozetka.ua/goods/1286260/glenmorangie_5010494560282_images_1286260212.jpg" alt="..." height="160px">
-                    </div>
-
-                    <div class="caption">
-                        <h3>{{ product.name }}</h3>
-
-                        <div class="price" *ngIf="!product.isPromotion">
-                            <h3>{{ product.price }}</h3>
-                            <mat-icon>add_shopping_cart</mat-icon>
-                        </div>
-
-                        <div class="without-discount" *ngIf="product.isPromotion">
-                            {{ product.price }}
-                        </div>
-                        <div class="discount-price" *ngIf="product.isPromotion">
-                            <h3>{{ product.price - (product.price * product.discount / 100) }}</h3>
-                            <mat-icon>add_shopping_cart</mat-icon>
-                        </div>
-
-                        <div class="available">
-                            <span *ngIf="product.available">Есть в наличии</span>
-                            <span *ngIf="!product.available">Нету в наличии</span>
-                        </div>
-
-                        <ul *ngIf="product.characteristicsValues.length > 0">
-                            <li *ngFor="let value of product.characteristicsValues">
-                                <span>{{ value.name }}:</span>
-                                <span *ngIf="value.type == 'boolean' && value.booleanValue">Есть</span>
-                                <span *ngIf="value.type == 'boolean' && !value.booleanValue">Нету</span>
-                                <span *ngIf="value.type != 'boolean'">{{ value[value.type + 'Value'] }}</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div> 
-        </div>
-
-        <nav>
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" 
-                        [routerLink]="['']" 
-                        [queryParams]="{page: canPrev ? page - 1 : page}" 
-                        [ngClass]="{disabled: canPrev}"
-                    >
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-
-                <li 
-                    class="page-item active" 
-                    *ngFor="let p of pages"
-                    [ngClass]="{active: p === page}"
-                >
-                    <a 
-                        class="page-link" 
-                        [routerLink]="['']" 
-                        [queryParams]="{page: p != '...' ?  p : page}" 
-                    >
-                        {{ p }}
-                    </a>
-                </li>
-
-                <li class="page-item">
-                    <a class="page-link" 
-                        [routerLink]="['']" 
-                        [queryParams]="{page: canNext ? page + 1 : page }" 
-                        [ngClass]="{disabled: canNext}"
-                    >
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </ul>
-        </nav> 
+        <app-pagination 
+            *ngIf="products"
+            [pages]="pages"     
+            [page]="page"
+        >
+        </app-pagination>
     </main>
 </div>
