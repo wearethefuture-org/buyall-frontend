@@ -19,9 +19,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
   subParams: Subscription;
   products: IProduct[];
   categories: ICategory[];
-  page: number = 1;
-  pages: any[] = [];
-  limit: number = 10;
+  page: number;
+  pages: any[];
+  limit: number;
 
   constructor(
     private cartService: CartService,
@@ -29,7 +29,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
     private productsService: ProductsService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+    this.page = 1;
+    this.pages = [];
+    this.limit = 10;
+  }
 
   share(): void {
     window.alert('The product has been shared!');
@@ -46,11 +50,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
       this.subProducts = this.productsService.getProductsList(offset, this.limit)
         .subscribe((products: any) => {
+          if (!products.rows || !products.count) {
+            return;
+          }
+
           this.products = products.rows;
           const amountOfPages = Math.ceil(products.count / this.limit);
 
           this.pages = makePagination(this.page, amountOfPages);
-          
+
           if (this.page > amountOfPages) {
             this.router.navigate([], {queryParams: {page: amountOfPages}});
           }

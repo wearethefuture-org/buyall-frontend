@@ -26,7 +26,9 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
       this.subCategories = this.categoriesService.getCategoryById(id)
         .subscribe((category: ICategory) => {
-          if (!category) this.router.navigate(['/shop/category']);
+          if (!category) {
+            this.router.navigate(['/shop/category']);
+          }
 
           this.category = category;
         });

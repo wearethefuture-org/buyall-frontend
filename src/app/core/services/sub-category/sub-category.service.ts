@@ -20,12 +20,16 @@ export class SubCategoryService extends BaseService {
     return this.get(`/subCategory/${id}`);
   }
 
-  getSubCategoryProducts(id: number, offset: number = undefined, limit: number = undefined): Observable<IProduct[]> {
+  getSubCategoryProducts(id: number, offset?: number, limit?: number): Observable<IProduct[]> {
     let url = `/subCategoryProducts/${id}?`;
 
-    if (offset) url += `offset=${offset}&`;
+    if (offset) {
+      url += `offset=${offset}&`;
+    }
 
-    if (limit) url += `limit=${limit}&`;
+    if (limit) {
+      url += `limit=${limit}&`;
+    }
 
     return this.get(url);
   }

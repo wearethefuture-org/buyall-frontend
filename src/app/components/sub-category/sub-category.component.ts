@@ -18,15 +18,19 @@ export class SubCategoryComponent implements OnInit, OnDestroy {
   subGetSubCategory: Subscription;
   subCategory: ISubCategory;
   products: IProduct[];
-  page: number = 1;
-  pages: any[] = [];
-  limit: number = 10;
+  page: number;
+  pages: any[];
+  limit: number;
 
   constructor(
     private subCategoriesService: SubCategoryService,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {
+    this.page = 1;
+    this.pages = [];
+    this.limit = 10;
+  }
 
   ngOnInit(): void {
     // need refactoring seperate this and make sync
@@ -35,26 +39,32 @@ export class SubCategoryComponent implements OnInit, OnDestroy {
 
       this.subGetSubCategory = this.subCategoriesService.getSubCategoryById(id)
         .subscribe((subCategory: ISubCategory) => {
-          if (!subCategory) this.router.navigate(['/shop/category']);
+          if (!subCategory) {
+            this.router.navigate(['/shop/category']);
+          }
 
           this.subCategory = subCategory;
 
-          this.subQueryParams = this.route.queryParams.subscribe((params: Params) => {
-            if (!+params.page ||  +params.page < 1) {
+          this.subQueryParams = this.route.queryParams.subscribe((queryParams: Params) => {
+            if (!+queryParams.page ||  +queryParams.page < 1) {
               this.router.navigate([], {queryParams: {page: 1}});
             }
-            this.page = +params.page;
+            this.page = +queryParams.page;
 
             const offset = this.page * this.limit - this.limit;
 
             this.subProducts = this.subCategoriesService.getSubCategoryProducts(subCategory.id, offset, this.limit)
               .subscribe((products: any) => {
+                if (!products.rows || !products.count) {
+                  return;
+                }
+
                 this.products = products.rows;
 
                 const amountOfPages = Math.ceil(products.count / this.limit);
 
                 this.pages = makePagination(this.page, amountOfPages);
-                
+
                 if (this.page > amountOfPages) {
                   this.router.navigate([], {queryParams: {page: amountOfPages}});
                 }

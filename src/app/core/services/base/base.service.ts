@@ -34,9 +34,9 @@ export class BaseService {
   }
 
   protected setHeaders(url: string): void {
-    if (url !== '/auth/login'&& url !== '/auth/register') {
+    if (url !== '/auth/login' && url !== '/auth/register') {
       let token = JSON.parse(localStorage.getItem('token'));
-      
+
       token = token ? token.token : '';
       this.headers = new HttpHeaders({Authorization: token});
     }

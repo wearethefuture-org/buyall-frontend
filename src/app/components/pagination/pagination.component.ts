@@ -6,8 +6,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent implements OnInit {
-  @Input('pages') pages: any[];
-  @Input('page') page: number;
+  @Input() pages: any[];
+  @Input() page: number;
 
   constructor() { }
 

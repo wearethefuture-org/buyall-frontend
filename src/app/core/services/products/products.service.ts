@@ -18,12 +18,16 @@ export class ProductsService extends BaseService {
     return this.get(`/product/${id}`);
   }
 
-  getProductsList(offset: number = undefined, limit: number = undefined): Observable<IProduct[]> {
+  getProductsList(offset?: number, limit?: number): Observable<IProduct[]> {
     let url = '/products?';
 
-    if (offset) url += `offset=${offset}&`;
+    if (offset) {
+      url += `offset=${offset}&`;
+    }
 
-    if (limit) url += `limit=${limit}&`;
+    if (limit) {
+      url += `limit=${limit}&`;
+    }
 
     return this.get(url);
   }
