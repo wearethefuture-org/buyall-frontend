@@ -2,7 +2,8 @@ export interface ISubCategory {
     id: number,
     categoryId: number,
     name: string,
-    description: string
+    description: string,
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
+    characteristicsSettings: any[]
 }

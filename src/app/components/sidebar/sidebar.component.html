@@ -3,8 +3,7 @@
     <!-- Logo -->
     <div class="logo">
         <!-- Icon -->
-        <a aria-label="sidebar mini logo" href="#" 
-        class="simple-text logo-mini">
+        <a aria-label="sidebar mini logo" class="simple-text logo-mini">
             <div class="logo-img">
                 <img src="./assets/logo.png" alt="logo">
             </div>
@@ -66,6 +65,15 @@
                 </a>
             </li>
             <!-- ./ Sub categories -->
+
+            <!-- Products -->
+            <li [routerLinkActive]="['active']" [routerLink]="['/admin', 'products']">
+                <a>
+                    <i class="icon material-icons">shopping_cart</i>
+                    <p>Products</p>
+                </a>
+            </li>
+            <!-- ./ Products -->
 
         </ul>
         <!-- ./ Sidebar nav -->

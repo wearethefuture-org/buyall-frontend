@@ -1,0 +1,18 @@
+<div class="content">
+    <select 
+        *ngIf="currentSubCategory" 
+        matNativeControl 
+        required 
+        [(ngModel)]="currentSubCategory" 
+        (change)="onSelectChanges()">
+        <option [ngValue]="subCategory" *ngFor="let subCategory of subCategories">{{ subCategory.name }}</option>
+    </select>
+
+        <!-- *ngIf="subCategories" -->
+        <!-- [headers]="tableHeaders"
+        [(body)]="tableBody" -->
+    <app-admin-table
+        [canDelete]="true"
+        [canEdit]="true"
+    ></app-admin-table>
+</div>

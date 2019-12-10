@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ManageUserPageComponent } from 'src/app/components/manage-user-page/manage-user-page.component';
 import { ManageCategoriesPageComponent } from 'src/app/components/manage-categories-page/manage-categories-page.component';
 import { ManageSubcategoriesPageComponent } from 'src/app/components/manage-subcategories-page/manage-subcategories-page.component';
+import { ManageProductsComponent } from 'src/app/components/manage-products/manage-products.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'subCategories',
     component: ManageSubcategoriesPageComponent
+  },
+  {
+    path: 'products',
+    component: ManageProductsComponent
   }
 ];
 

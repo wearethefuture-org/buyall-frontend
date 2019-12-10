@@ -1,8 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-/* ******************************************************
-      Make view responsive (adjust to small screens)
-   ****************************************************** */
 @Component({
   selector: 'app-admin-table',
   templateUrl: './admin-table.component.html',

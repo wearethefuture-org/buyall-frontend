@@ -3,5 +3,7 @@ export interface IProduct {
     name: string,
     price: number,
     description: string,
-    img: string
+    createdAt: string,
+    updatedAt: string,
+    characteristicsValues: any[]
 }
