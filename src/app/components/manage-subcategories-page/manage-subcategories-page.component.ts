@@ -5,8 +5,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CategoriesService } from 'src/app/core/services/categories/categories.service';
 import { ICategory } from 'src/app/core/interfaces/category';
-import { map } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 
 /* ************************************************
       Display name of category instead of id
@@ -18,16 +19,20 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   @ViewChild('editModalToggler', {static: false}) editModalToggler: ElementRef;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  pageSizeOptions = [5, 10, 15, 25];
   categories: ICategory[];
   subCategories: ISubCategory[];
   createSubCategoryForm: FormGroup;
   editSubCategoryForm: FormGroup;
   editedSubCategoryId: number = undefined;
-  subGetSubCategoriesList: Subscription;
-  subGetCategoriesList: Subscription;
+  subGetCategories: Subscription;
   subCreateSubCategory: Subscription;
   subEditSubCategory: Subscription;
   subDeleteSubCategory: Subscription;
+  tableBody: MatTableDataSource<ISubCategory>;
+  tableHeaders = ['id', 'categoryId', 'name', 'description', 'actions'];
 
   constructor(
     private toastr: ToastrService,
@@ -40,33 +45,33 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
     this.createSubCategoryForm = this.fb.group({
       name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
       categoryId: [null, Validators.compose([Validators.required])],
-      description: [null, Validators.compose([Validators.required, Validators.maxLength(255)])]
+      description: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
+      img: [null, Validators.compose([Validators.required])]
     });
 
     this.editSubCategoryForm = this.fb.group({
       id: [null],
       name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
       categoryId: [null, Validators.compose([Validators.required])],
-      description: [null, Validators.compose([Validators.required, Validators.maxLength(255)])]
+      description: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
+      img: [null, Validators.compose([Validators.required])]
     });
 
-    this.subGetSubCategoriesList = this.subCategoriesService.getSubCategoriesList()
-      .pipe(map((subCategories: ISubCategory[]) => {
-        return subCategories.map((subCategory: ISubCategory) => {
-          delete subCategory.createdAt;
-          delete subCategory.updatedAt;
+    this.subGetCategories = this.categoriesService.getCategoriesList()
+      .pipe(
+        switchMap((categories) => {
+          this.categories = categories;
+          this.createSubCategoryForm.get('categoryId').setValue(categories[0].id);
 
-          return subCategory;
-        });
-      }))
-      .subscribe((subCategories: ISubCategory[]) => {
-        this.subCategories = subCategories;
-      });
+          return this.subCategoriesService.getSubCategoriesList()
+        })
+      )
+      .subscribe((subCategories: any) => {
+        this.subCategories = subCategories.rows;
 
-    this.subGetCategoriesList = this.categoriesService.getCategoriesList()
-      .subscribe((categories: ICategory[]) => {
-        this.categories = categories;
-        this.createSubCategoryForm.get('categoryId').setValue(categories[0].id);
+        this.tableBody = new MatTableDataSource(this.subCategories);
+        this.tableBody.sort = this.sort;
+        this.tableBody.paginator = this.paginator;
       });
   }
 
@@ -113,13 +118,14 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   }
 
   showEditModal(subCategory: ISubCategory): void {
-    this.editSubCategoryForm.setValue(subCategory);
+    const body = Object.assign({}, subCategory);
+
+    delete body.createdAt;
+    delete body.updatedAt;
+    delete body.characteristicsSettings;
+
+    this.editSubCategoryForm.setValue(body);
     this.editModalToggler.nativeElement.click();
-  }
-
-
-  get tableHeaders(): string[] {
-    return Object.keys(this.subCategories[0]);
   }
 
   ngOnDestroy(): void {
@@ -131,12 +137,8 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
       this.subEditSubCategory.unsubscribe();
     }
 
-    if (this.subGetSubCategoriesList) {
-      this.subGetSubCategoriesList.unsubscribe();
-    }
-
-    if (this.subGetCategoriesList) {
-      this.subGetCategoriesList.unsubscribe();
+    if (this.subGetCategories) {
+      this.subGetCategories.unsubscribe();
     }
 
     if (this.subDeleteSubCategory) {
