@@ -31,7 +31,7 @@
                 <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
                 <mat-cell *matCellDef="let subCategory">
                     <button mat-icon-button (click)="showEditModal(subCategory)"><mat-icon>launch</mat-icon></button>
-                    <button mat-icon-button color="warn" (click)="showEditModal(subCategory)"><mat-icon>delete_outline</mat-icon></button>
+                    <button mat-icon-button color="warn" (click)="onSubCategoryDelete(subCategory)"><mat-icon>delete_outline</mat-icon></button>
                 </mat-cell>
             </ng-container>
 

@@ -30,8 +30,8 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   // editedSubCategoryId: number = undefined;
   subGetCategories: Subscription;
   subCreateSubCategory: Subscription;
+  subDeleteSubCategory: Subscription;
   // subEditSubCategory: Subscription;
-  // subDeleteSubCategory: Subscription;
 
   constructor(
     private toastr: ToastrService,
@@ -126,16 +126,20 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  // onSubCategoryDelete(subCategory: ISubCategory): void {
-  //   this.subDeleteSubCategory = this.subCategoriesService.deleteSubCategory(subCategory.id)
-  //     .subscribe((res: boolean) => {
-  //       if (res) {
-  //         this.subCategories = this.subCategories.filter((s: ISubCategory) => {
-  //           return s.id !== subCategory.id;
-  //         });
-  //       }
-  //     });
-  // }
+  onSubCategoryDelete(mustBeDeletedSubCategory: ISubCategory): void {
+    this.subDeleteSubCategory = this.subCategoriesService.deleteSubCategory(mustBeDeletedSubCategory.id)
+      .subscribe((res: boolean) => {
+        if (!res) {
+          return;
+        }
+        
+        this.subCategories = this.subCategories.filter((subCategory: ISubCategory) => {
+          return subCategory.id !== mustBeDeletedSubCategory.id;
+        });
+
+        this.tableBody = new MatTableDataSource(this.subCategories);
+      });
+  }
 
   // onSubCategoryEdit(): void {
   //   if (this.editSubCategoryForm.invalid) {
@@ -169,14 +173,10 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.subGetCategories) this.subGetCategories.unsubscribe();
     if (this.subCreateSubCategory) this.subCreateSubCategory.unsubscribe();
+    if (this.subDeleteSubCategory) this.subDeleteSubCategory.unsubscribe();
 
     // if (this.subEditSubCategory) {
     //   this.subEditSubCategory.unsubscribe();
-    // }
-
-
-    // if (this.subDeleteSubCategory) {
-    //   this.subDeleteSubCategory.unsubscribe();
     // }
   }
 }
