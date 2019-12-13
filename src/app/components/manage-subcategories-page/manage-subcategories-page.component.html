@@ -118,7 +118,6 @@
                                         <textarea matInput formControlName="description" placeholder="Description"></textarea>
                                     </mat-form-field>
 
-                                    <!-- <div> -->
                                     <div class="delete-characteristic-wrapper">
                                         <button 
                                             class="btn btn-danger" 
@@ -155,6 +154,7 @@
                                             <button 
                                                 class="btn btn-danger btn-sm" 
                                                 type="button"
+                                                (click)="deleteOption(characteristic, option)"
                                             >Delete</button>
                                         </div>
 

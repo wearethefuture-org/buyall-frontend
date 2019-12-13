@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ISubCategory } from 'src/app/core/interfaces/subCategory';
 import { SubCategoryService } from 'src/app/core/services/subCategory/sub-category.service';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CategoriesService } from 'src/app/core/services/categories/categories.service';
 import { ICategory } from 'src/app/core/interfaces/category';
@@ -89,11 +89,11 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  deleteCharacteristic(fg: FormGroup, characteristic: FormGroup) {
+  deleteCharacteristic(fg: FormGroup, mustBeDeletedCharacteristic: FormGroup) {
     const characteristics = fg.get('characteristicsSettings') as FormArray;
 
-    characteristics.controls = characteristics.controls.filter(c => {
-      return characteristic != c;
+    characteristics.controls = characteristics.controls.filter(characteristic => {
+      return characteristic != mustBeDeletedCharacteristic;
     });
   }
 
@@ -101,6 +101,14 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
     const options = fg.get('options') as FormArray;
 
     options.push(this.fb.control(null, Validators.compose([Validators.required])));
+  }
+
+  deleteOption(fg: FormGroup, mustBeDeletedOption: FormControl) {
+    const options = fg.get('options') as FormArray;
+
+    options.controls = options.controls.filter(option => {
+      return option != mustBeDeletedOption;
+    });
   }
 
   onSubCategoryCreate(): void {

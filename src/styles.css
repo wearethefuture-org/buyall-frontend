@@ -89,8 +89,9 @@ label {
   border: none;
   background: transparent;
 }
-.button:focus, button:focus {
-  outline: none;
+
+.button:focus, .btn:focus, button:focus {
+  outline: none !important;
 }
 
 .button:hover, button:hover {
