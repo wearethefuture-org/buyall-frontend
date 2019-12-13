@@ -2,8 +2,8 @@
     font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
 
-#editModalToggle {
-  display: none;
+mat-icon {
+  font-family: 'Material Icons';
 }
 
 .content {
@@ -13,6 +13,7 @@
     flex-direction: column;
 }
 
+.add-enum-type,
 .create-btn {
   border-radius: 5px;
   width: 150px;
@@ -22,34 +23,13 @@
   margin-bottom: 15px;
 }
 
-.close {
-  background-color: red;
-  color: white;
-  opacity: 0.5;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  padding-left: 4px;
-}
-
-mat-icon {
-  font-family: 'Material Icons';
-  position: relative;
-  top: 5px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-form > div {
+.sub-categories-values,
+.sub-categories-description {
   width: 80%;
   margin: 0 auto;
 }
 
-form div mat-form-field:first-of-type {
+.modal-body > form div mat-form-field:first-of-type {
   margin-right: 20px;
 }
 
@@ -57,4 +37,39 @@ form div mat-form-field:first-of-type {
 .mat-cell {
   text-align: center;
   justify-content: center;
+}
+
+.characteristics-values {
+  display: grid; 
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.delete-characteristic-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.delete-characteristic {
+  color: white;
+  background-color: #c23616;
+  border-radius: 3px;
+}
+
+.enums {
+  margin-top: 20px;
+}
+
+.enum-type {
+  border: 1px solid silver;
+  border-top: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.enum-type:first-of-type {
+  border-top: 1px solid silver;
 }

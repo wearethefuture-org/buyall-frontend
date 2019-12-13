@@ -13,7 +13,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminTableComponent } from 'src/app/components/admin-table/admin-table.component';
 import { ManageProductsComponent } from 'src/app/components/manage-products/manage-products.component';
 import { MatTableModule } from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { CategoryIdNamePipe } from 'src/app/core/pipe/category-id-name/category-id-name.pipe';
 
 
@@ -41,6 +42,7 @@ import { CategoryIdNamePipe } from 'src/app/core/pipe/category-id-name/category-
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatExpansionModule,
     FormsModule
   ]
 })
