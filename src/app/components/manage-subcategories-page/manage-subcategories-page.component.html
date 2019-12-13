@@ -72,13 +72,13 @@
 
                     <button 
                         class="create-btn" 
-                        (click)="addCharacteristic(createSubCategoryForm)"
+                        (click)="addSetting(createSubCategoryForm)"
                         type="button"
                     >Add characteristic</button>
 
                     <div 
                         class="characteristics" 
-                        *ngIf="this.createSubCategoryForm.get('characteristicsSettings').value.length > 0"
+                        *ngIf="createSubCategoryForm.get('characteristicsSettings').value.length > 0"
                     >
                         <mat-accordion 
                             formArrayName="characteristicsSettings"
@@ -121,7 +121,7 @@
                                     <div class="delete-characteristic-wrapper">
                                         <button 
                                             class="btn btn-danger" 
-                                            (click)="deleteCharacteristic(createSubCategoryForm, characteristic)"
+                                            (click)="deleteSetting(createSubCategoryForm, characteristic)"
                                             type="button"
                                         >Delete</button>
                                     </div>
@@ -154,7 +154,7 @@
                                             <button 
                                                 class="btn btn-danger btn-sm" 
                                                 type="button"
-                                                (click)="deleteOption(characteristic, option)"
+                                                (click)="deleteOption(createSubCategoryForm, characteristic, option)"
                                             >Delete</button>
                                         </div>
 
@@ -176,7 +176,7 @@
     </div>
 </div>
 
-<!-- <div id="editSubCategoryModal" class="modal fade" role="dialog">
+<div id="editSubCategoryModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -184,9 +184,9 @@
                 <h4 class="modal-title">Edit user</h4>
             </div>
             <div class="modal-body">
-                <form [formGroup]="editSubCategoryForm">
+                <form [formGroup]="editSubCategoryForm" *ngIf="editSubCategoryForm">
                     <input formControlName="id" type="hidden">
-                    <div>
+                    <div class="sub-categories-values">
                         <mat-form-field>
                             <input matInput placeholder="Name" formControlName="name">
                             <mat-icon matSuffix>person</mat-icon>
@@ -200,16 +200,111 @@
                         </mat-form-field>
                     </div>
 
-                    <div>
+                    <div class="sub-categories-description">
                         <mat-form-field>
                             <textarea matInput placeholder="Description" formControlName="description"></textarea>
                         </mat-form-field>
                     </div>
+
+                    <button 
+                        class="create-btn" 
+                        (click)="addSetting(editSubCategoryForm)"
+                        type="button"
+                    >Add characteristic</button>
+
+                    <div 
+                        class="characteristics" 
+                        *ngIf="editSubCategoryForm.get('characteristicsSettings').value.length > 0"
+                    >
+                        <mat-accordion 
+                            formArrayName="characteristicsSettings"
+                            *ngFor="let characteristic of editSubCategoryForm.get('characteristicsSettings').controls;let i = index"
+                        >
+                            <mat-expansion-panel [formGroupName]="i">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{ characteristic.controls.name.value }}
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        {{ characteristic.controls.type.value }}
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+
+                                <div class="characteristics-values">
+                                    <mat-form-field>
+                                        <input matInput formControlName="name" placeholder="Name">
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <mat-label>Type</mat-label>
+                                        <select matNativeControl formControlName="type" required>
+                                            <option value="{{ type }}" *ngFor="let type of characteristicsTypes">{{ type }}</option>
+                                        </select>
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <input matInput formControlName="minOption" placeholder="Min option">
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <input matInput formControlName="maxOption" placeholder="Max option">
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <textarea matInput formControlName="description" placeholder="Description"></textarea>
+                                    </mat-form-field>
+
+                                    <div class="delete-characteristic-wrapper">
+                                        <button 
+                                            class="btn btn-danger" 
+                                            (click)="deleteSetting(editSubCategoryForm, characteristic)"
+                                            type="button"
+                                        >Delete</button>
+                                    </div>
+                                </div>
+
+                                <mat-accordion
+                                    class="enums"
+                                    *ngIf="characteristic.controls.type.value === 'enum'"
+                                >
+                                    <mat-expansion-panel>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                Enum types
+                                            </mat-panel-title>
+                                        </mat-expansion-panel-header>
+
+                                        <button 
+                                            class="add-enum-type" 
+                                            (click)="addOption(characteristic)"
+                                            type="button"
+                                        >Add enum type</button>
+
+                                        <div class="enum-type"
+                                            *ngFor="let option of characteristic.controls.options.controls;"
+                                        >
+                                            <mat-form-field>
+                                                <input matInput placeholder="Enum type" [formControl]="option">
+                                            </mat-form-field>
+
+                                            <button 
+                                                class="btn btn-danger btn-sm" 
+                                                type="button"
+                                                (click)="deleteOption(editSubCategoryForm, characteristic, option)"
+                                            >Delete</button>
+                                        </div>
+
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="" (click)="onSubCategoryEdit()" data-dismiss="modal">Edit</button>
+                <button type="button" (click)="onSubCategoryEdit()">Edit</button>
             </div>
         </div>
     </div>
-</div> -->
+</div>

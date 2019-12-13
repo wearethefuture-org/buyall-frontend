@@ -26,12 +26,11 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   categories: ICategory[];
   subCategories: ISubCategory[];
   createSubCategoryForm: FormGroup;
-  // editSubCategoryForm: FormGroup;
-  // editedSubCategoryId: number = undefined;
+  editSubCategoryForm: FormGroup;
   subGetCategories: Subscription;
   subCreateSubCategory: Subscription;
   subDeleteSubCategory: Subscription;
-  // subEditSubCategory: Subscription;
+  subEditSubCategory: Subscription;
 
   constructor(
     private toastr: ToastrService,
@@ -47,14 +46,6 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
       description: [null, Validators.compose([Validators.maxLength(255)])],
       characteristicsSettings: this.fb.array([])
     });
-
-    // this.editSubCategoryForm = this.fb.group({
-    //   id: [null],
-    //   name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
-    //   categoryId: [null, Validators.compose([Validators.required])],
-    //   description: [null, Validators.compose([Validators.maxLength(255)])],
-    //   img: [null, Validators.compose([Validators.required])]
-    // });
 
     this.subGetCategories = this.categoriesService.getCategoriesList()
       .pipe(
@@ -74,10 +65,10 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  addCharacteristic(fg: FormGroup) {
-    const characteristics = fg.get('characteristicsSettings') as FormArray;
+  addSetting(fg: FormGroup) {
+    const settings = fg.get('characteristicsSettings') as FormArray;
 
-    characteristics.push(
+    settings.push(
       this.fb.group({
         name: ['Characteristic', Validators.compose([Validators.required, Validators.maxLength(255)])],
         type: ['string', Validators.compose([Validators.required])],
@@ -89,12 +80,14 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  deleteCharacteristic(fg: FormGroup, mustBeDeletedCharacteristic: FormGroup) {
-    const characteristics = fg.get('characteristicsSettings') as FormArray;
+  deleteSetting(fg: FormGroup, mustBeDeletedSetting: FormGroup) {
+    const settings = fg.get('characteristicsSettings') as FormArray;
 
-    characteristics.controls = characteristics.controls.filter(characteristic => {
-      return characteristic != mustBeDeletedCharacteristic;
+    settings.controls = settings.controls.filter(setting => {
+      return setting != mustBeDeletedSetting;
     });
+
+    fg.setControl('characteristicsSettings', settings);
   }
 
   addOption(fg: FormGroup) {
@@ -103,12 +96,16 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
     options.push(this.fb.control(null, Validators.compose([Validators.required])));
   }
 
-  deleteOption(fg: FormGroup, mustBeDeletedOption: FormControl) {
-    const options = fg.get('options') as FormArray;
+  deleteOption(fg: FormGroup, settingOfOption: FormGroup, mustBeDeletedOption: FormControl) {
+    const settings = fg.get('characteristicsSettings') as FormArray;
+
+    const options = settingOfOption.get('options') as FormArray;
 
     options.controls = options.controls.filter(option => {
       return option != mustBeDeletedOption;
     });
+
+    fg.setControl('characteristicsSettings', settings);
   }
 
   onSubCategoryCreate(): void {
@@ -138,45 +135,85 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
         });
 
         this.tableBody = new MatTableDataSource(this.subCategories);
+        this.toastr.success('Sub category deleated');
       });
   }
 
-  // onSubCategoryEdit(): void {
-  //   if (this.editSubCategoryForm.invalid) {
-  //     this.toastr.error('Invalid credentials');
-  //     return;
-  //   }
+  showEditModal(subCategory: ISubCategory): void {
+    const body = Object.assign({}, subCategory);
 
-  //   this.subEditSubCategory = this.subCategoriesService.editSubCategory(
-  //     this.editSubCategoryForm.value,
-  //     this.subCategories[this.editedSubCategoryId].id
-  //   )
-  //     .subscribe((res: boolean) => {
-  //       if (res) {
-  //         this.editSubCategoryForm.value.id = this.subCategories[this.editedSubCategoryId].id;
-  //         this.subCategories[this.editedSubCategoryId] = this.editSubCategoryForm.value;
-  //       }
-  //     });
-  // }
+    const characteristics = new FormArray([]);
 
-  // showEditModal(subCategory: ISubCategory): void {
-  //   const body = Object.assign({}, subCategory);
+    body.characteristicsSettings.forEach(setting => {
+      characteristics.push(
+        this.fb.group({
+          id: [setting.id, Validators.compose([Validators.required, Validators.maxLength(255)])],
+          name: [setting.name, Validators.compose([Validators.required, Validators.maxLength(255)])],
+          type: [setting.type, Validators.compose([Validators.required])],
+          description: [setting.description, Validators.compose([Validators.maxLength(255)])],
+          options: this.fb.array([]),
+          minOption: [setting.minOption],
+          maxOption: [setting.maxOption]
+        })
+      );
 
-  //   delete body.createdAt;
-  //   delete body.updatedAt;
-  //   delete body.characteristicsSettings;
+      if (!setting.options) {
+        return;
+      }
 
-  //   this.editSubCategoryForm.setValue(body);
-  //   this.editModalToggler.nativeElement.click();
-  // }
+      const options = characteristics.controls[characteristics.controls.length - 1].get('options') as FormArray;
+
+      setting.options.forEach(option => {
+        options.push(this.fb.control(option, Validators.compose([Validators.required])));
+      });
+    });
+
+    this.editSubCategoryForm = this.fb.group({
+      id: [body.id, Validators.compose([Validators.required])],
+      name: [body.name, Validators.compose([Validators.required, Validators.maxLength(255)])],
+      categoryId: [body.categoryId, Validators.compose([Validators.required])],
+      description: [body.description, Validators.compose([Validators.maxLength(255)])],
+      img: [body.img, Validators.compose([Validators.required])],
+      characteristicsSettings: characteristics
+    });
+
+    this.editModalToggler.nativeElement.click();
+  }
+
+  onSubCategoryEdit(): void {
+    if (this.editSubCategoryForm.invalid) {
+      this.toastr.error('Invalid credentials');
+      return;
+    }
+
+    this.subEditSubCategory = this.subCategoriesService.editSubCategory(
+      this.editSubCategoryForm.value,
+      this.editSubCategoryForm.value.id
+    )
+      .subscribe((res: boolean) => {
+        if (!res) {
+          return;
+        }
+
+        this.subCategories = this.subCategories.map(subCategory => {
+          if (subCategory.id === this.editSubCategoryForm.value.id) {
+            return this.editSubCategoryForm.value;
+          }
+
+          return subCategory;
+        });
+
+        this.tableBody = new MatTableDataSource(this.subCategories);
+        this.toastr.success('Sub category updated');
+
+        this.editModalToggler.nativeElement.click();
+      });
+  }
 
   ngOnDestroy(): void {
     if (this.subGetCategories) this.subGetCategories.unsubscribe();
     if (this.subCreateSubCategory) this.subCreateSubCategory.unsubscribe();
     if (this.subDeleteSubCategory) this.subDeleteSubCategory.unsubscribe();
-
-    // if (this.subEditSubCategory) {
-    //   this.subEditSubCategory.unsubscribe();
-    // }
+    if (this.subEditSubCategory) this.subEditSubCategory.unsubscribe();
   }
 }
