@@ -15,11 +15,12 @@ import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 export class ManageProductsComponent implements OnDestroy, AfterViewInit {
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  pageSizeOptions = [5, 10, 15, 25];
   tableHeaders = ['id', 'subCategoryId', 'name', 'description', 'available', 'amount', 'isPromotion', 'discount', 'weight', 'price', 'actions'];
   tableBody: MatTableDataSource<IProduct>;
   subCategories: ISubCategory[] = [];
   products: IProduct[] = [];
-  // currentSubCategory;
+  currentSubCategory: any = 'All';
   subGetProducts: Subscription;
 
   constructor(
@@ -32,8 +33,6 @@ export class ManageProductsComponent implements OnDestroy, AfterViewInit {
       .pipe(
         switchMap((products: any) => {
           this.products = products.rows;
-          console.log(this.products[0]);
-          
 
           this.tableBody = new MatTableDataSource(this.products);
           this.tableBody.sort = this.sort;
@@ -45,41 +44,22 @@ export class ManageProductsComponent implements OnDestroy, AfterViewInit {
       .subscribe((subCategories: any) => {
         this.subCategories = subCategories.rows;
       });
-
-
-    // this.subGetSubCategories = this.subCategoriesService.getSubCategoriesList()
-    //   .pipe(
-    //     switchMap((subCategories) => {
-          // console.log(subCategories);
-          
-          // this.subCategories = subCategories; 
-          // this.currentSubCategory = subCategories[0];
-          // this.table.headers = this.tableHeaders;
-
-          // return this.subCategoriesService.getSubCategoryProducts(subCategories[0].id)
-      //   })
-      // )
-      // .subscribe((products: any) => {
-        // this.products = products.rows;
-
-        // this.table.body = this.tableBody;
-      // });
   }
 
   onSelectChanges() {
-    // unsibscribe
-    // this.subCategoriesService.getSubCategoryProducts(this.currentSubCategory.id)
-      // .subscribe((products: any) => {
-        // this.products = products.rows;
+    if (this.currentSubCategory === 'All') {
+      this.tableBody = new MatTableDataSource(this.products);
+      return;
+    }
 
-        // this.table.headers = this.tableHeaders;
-        // this.table.body = this.tableBody;
-      // });
+    const productsBySubCategory = this.products.filter(product => {
+      return product.subCategoryId === this.currentSubCategory.id;
+    });
+
+    this.tableBody = new MatTableDataSource(productsBySubCategory);
   }
 
   ngOnDestroy(): void {
     if (this.subGetProducts) this.subGetProducts.unsubscribe();
-    // if (this.subGetSubCategories) { this.subGetSubCategories.unsubscribe(); }
-    // if (this.subProducts) { this.subProducts.unsubscribe(); }
   }
 }

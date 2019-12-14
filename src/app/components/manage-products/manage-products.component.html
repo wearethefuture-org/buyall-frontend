@@ -1,12 +1,13 @@
 <div class="content">
-    <!-- <select 
-        *ngIf="currentSubCategory" 
-        matNativeControl 
+    <select 
         required 
         [(ngModel)]="currentSubCategory" 
-        (change)="onSelectChanges()">
+        (change)="onSelectChanges()"
+        class="choose-category"
+    >
+        <option value="All" selected>All</option>
         <option [ngValue]="subCategory" *ngFor="let subCategory of subCategories">{{ subCategory.name }}</option>
-    </select> -->
+    </select>
 
     <div class="mat-elevation-8">
         <mat-table [dataSource]="tableBody" matSort>

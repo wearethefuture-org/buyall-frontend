@@ -15,11 +15,12 @@ mat-icon {
     height: 100%;
 }
 
-.content > select {
-    width: 300px;
-}
-
 .content::after {
     content: '';
     flex: 0 0 30px;
+}
+
+.choose-category {
+    width: 20%;
+    margin-bottom: 15px;
 }
