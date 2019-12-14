@@ -1,18 +1,77 @@
 <div class="content">
-    <select 
+    <!-- <select 
         *ngIf="currentSubCategory" 
         matNativeControl 
         required 
         [(ngModel)]="currentSubCategory" 
         (change)="onSelectChanges()">
         <option [ngValue]="subCategory" *ngFor="let subCategory of subCategories">{{ subCategory.name }}</option>
-    </select>
+    </select> -->
 
-        <!-- *ngIf="subCategories" -->
-        <!-- [headers]="tableHeaders"
-        [(body)]="tableBody" -->
-    <app-admin-table
-        [canDelete]="true"
-        [canEdit]="true"
-    ></app-admin-table>
+    <div class="mat-elevation-8">
+        <mat-table [dataSource]="tableBody" matSort>
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.id }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="subCategoryId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Sub category</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.subCategoryId | idToName:subCategories }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.name }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.description }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="available">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Available</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.available }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.amount }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="isPromotion">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Promotion</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.isPromotion }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="discount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Discount</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.discount | number:'1.1-2' }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="weight">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Weight</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.weight }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.price }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let product">
+                    <button mat-icon-button><mat-icon>launch</mat-icon></button>
+                    <button mat-icon-button><mat-icon color="warn">delete_outline</mat-icon></button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="tableHeaders"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: tableHeaders"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+    </div>
+    
 </div>

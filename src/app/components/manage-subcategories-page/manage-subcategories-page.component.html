@@ -14,7 +14,7 @@
 
             <ng-container matColumnDef="categoryId">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Category</mat-header-cell>
-                <mat-cell *matCellDef="let subCategory">{{ subCategory.categoryId | categoryIdName:categories }}</mat-cell>
+                <mat-cell *matCellDef="let subCategory">{{ subCategory.categoryId | idToName:categories }}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="name">
@@ -31,14 +31,14 @@
                 <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
                 <mat-cell *matCellDef="let subCategory">
                     <button mat-icon-button (click)="showEditModal(subCategory)"><mat-icon>launch</mat-icon></button>
-                    <button mat-icon-button color="warn" (click)="onSubCategoryDelete(subCategory)"><mat-icon>delete_outline</mat-icon></button>
+                    <button mat-icon-button (click)="onSubCategoryDelete(subCategory)"><mat-icon color="warn">delete_outline</mat-icon></button>
                 </mat-cell>
             </ng-container>
 
             <mat-header-row *matHeaderRowDef="tableHeaders"></mat-header-row>
             <mat-row *matRowDef="let row; columns: tableHeaders"></mat-row>
         </mat-table>
-        <mat-paginator [pageSizeOptions]="pageSizeOptions" [length]="30"></mat-paginator>
+        <mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
     </div>
 </div>
 

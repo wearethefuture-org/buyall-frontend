@@ -3,8 +3,9 @@ import { IProduct } from 'src/app/core/interfaces/product';
 import { Subscription } from 'rxjs';
 import { SubCategoryService } from 'src/app/core/services/subCategory/sub-category.service';
 import { ISubCategory } from 'src/app/core/interfaces/subCategory';
-import { AdminTableComponent } from '../admin-table/admin-table.component';
 import { switchMap } from 'rxjs/operators';
+import { ProductsService } from 'src/app/core/services/products/products.service';
+import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-manage-products',
@@ -12,77 +13,73 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./manage-products.component.css']
 })
 export class ManageProductsComponent implements OnDestroy, AfterViewInit {
-  @ViewChild(AdminTableComponent, {static: false}) table;
-  subGetSubCategories: Subscription;
-  subProducts: Subscription;
-  products: IProduct[];
-  subCategories: ISubCategory[];
-  currentSubCategory;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  tableHeaders = ['id', 'subCategoryId', 'name', 'description', 'available', 'amount', 'isPromotion', 'discount', 'weight', 'price', 'actions'];
+  tableBody: MatTableDataSource<IProduct>;
+  subCategories: ISubCategory[] = [];
+  products: IProduct[] = [];
+  // currentSubCategory;
+  subGetProducts: Subscription;
 
   constructor(
-    private subCategoriesService: SubCategoryService
+    private subCategoriesService: SubCategoryService,
+    private productsService: ProductsService
   ) { }
 
   ngAfterViewInit(): void {
-    this.subGetSubCategories = this.subCategoriesService.getSubCategoriesList()
+    this.subGetProducts = this.productsService.getProductsList()
       .pipe(
-        switchMap((subCategories) => {
-          console.log(subCategories);
+        switchMap((products: any) => {
+          this.products = products.rows;
+          console.log(this.products[0]);
           
-          this.subCategories = subCategories; 
-          this.currentSubCategory = subCategories[0];
-          this.table.headers = this.tableHeaders;
 
-          return this.subCategoriesService.getSubCategoryProducts(subCategories[0].id)
+          this.tableBody = new MatTableDataSource(this.products);
+          this.tableBody.sort = this.sort;
+          this.tableBody.paginator = this.paginator;
+
+          return this.subCategoriesService.getSubCategoriesList(); 
         })
       )
-      .subscribe((products: any) => {
-        this.products = products.rows;
-
-        this.table.body = this.tableBody;
+      .subscribe((subCategories: any) => {
+        this.subCategories = subCategories.rows;
       });
+
+
+    // this.subGetSubCategories = this.subCategoriesService.getSubCategoriesList()
+    //   .pipe(
+    //     switchMap((subCategories) => {
+          // console.log(subCategories);
+          
+          // this.subCategories = subCategories; 
+          // this.currentSubCategory = subCategories[0];
+          // this.table.headers = this.tableHeaders;
+
+          // return this.subCategoriesService.getSubCategoryProducts(subCategories[0].id)
+      //   })
+      // )
+      // .subscribe((products: any) => {
+        // this.products = products.rows;
+
+        // this.table.body = this.tableBody;
+      // });
   }
 
   onSelectChanges() {
-    this.subCategoriesService.getSubCategoryProducts(this.currentSubCategory.id)
-      .subscribe((products: any) => {
-        this.products = products.rows;
+    // unsibscribe
+    // this.subCategoriesService.getSubCategoryProducts(this.currentSubCategory.id)
+      // .subscribe((products: any) => {
+        // this.products = products.rows;
 
-        this.table.headers = this.tableHeaders;
-        this.table.body = this.tableBody;
-      });
-  }
-
-  get tableHeaders(): string[] {
-    const subCategory = Object.assign({}, this.currentSubCategory);
-
-    const keys = this.currentSubCategory.characteristicsSettings
-      .map((setting: any) => { return setting.name; });
-
-    delete subCategory.characteristicsSettings;
-    delete subCategory.createdAt;
-    delete subCategory.updatedAt;
-
-    keys.unshift.apply(keys, Object.keys(subCategory));
-
-    return keys;
-  }
-
-  get tableBody(): IProduct[] {
-    return this.products.map((product: IProduct) => {
-      const productCopy = Object.assign({}, product);
-
-      productCopy.characteristicsValues.forEach(value => {
-        productCopy[value.name] = value[`${value.type}Value`] ;
-      });
-
-      delete productCopy.characteristicsValues;
-      return productCopy;
-    });
+        // this.table.headers = this.tableHeaders;
+        // this.table.body = this.tableBody;
+      // });
   }
 
   ngOnDestroy(): void {
-    if (this.subGetSubCategories) { this.subGetSubCategories.unsubscribe(); }
-    if (this.subProducts) { this.subProducts.unsubscribe(); }
+    if (this.subGetProducts) this.subGetProducts.unsubscribe();
+    // if (this.subGetSubCategories) { this.subGetSubCategories.unsubscribe(); }
+    // if (this.subProducts) { this.subProducts.unsubscribe(); }
   }
 }

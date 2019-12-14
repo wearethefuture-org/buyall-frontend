@@ -15,7 +15,7 @@ import { ManageProductsComponent } from 'src/app/components/manage-products/mana
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { CategoryIdNamePipe } from 'src/app/core/pipe/category-id-name/category-id-name.pipe';
+import { IdToNamePipe } from 'src/app/core/pipes/id-to-name/id-to-name.pipe';
 
 
 @NgModule({
@@ -25,7 +25,7 @@ import { CategoryIdNamePipe } from 'src/app/core/pipe/category-id-name/category-
     ManageSubcategoriesPageComponent,
     ManageProductsComponent,
     AdminTableComponent,
-    CategoryIdNamePipe
+    IdToNamePipe
   ],
   imports: [
     CommonModule,

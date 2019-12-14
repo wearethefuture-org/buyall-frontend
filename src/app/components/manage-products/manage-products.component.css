@@ -2,9 +2,9 @@
     font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
 }
 
-/* .wrapper {
-    padding: 30px;
-} */
+mat-icon {
+  font-family: 'Material Icons';
+}
 
 .content {
     display: flex;
