@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild, AfterViewInit, OnInit, ElementRef } from '@angular/core';
+import { Component, OnDestroy, ViewChild, OnInit, ElementRef } from '@angular/core';
 import { IProduct } from 'src/app/core/interfaces/product';
 import { Subscription } from 'rxjs';
 import { SubCategoryService } from 'src/app/core/services/subCategory/sub-category.service';
@@ -9,6 +9,7 @@ import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FieldToObjectPipe } from 'src/app/core/pipes/fieldToObject/field-to-object.pipe';
+import { CharacteristicsService } from 'src/app/core/services/characteristics/characteristics.service';
 
 @Component({
   selector: 'app-manage-products',
@@ -16,6 +17,7 @@ import { FieldToObjectPipe } from 'src/app/core/pipes/fieldToObject/field-to-obj
   styleUrls: ['./manage-products.component.css']
 })
 export class ManageProductsComponent implements OnDestroy, OnInit {
+  @ViewChild('modalToggler', {static: false}) modalToggler: ElementRef;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   pageSizeOptions = [5, 10, 15, 25];
@@ -27,9 +29,12 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   subCategorySettings; // interface here and in sub category interface
   valueSetting; // interface here
   currentSubCategory: any = 'All';
+  edit = false;
   subGetProducts: Subscription;
   subCreateProduct: Subscription;
   subDeleteProduct: Subscription;
+  subEditProduct: Subscription;
+  subGetSettings: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -40,18 +45,6 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   ) { }
 
   ngOnInit() {
-    this.productForm = this.fb.group({
-      name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
-      description: [null],
-      subCategoryId: [null, Validators.required],
-      amount: [null],
-      discount: [null],
-      weight: [null, Validators.required],
-      price: [null, Validators.required],
-      available: [false, Validators.required],
-      isPromotion: [false, Validators.required],
-      characteristicsValues: this.fb.array([])
-    });
 
     this.subGetProducts = this.productsService.getProductsList()
       .pipe(
@@ -91,44 +84,6 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
     const subCategory: any = this.fieldToObjectPipe.transform(this.productForm.get('subCategoryId').value, 'id', this.subCategories);
 
     this.subCategorySettings = subCategory.characteristicsSettings;
-  }
-
-  onCreateProduct() {
-    if (this.productForm.invalid) {
-      this.toastr.error('Invalid credentials');
-      this.productForm.markAllAsTouched();
-      return;
-    }
-
-    this.subCreateProduct = this.productsService.createProduct(this.productForm.value)
-      .subscribe((product: IProduct) => {
-        this.products.push(product);
-        
-        this.onSelectSearchSubCategory();
-
-        this.toastr.success('Product created');
-      });
-  }
-
-  onDeleteProduct(mustBeDeletedProduct: IProduct) {
-    this.subDeleteProduct = this.productsService.deleteProduct(mustBeDeletedProduct.id)
-      .subscribe((res) => {
-        if (!res) {
-          return;
-        }
-
-        this.products = this.products.filter((product: IProduct) => {
-          return product.id !== mustBeDeletedProduct.id;
-        });
-
-        this.onSelectSearchSubCategory();
-
-        this.toastr.success('Product deleated');
-      });
-  }
-
-  onEditProduct() {
-
   }
 
   addValue() {
@@ -177,9 +132,138 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
     this.subCategorySettings.push(setting);
   }
 
+  showCreateModal() {
+    this.productForm = this.fb.group({
+      name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
+      description: [null],
+      subCategoryId: [null, Validators.required],
+      amount: [null],
+      discount: [null],
+      weight: [null, Validators.required],
+      price: [null, Validators.required],
+      available: [false, Validators.required],
+      isPromotion: [false, Validators.required],
+      characteristicsValues: this.fb.array([])
+    });
+
+    this.modalToggler.nativeElement.click();
+    this.edit = false;
+  }
+
+  showEditModal(product) {
+    const body: any = {
+      id: [product.id],
+      name: [product.name, Validators.compose([Validators.required, Validators.maxLength(255)])],
+      description: [product.description],
+      subCategoryId: [product.subCategoryId, Validators.required],
+      amount: [product.amount],
+      discount: [product.discount],
+      weight: [product.weight, Validators.required],
+      price: [product.price, Validators.required],
+      available: [product.available, Validators.required],
+      isPromotion: [product.isPromotion, Validators.required]
+    };
+
+    const subCategory: any = this.fieldToObjectPipe.transform(product.subCategoryId, 'id', this.subCategories); // interface her
+
+    const values = product.characteristicsValues.map(value => {
+      const setting: any = this.fieldToObjectPipe.transform(value.characteristicSettingId, 'id', subCategory.characteristicsSettings); // interface here
+      
+      const formValue = {
+        id: [value.id, Validators.compose([Validators.required, Validators.maxLength(255)])],
+        name: [value.name, Validators.compose([Validators.required, Validators.maxLength(255)])],
+        type: [value.type, Validators.compose([Validators.required])],
+        options: this.fb.array([]),
+      };
+      formValue[`${value.type}Value`] = [value[`${value.type}Value`], Validators.compose([Validators.required])];
+
+      if (!setting.options) {
+        return this.fb.group(formValue);
+      }
+
+      setting.options.forEach(option => {
+        formValue.options.push(this.fb.control(option))
+      });
+
+      return this.fb.group(formValue);
+    });
+    
+    body.characteristicsValues = this.fb.array(values);
+
+    this.productForm = this.fb.group(body);
+
+    this.modalToggler.nativeElement.click();
+    this.edit = true;
+  }
+
+  onCreateProduct() {
+    if (this.productForm.invalid) {
+      this.toastr.error('Invalid credentials');
+      this.productForm.markAllAsTouched();
+      return;
+    }
+
+    this.subCreateProduct = this.productsService.createProduct(this.productForm.value)
+      .subscribe((product: IProduct) => {
+        this.products.push(product);
+        
+        this.onSelectSearchSubCategory();
+
+        this.toastr.success('Product created');
+        this.modalToggler.nativeElement.click();
+      });
+  }
+
+  onEditProduct(): void {
+    if (this.productForm.invalid) {
+      this.toastr.error('Invalid credentials');
+      this.productForm.markAllAsTouched();
+      return;
+    }
+
+    this.subEditProduct = this.productsService.updateProduct(this.productForm.value, this.productForm.value.id)
+      .subscribe((res: boolean) => {
+        if (!res) {
+          return;
+        }
+
+        this.products = this.products.map(product => {
+          if (product.id === this.productForm.value.id) {
+            return this.productForm.value;
+          }
+
+          return product;
+        });
+
+        this.onSelectSearchSubCategory();
+
+        this.toastr.success('Product edited');
+        this.modalToggler.nativeElement.click();
+      });
+  }
+
+  onDeleteProduct(mustBeDeletedProduct: IProduct): void {
+    this.subDeleteProduct = this.productsService.deleteProduct(mustBeDeletedProduct.id)
+      .subscribe((res) => {
+        if (!res) {
+          return;
+        }
+
+        this.products = this.products.filter((product: IProduct) => {
+          return product.id !== mustBeDeletedProduct.id;
+        });
+
+        this.onSelectSearchSubCategory();
+
+        this.toastr.success('Product deleated');
+      });
+  }
+
   ngOnDestroy(): void {
     if (this.subGetProducts) this.subGetProducts.unsubscribe();
     if (this.subCreateProduct) this.subCreateProduct.unsubscribe();
     if (this.subDeleteProduct) this.subDeleteProduct.unsubscribe();
+    if (this.subGetSettings) this.subGetSettings.unsubscribe();
+    if (this.subEditProduct) this.subEditProduct.unsubscribe();
   }
 }
