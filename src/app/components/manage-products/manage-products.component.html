@@ -1,13 +1,20 @@
 <div class="content">
-    <select 
-        required 
-        [(ngModel)]="currentSubCategory" 
-        (change)="onSelectChanges()"
-        class="choose-category"
-    >
-        <option value="All" selected>All</option>
-        <option [ngValue]="subCategory" *ngFor="let subCategory of subCategories">{{ subCategory.name }}</option>
-    </select>
+
+    <div class="controls">
+        <select 
+            required 
+            [(ngModel)]="currentSubCategory" 
+            (change)="onSelectSearchSubCategory()"
+            class="choose-category"
+        >
+            <option value="All" selected>All</option>
+            <option [ngValue]="subCategory" *ngFor="let subCategory of subCategories">{{ subCategory.name }}</option>
+        </select>
+
+        <button class="create-btn" data-toggle="modal" data-target="#productModal">
+            Create new product
+        </button>
+    </div>
 
     <div class="mat-elevation-8">
         <mat-table [dataSource]="tableBody" matSort>
@@ -75,4 +82,143 @@
         <mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
     </div>
     
+</div>
+
+
+<div id="productModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" #createModalToggler>&times;</button>
+                <h4 class="modal-title">Create new product</h4>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="productForm">
+                    <div class="product-controls">
+                        <mat-form-field>
+                            <input matInput formControlName="name" placeholder="Name">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Sub category</mat-label>
+                            <select 
+                                matNativeControl 
+                                formControlName="subCategoryId" 
+                                (change)="onSelectProductSubCategory()"
+                            >
+                                <option 
+                                    value="{{ subCategory.id }}" 
+                                    *ngFor="let subCategory of subCategories"
+                                >
+                                    {{ subCategory.name }}
+                                </option>
+                            </select>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="amount" placeholder="Amount">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="discount" placeholder="Discount">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="weight" placeholder="Weight">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="price" placeholder="Price">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <textarea matInput formControlName="description" placeholder="Description"></textarea>
+                        </mat-form-field>
+
+                        <div class="checkboxes">
+                            <mat-checkbox formControlName="available" color="primary">Available</mat-checkbox>
+                            <mat-checkbox formControlName="isPromotion" color="primary">Promotion</mat-checkbox>
+                        </div>
+                    </div>
+
+                    <div class="create-value-controls" *ngIf="productForm.get('subCategoryId').value && this.subCategorySettings.length > 0">
+                        <button 
+                            class="create-btn" 
+                            (click)="addValue()"
+                            type="button"
+                        >Add value</button>
+
+                        <select [(ngModel)]="valueSetting" [ngModelOptions]="{standalone: true}">
+                            <option 
+                                [ngValue]="setting" 
+                                *ngFor="let setting of subCategorySettings"
+                            >
+                                {{ setting.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div 
+                        class="values"
+                        *ngIf="productForm.get('characteristicsValues').length > 0"
+                    >
+
+                        <mat-accordion 
+                            formArrayName="characteristicsValues"
+                            *ngFor="let value of productForm.get('characteristicsValues').controls;let i = index"
+                        >
+                            <mat-expansion-panel [formGroupName]="i">
+
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{ value.controls.name.value }}
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        {{ value.controls.type.value }}
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+
+                                <div class="value-controls">
+                                    <mat-form-field *ngIf="value.get('type').value != 'enum' && value.get('type').value != 'boolean'">
+                                        <input matInput [formControl]="value.controls[value.controls.type.value + 'Value']" placeholder="Value">
+                                    </mat-form-field>
+
+                                    <select 
+                                        [formControl]="value.controls[value.controls.type.value + 'Value']"
+                                        *ngIf="value.get('type').value === 'enum'"
+                                    >
+                                        <option>{{ value.get('characteristicSettingId').value | fieldToObject:'id':subCategorySettings }}</option>
+                                        <option 
+                                            [ngValue]="option.value" 
+                                            *ngFor="let option of value.get('options').controls;let i = index"
+                                            [selected]="i === 0"
+                                        >
+                                            {{ option.value }}
+                                        </option>
+                                    </select>
+
+                                    <mat-checkbox
+                                        [formControl]="value.controls[value.controls.type.value + 'Value']"
+                                        color="primary"
+                                        *ngIf="value.get('type').value === 'boolean'"
+                                    >Is {{ value.get('name').value }}</mat-checkbox>
+
+                                    <button 
+                                        class="btn btn-danger btn-sm" 
+                                        type="button"
+                                        (click)="deleteValue(value)"
+                                    >Delete</button>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button (click)="onCreateProduct()">Create</button>
+            </div>
+        </div>
+    </div>
 </div>

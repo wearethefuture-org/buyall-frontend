@@ -22,4 +22,8 @@ export class ProductsService extends BaseService {
   getProductsList(): Observable<IProduct[]> {
     return this.get(EProductUrls.productList);
   }
+
+  createProduct(product: IProduct): Observable<IProduct> {
+    return this.post(product, '/product/');
+  }
 }

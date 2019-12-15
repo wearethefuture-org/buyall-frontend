@@ -16,6 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { IdToNamePipe } from 'src/app/core/pipes/id-to-name/id-to-name.pipe';
+import { FieldToObjectPipe } from 'src/app/core/pipes/fieldToObject/field-to-object.pipe';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { IdToNamePipe } from 'src/app/core/pipes/id-to-name/id-to-name.pipe';
     ManageSubcategoriesPageComponent,
     ManageProductsComponent,
     AdminTableComponent,
-    IdToNamePipe
+    IdToNamePipe,
+    FieldToObjectPipe
   ],
   imports: [
     CommonModule,
@@ -44,6 +46,7 @@ import { IdToNamePipe } from 'src/app/core/pipes/id-to-name/id-to-name.pipe';
     MatSortModule,
     MatExpansionModule,
     FormsModule
-  ]
+  ],
+  providers: [FieldToObjectPipe]
 })
 export class AdminModule { }

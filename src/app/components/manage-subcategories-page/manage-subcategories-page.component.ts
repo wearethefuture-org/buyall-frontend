@@ -111,6 +111,7 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   onSubCategoryCreate(): void {
     if (this.createSubCategoryForm.invalid) {
       this.toastr.error('Invalid credentials');
+      this.createSubCategoryForm.markAllAsTouched();
       return;
     }
 
@@ -183,6 +184,7 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   onSubCategoryEdit(): void {
     if (this.editSubCategoryForm.invalid) {
       this.toastr.error('Invalid credentials');
+      this.createSubCategoryForm.markAllAsTouched();
       return;
     }
 
