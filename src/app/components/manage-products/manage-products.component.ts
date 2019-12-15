@@ -9,7 +9,8 @@ import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { FieldToObjectPipe } from 'src/app/core/pipes/fieldToObject/field-to-object.pipe';
-import { CharacteristicsService } from 'src/app/core/services/characteristics/characteristics.service';
+import { ISetting } from 'src/app/core/interfaces/setting';
+import { IValue } from 'src/app/core/interfaces/value';
 
 @Component({
   selector: 'app-manage-products',
@@ -20,14 +21,15 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   @ViewChild('modalToggler', {static: false}) modalToggler: ElementRef;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  pageSizeOptions = [5, 10, 15, 25];
-  tableHeaders = ['id', 'subCategoryId', 'name', 'description', 'available', 'amount', 'isPromotion', 'discount', 'weight', 'price', 'actions'];
+  pageSizeOptions: number[] = [5, 10, 15, 25];
+  tableHeaders: string[] = ['id', 'subCategoryId', 'name', 'description', 'available',
+  'amount', 'isPromotion', 'discount', 'weight', 'price', 'actions'];
   tableBody: MatTableDataSource<IProduct>;
   subCategories: ISubCategory[] = [];
   products: IProduct[] = [];
   productForm: FormGroup;
-  subCategorySettings; // interface here and in sub category interface
-  valueSetting; // interface here
+  subCategorySettings: ISetting[];
+  valueSetting: ISetting;
   currentSubCategory: any = 'All';
   edit = false;
   subGetProducts: Subscription;
@@ -44,7 +46,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
     private productsService: ProductsService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     this.subGetProducts = this.productsService.getProductsList()
       .pipe(
@@ -55,7 +57,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
           this.tableBody.sort = this.sort;
           this.tableBody.paginator = this.paginator;
 
-          return this.subCategoriesService.getSubCategoriesList(); 
+          return this.subCategoriesService.getSubCategoriesList();
         })
       )
       .subscribe((subCategories: any) => {
@@ -63,7 +65,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
       });
   }
 
-  onSelectSearchSubCategory() {
+  onSelectSearchSubCategory(): void {
     if (this.currentSubCategory === 'All') {
       this.tableBody = new MatTableDataSource(this.products);
       this.tableBody.sort = this.sort;
@@ -71,7 +73,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
       return;
     }
 
-    const productsBySubCategory = this.products.filter(product => {
+    const productsBySubCategory = this.products.filter((product: IProduct) => {
       return product.subCategoryId === this.currentSubCategory.id;
     });
 
@@ -80,13 +82,13 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
     this.tableBody.paginator = this.paginator;
   }
 
-  onSelectProductSubCategory() {
+  onSelectProductSubCategory(): void {
     const subCategory: any = this.fieldToObjectPipe.transform(this.productForm.get('subCategoryId').value, 'id', this.subCategories);
 
     this.subCategorySettings = subCategory.characteristicsSettings;
   }
 
-  addValue() {
+  addValue(): void {
     if (!this.valueSetting) {
       this.toastr.error('Choose setting');
       return;
@@ -99,9 +101,11 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
       type: [this.valueSetting.type],
       characteristicSettingId: [this.valueSetting.id]
     };
-    value[`${this.valueSetting.type}Value`] = this.valueSetting.type === 'boolean' ? [false, Validators.required] : [null, Validators.required];
+    value[`${this.valueSetting.type}Value`] = this.valueSetting.type === 'boolean'
+      ? [false, Validators.required]
+      : [null, Validators.required];
 
-    const options = this.valueSetting.options ? this.valueSetting.options.map(option => {
+    const options = this.valueSetting.options ? this.valueSetting.options.map((option: string) => {
       return this.fb.control(option);
     }) : [];
 
@@ -109,30 +113,31 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
 
     values.push(this.fb.group(value));
 
-    this.subCategorySettings = this.subCategorySettings.filter(setting => {
-      return setting != this.valueSetting;
+    this.subCategorySettings = this.subCategorySettings.filter((setting: ISetting) => {
+      return setting !== this.valueSetting;
     });
 
     this.valueSetting = this.subCategorySettings[0];
   }
 
-  deleteValue(mustBeDeletedValue: FormGroup) {
+  deleteValue(mustBeDeletedValue: FormGroup): void {
     const values = this.productForm.get('characteristicsValues') as FormArray;
 
-    values.controls = values.controls.filter(value => {
-      return value != mustBeDeletedValue;
+    values.controls = values.controls.filter((value: FormGroup) => {
+      return value !== mustBeDeletedValue;
     });
 
     this.productForm.setControl('characteristicsValues', values);
 
     const subCategory: any = this.fieldToObjectPipe.transform(this.productForm.get('subCategoryId').value, 'id', this.subCategories);
 
-    const setting = this.fieldToObjectPipe.transform(mustBeDeletedValue.value.characteristicSettingId, 'id', subCategory.characteristicsSettings);
+    const setting: any = this.fieldToObjectPipe.transform(
+      mustBeDeletedValue.value.characteristicSettingId, 'id', subCategory.characteristicsSettings);
 
     this.subCategorySettings.push(setting);
   }
 
-  showCreateModal() {
+  showCreateModal(): void {
     this.productForm = this.fb.group({
       name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
       description: [null],
@@ -150,7 +155,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
     this.edit = false;
   }
 
-  showEditModal(product) {
+  showEditModal(product: IProduct): void {
     const body: any = {
       id: [product.id],
       name: [product.name, Validators.compose([Validators.required, Validators.maxLength(255)])],
@@ -166,9 +171,10 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
 
     const subCategory: any = this.fieldToObjectPipe.transform(product.subCategoryId, 'id', this.subCategories); // interface her
 
-    const values = product.characteristicsValues.map(value => {
-      const setting: any = this.fieldToObjectPipe.transform(value.characteristicSettingId, 'id', subCategory.characteristicsSettings); // interface here
-      
+    const values = product.characteristicsValues.map((value: IValue) => {
+      const setting: any = this.fieldToObjectPipe.transform(
+        value.characteristicSettingId, 'id', subCategory.characteristicsSettings);
+
       const formValue = {
         id: [value.id, Validators.compose([Validators.required, Validators.maxLength(255)])],
         name: [value.name, Validators.compose([Validators.required, Validators.maxLength(255)])],
@@ -181,13 +187,13 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
         return this.fb.group(formValue);
       }
 
-      setting.options.forEach(option => {
-        formValue.options.push(this.fb.control(option))
+      setting.options.forEach((option: string) => {
+        formValue.options.push(this.fb.control(option));
       });
 
       return this.fb.group(formValue);
     });
-    
+
     body.characteristicsValues = this.fb.array(values);
 
     this.productForm = this.fb.group(body);
@@ -196,7 +202,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
     this.edit = true;
   }
 
-  onCreateProduct() {
+  onCreateProduct(): void {
     if (this.productForm.invalid) {
       this.toastr.error('Invalid credentials');
       this.productForm.markAllAsTouched();
@@ -206,7 +212,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
     this.subCreateProduct = this.productsService.createProduct(this.productForm.value)
       .subscribe((product: IProduct) => {
         this.products.push(product);
-        
+
         this.onSelectSearchSubCategory();
 
         this.toastr.success('Product created');
@@ -227,7 +233,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
           return;
         }
 
-        this.products = this.products.map(product => {
+        this.products = this.products.map((product: IProduct) => {
           if (product.id === this.productForm.value.id) {
             return this.productForm.value;
           }
@@ -244,7 +250,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
 
   onDeleteProduct(mustBeDeletedProduct: IProduct): void {
     this.subDeleteProduct = this.productsService.deleteProduct(mustBeDeletedProduct.id)
-      .subscribe((res) => {
+      .subscribe((res: boolean) => {
         if (!res) {
           return;
         }
@@ -260,10 +266,10 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    if (this.subGetProducts) this.subGetProducts.unsubscribe();
-    if (this.subCreateProduct) this.subCreateProduct.unsubscribe();
-    if (this.subDeleteProduct) this.subDeleteProduct.unsubscribe();
-    if (this.subGetSettings) this.subGetSettings.unsubscribe();
-    if (this.subEditProduct) this.subEditProduct.unsubscribe();
+    if (this.subGetProducts) { this.subGetProducts.unsubscribe(); }
+    if (this.subCreateProduct) { this.subCreateProduct.unsubscribe(); }
+    if (this.subDeleteProduct) { this.subDeleteProduct.unsubscribe(); }
+    if (this.subGetSettings) { this.subGetSettings.unsubscribe(); }
+    if (this.subEditProduct) { this.subEditProduct.unsubscribe(); }
   }
 }

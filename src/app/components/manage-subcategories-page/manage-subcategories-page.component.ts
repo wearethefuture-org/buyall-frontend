@@ -8,6 +8,7 @@ import { ICategory } from 'src/app/core/interfaces/category';
 import { switchMap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { ISetting } from 'src/app/core/interfaces/setting';
 
 @Component({
   selector: 'app-manage-subcategories-page',
@@ -19,10 +20,10 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   @ViewChild('createModalToggler', {static: false}) createModalToggler: ElementRef;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  pageSizeOptions = [5, 10, 15, 25];
   tableBody: MatTableDataSource<ISubCategory>;
-  tableHeaders = ['id', 'categoryId', 'name', 'description', 'actions'];
-  characteristicsTypes = ['string', 'boolean', 'integer', 'float', 'date', 'enum'];
+  pageSizeOptions: number[] = [5, 10, 15, 25];
+  tableHeaders: string[] = ['id', 'categoryId', 'name', 'description', 'actions'];
+  characteristicsTypes: string[] = ['string', 'boolean', 'integer', 'float', 'date', 'enum'];
   categories: ICategory[];
   subCategories: ISubCategory[];
   createSubCategoryForm: FormGroup;
@@ -49,11 +50,11 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
 
     this.subGetCategories = this.categoriesService.getCategoriesList()
       .pipe(
-        switchMap((categories) => {
+        switchMap((categories: ICategory[]) => {
           this.categories = categories;
           this.createSubCategoryForm.get('categoryId').setValue(categories[0].id);
 
-          return this.subCategoriesService.getSubCategoriesList()
+          return this.subCategoriesService.getSubCategoriesList();
         })
       )
       .subscribe((subCategories: any) => {
@@ -65,7 +66,7 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  addSetting(fg: FormGroup) {
+  addSetting(fg: FormGroup): void {
     const settings = fg.get('characteristicsSettings') as FormArray;
 
     settings.push(
@@ -80,29 +81,29 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  deleteSetting(fg: FormGroup, mustBeDeletedSetting: FormGroup) {
+  deleteSetting(fg: FormGroup, mustBeDeletedSetting: FormGroup): void {
     const settings = fg.get('characteristicsSettings') as FormArray;
 
-    settings.controls = settings.controls.filter(setting => {
-      return setting != mustBeDeletedSetting;
+    settings.controls = settings.controls.filter((setting: FormGroup) => {
+      return setting !== mustBeDeletedSetting;
     });
 
     fg.setControl('characteristicsSettings', settings);
   }
 
-  addOption(fg: FormGroup) {
+  addOption(fg: FormGroup): void {
     const options = fg.get('options') as FormArray;
 
     options.push(this.fb.control(null, Validators.compose([Validators.required])));
   }
 
-  deleteOption(fg: FormGroup, settingOfOption: FormGroup, mustBeDeletedOption: FormControl) {
+  deleteOption(fg: FormGroup, settingOfOption: FormGroup, mustBeDeletedOption: FormControl): void {
     const settings = fg.get('characteristicsSettings') as FormArray;
 
     const options = settingOfOption.get('options') as FormArray;
 
-    options.controls = options.controls.filter(option => {
-      return option != mustBeDeletedOption;
+    options.controls = options.controls.filter((option: FormControl) => {
+      return option !== mustBeDeletedOption;
     });
 
     fg.setControl('characteristicsSettings', settings);
@@ -130,7 +131,7 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
         if (!res) {
           return;
         }
-        
+
         this.subCategories = this.subCategories.filter((subCategory: ISubCategory) => {
           return subCategory.id !== mustBeDeletedSubCategory.id;
         });
@@ -145,7 +146,7 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
 
     const characteristics = new FormArray([]);
 
-    body.characteristicsSettings.forEach(setting => {
+    body.characteristicsSettings.forEach((setting: ISetting) => {
       characteristics.push(
         this.fb.group({
           id: [setting.id, Validators.compose([Validators.required, Validators.maxLength(255)])],
@@ -164,7 +165,7 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
 
       const options = characteristics.controls[characteristics.controls.length - 1].get('options') as FormArray;
 
-      setting.options.forEach(option => {
+      setting.options.forEach((option: string) => {
         options.push(this.fb.control(option, Validators.compose([Validators.required])));
       });
     });
@@ -197,7 +198,7 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.subCategories = this.subCategories.map(subCategory => {
+        this.subCategories = this.subCategories.map((subCategory: ISubCategory) => {
           if (subCategory.id === this.editSubCategoryForm.value.id) {
             return this.editSubCategoryForm.value;
           }
@@ -213,9 +214,9 @@ export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.subGetCategories) this.subGetCategories.unsubscribe();
-    if (this.subCreateSubCategory) this.subCreateSubCategory.unsubscribe();
-    if (this.subDeleteSubCategory) this.subDeleteSubCategory.unsubscribe();
-    if (this.subEditSubCategory) this.subEditSubCategory.unsubscribe();
+    if (this.subGetCategories) { this.subGetCategories.unsubscribe(); }
+    if (this.subCreateSubCategory) { this.subCreateSubCategory.unsubscribe(); }
+    if (this.subDeleteSubCategory) { this.subDeleteSubCategory.unsubscribe(); }
+    if (this.subEditSubCategory) { this.subEditSubCategory.unsubscribe(); }
   }
 }
