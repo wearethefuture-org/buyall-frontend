@@ -29,6 +29,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   currentSubCategory: any = 'All';
   subGetProducts: Subscription;
   subCreateProduct: Subscription;
+  subDeleteProduct: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -104,11 +105,26 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
         this.products.push(product);
         
         this.onSelectSearchSubCategory();
+
+        this.toastr.success('Product created');
       });
   }
 
-  onDeleteProduct() {
+  onDeleteProduct(mustBeDeletedProduct: IProduct) {
+    this.subDeleteProduct = this.productsService.deleteProduct(mustBeDeletedProduct.id)
+      .subscribe((res) => {
+        if (!res) {
+          return;
+        }
 
+        this.products = this.products.filter((product: IProduct) => {
+          return product.id !== mustBeDeletedProduct.id;
+        });
+
+        this.onSelectSearchSubCategory();
+
+        this.toastr.success('Product deleated');
+      });
   }
 
   onEditProduct() {
@@ -164,5 +180,6 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void {
     if (this.subGetProducts) this.subGetProducts.unsubscribe();
     if (this.subCreateProduct) this.subCreateProduct.unsubscribe();
+    if (this.subDeleteProduct) this.subDeleteProduct.unsubscribe();
   }
 }

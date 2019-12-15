@@ -26,4 +26,8 @@ export class ProductsService extends BaseService {
   createProduct(product: IProduct): Observable<IProduct> {
     return this.post(product, '/product/');
   }
+
+  deleteProduct(id: number): Observable<boolean> {
+    return this.delete(`/product/${id}`);
+  }
 }
