@@ -1,0 +1,7 @@
+<app-products [products]="products" *ngIf="products"></app-products>
+<app-pagination
+    *ngIf="products"
+    [pages]="pages"     
+    [page]="page"
+>
+</app-pagination>

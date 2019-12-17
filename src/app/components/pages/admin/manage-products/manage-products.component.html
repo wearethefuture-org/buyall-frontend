@@ -1,0 +1,226 @@
+<button data-toggle="modal" data-target="#productModal" #modalToggler style="display: none;"></button>
+<div class="content">
+
+    <div class="controls">
+        <select 
+            required 
+            [(ngModel)]="currentSubCategory" 
+            (change)="onSelectSearchSubCategory()"
+            class="choose-category"
+        >
+            <option value="All" selected>All</option>
+            <option [ngValue]="subCategory" *ngFor="let subCategory of subCategories">{{ subCategory.name }}</option>
+        </select>
+
+        <button class="create-btn" (click)="showCreateModal()">
+            Create new product
+        </button>
+    </div>
+
+    <div class="mat-elevation-8">
+        <mat-table [dataSource]="tableBody" matSort>
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.id }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="subCategoryId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Sub category</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.subCategoryId | idToName:subCategories }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.name }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.description }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="available">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Available</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.available }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="amount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.amount }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="isPromotion">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Promotion</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.isPromotion }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="discount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Discount</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.discount | number:'1.1-2' }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="weight">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Weight</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.weight }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                <mat-cell *matCellDef="let product">{{ product.price }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let product">
+                    <button mat-icon-button (click)="showEditModal(product)"><mat-icon>launch</mat-icon></button>
+                    <button mat-icon-button (click)="onDeleteProduct(product)"><mat-icon color="warn">delete_outline</mat-icon></button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="tableHeaders"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: tableHeaders"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+    </div>
+    
+</div>
+
+
+<div id="productModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" *ngIf="!edit">Create new product</h4>
+                <h4 class="modal-title" *ngIf="edit">Edit product</h4>
+            </div>
+
+            <div class="modal-body">
+                <form [formGroup]="productForm" *ngIf="productForm">
+                    <div class="product-controls">
+                        <mat-form-field>
+                            <input matInput formControlName="name" placeholder="Name">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Sub category</mat-label>
+                            <select 
+                                matNativeControl 
+                                formControlName="subCategoryId" 
+                                (change)="onSelectProductSubCategory()"
+                            >
+                                <option 
+                                    value="{{ subCategory.id }}" 
+                                    *ngFor="let subCategory of subCategories"
+                                >
+                                    {{ subCategory.name }}
+                                </option>
+                            </select>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="amount" placeholder="Amount">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="discount" placeholder="Discount">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="weight" placeholder="Weight">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="price" placeholder="Price">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <textarea matInput formControlName="description" placeholder="Description"></textarea>
+                        </mat-form-field>
+
+                        <div class="checkboxes">
+                            <mat-checkbox formControlName="available" color="primary">Available</mat-checkbox>
+                            <mat-checkbox formControlName="isPromotion" color="primary">Promotion</mat-checkbox>
+                        </div>
+                    </div>
+
+                    <div class="create-value-controls" *ngIf="productForm.get('subCategoryId').value && this.subCategorySettings?.length > 0">
+                        <button 
+                            class="create-btn" 
+                            (click)="addValue()"
+                            type="button"
+                        >Add value</button>
+
+                        <select [(ngModel)]="valueSetting" [ngModelOptions]="{standalone: true}">
+                            <option 
+                                [ngValue]="setting" 
+                                *ngFor="let setting of subCategorySettings"
+                            >
+                                {{ setting.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div 
+                        class="values"
+                        *ngIf="productForm.get('characteristicsValues').length > 0"
+                    >
+
+                        <mat-accordion 
+                            formArrayName="characteristicsValues"
+                            *ngFor="let value of productForm.get('characteristicsValues').controls;let i = index"
+                        >
+                            <mat-expansion-panel [formGroupName]="i">
+
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{ value.controls.name.value }}
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        {{ value.controls.type.value }}
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+
+                                <div class="value-controls">
+                                    <mat-form-field *ngIf="value.get('type').value != 'enum' && value.get('type').value != 'boolean'">
+                                        <input matInput [formControl]="value.controls[value.controls.type.value + 'Value']" placeholder="Value">
+                                    </mat-form-field>
+
+                                    <select 
+                                        [formControl]="value.controls[value.controls.type.value + 'Value']"
+                                        *ngIf="value.get('type').value === 'enum'"
+                                    >
+                                        <option 
+                                            [ngValue]="option.value" 
+                                            *ngFor="let option of value.get('options').controls;let i = index"
+                                            [selected]="i === 0"
+                                        >
+                                            {{ option.value }}
+                                        </option>
+                                    </select>
+
+                                    <mat-checkbox
+                                        [formControl]="value.controls[value.controls.type.value + 'Value']"
+                                        color="primary"
+                                        *ngIf="value.get('type').value === 'boolean'"
+                                    >Is {{ value.get('name').value }}</mat-checkbox>
+
+                                    <button 
+                                        class="btn btn-danger btn-sm" 
+                                        type="button"
+                                        (click)="deleteValue(value)"
+                                    >Delete</button>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button (click)="onCreateProduct()" *ngIf="!edit">Create</button>
+                <button (click)="onEditProduct()" *ngIf="edit">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>

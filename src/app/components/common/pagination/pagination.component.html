@@ -1,0 +1,41 @@
+<nav>
+    <ul class="pagination">
+        <li class="page-item">
+            <a 
+                class="page-link" 
+                [routerLink]="[]" 
+                [queryParams]="{page: canPrev ? page - 1 : page}" 
+                [ngClass]="{disabled: canPrev}"
+            >
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+
+        <li 
+            class="page-item active" 
+            *ngFor="let p of pages"
+            [routerLink]="[]" 
+            [queryParams]="{page: p != '...' ?  p : page}" 
+            [ngClass]="{active: p === page}"
+        >
+            <a 
+                class="page-link" 
+            >
+                {{ p }}
+            </a>
+        </li>
+
+        <li class="page-item">
+            <a 
+                class="page-link" 
+                [routerLink]="[]" 
+                [queryParams]="{page: canNext ? page + 1 : page }" 
+                [ngClass]="{disabled: canNext}"
+            >
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
+</nav> 

@@ -1,0 +1,69 @@
+* {
+    font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
+}
+
+mat-icon {
+  font-family: 'Material Icons';
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 30px 30px 0 30px;
+    height: 100%;
+}
+
+.content::after {
+    content: '';
+    flex: 0 0 30px;
+}
+
+.choose-category {
+    width: 20%;
+    margin-bottom: 15px;
+}
+
+.create-btn {
+  border-radius: 5px;
+  width: 150px;
+  background-color: #6bd098;
+  color: white;
+  padding: 5px;
+  margin-bottom: 15px;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-controls,
+.create-value-controls {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.product-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 15px;
+}
+
+.create-value-controls select {
+    margin-left: 10px;
+}
+
+.product-controls .checkboxes {
+    padding-left: 15px;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.value-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

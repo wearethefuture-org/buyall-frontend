@@ -1,0 +1,242 @@
+* {
+    font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
+}
+
+
+/* ===============================================
+        Sidebar start here
+   =============================================== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    bottom: 0;
+    width: 260px;
+    left: 0;
+    z-index: 999;
+}
+
+.sidebar:after, .sidebar:before {
+    display: block;
+    content: "";
+    opacity: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.sidebar:after {
+    background: #212120;
+    z-index: 3;
+}
+
+.sidebar .sidebar-wrapper {
+    position: relative;
+    height: calc(100vh - 75px);
+    width: 260px;
+    z-index: 4;
+    padding-bottom: 100px;
+    touch-action: auto;
+    overflow: hidden !important;
+}
+/* ===============================================
+        Sidebar end here
+   =============================================== */
+
+
+/* ===============================================
+        Sidebar logo start here
+   =============================================== */
+.sidebar .logo {
+    position: relative;
+    padding: 7px .7rem;
+    z-index: 4;
+}
+
+.sidebar .logo:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    height: 1px;
+    width: calc(100% - 30px);
+    background-color: hsla(0,0%,100%,.5);
+}
+
+.sidebar .logo .simple-text {
+    text-transform: uppercase;
+    padding: .5rem 0;
+    display: block;
+    white-space: nowrap;
+    font-size: 1rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 400;
+    line-height: 30px;
+    overflow: hidden;
+}
+
+.sidebar .logo a.logo-mini {
+    float: left;
+    margin-top: 3px;
+    margin-left: 10px;
+    margin-right: 12px;
+}
+
+.sidebar .logo .simple-text .logo-img img {
+    height: 19px;
+}
+
+.sidebar .logo a.logo-normal {
+    display: block;
+    opacity: 1;
+    padding: 11px 0 8px;
+    transform: translateZ(0);
+}
+/* ===============================================
+        Sidebar logo end here
+   =============================================== */
+
+
+/* ===============================================
+        Sidebar user start here
+   =============================================== */
+.sidebar .user:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    height: 1px;
+    width: calc(100% - 30px);
+    background-color: hsla(0,0%,100%,.3);
+}
+
+.sidebar .user {
+    padding-bottom: 20px;
+    margin: 20px auto 0;
+    position: relative;
+}
+
+.sidebar .user .photo {
+    width: 34px;
+    height: 34px;
+    overflow: hidden;
+    float: left;
+    z-index: 5;
+    margin-right: 10px;
+    border-radius: 50%;
+    margin-left: 23px;
+}
+
+.sidebar .user .photo img {
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar .user a {
+    color: #fff;
+    text-decoration: none;
+    padding: .5rem 15px;
+    white-space: nowrap;
+}
+
+.sidebar .user .info>a {
+    display: block;
+    line-height: 18px;
+}
+
+.sidebar .user .info>a>span {
+    color: #fff;
+    opacity: 1;
+    display: block;
+    position: relative;
+    opacity: 1;
+    padding-top: 2px;
+}
+/* ===============================================
+        Sidebar user end here
+   =============================================== */
+
+
+/* ===============================================
+        Sidebar nav start here
+   =============================================== */
+.nav {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.sidebar .nav {
+    margin-top: 20px;
+    display: block;
+}
+
+.sidebar .nav li.active>a, 
+.sidebar .nav li.active>a>i, 
+.sidebar .nav li:focus:not(.active)>a, 
+.sidebar .nav li:hover:not(.active)>a {
+    background: transparent;
+    opacity: 1;
+}
+
+.sidebar .nav li.active>a>p, 
+.sidebar .nav li.active>a>i {
+    color: #6bd098 !important;
+}
+
+.sidebar .nav li {
+    outline: none;
+}
+
+.sidebar .nav li>a {
+    margin: 10px 15px 0;
+    color: #fff;
+    display: block;
+    text-decoration: none;
+    position: relative;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 10px 8px;
+    line-height: 30px;
+    opacity: .7;
+}
+
+.icon {
+    font-family: 'Material Icons';
+    display: inline-block;
+    font-size: inherit;
+    speak: none;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.sidebar .nav i {
+    font-size: 24px;
+    float: left;
+    margin-right: 12px;
+    line-height: 30px;
+    width: 34px;
+    text-align: center;
+    color: hsla(0,0%,100%,.5);
+    position: relative;
+}
+
+.sidebar .nav p {
+    margin: 0;
+    line-height: 30px;
+    position: relative;
+    display: block;
+    height: auto;
+    white-space: nowrap;
+    font-weight: 600;
+}
+/* ===============================================
+        Sidebar nav end here
+   =============================================== */

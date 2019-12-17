@@ -3,7 +3,6 @@ import { IUser } from '../../interfaces/user';
 import { BaseService } from '../base/base.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { EAuthUrls } from '../../enums/auth.e';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 
@@ -20,14 +19,14 @@ export class AuthService extends BaseService {
   ) { super(router, http); }
 
   register(user: IUser): Observable<IUser> {
-    return this.post(user, EAuthUrls.register);
+      return this.post(user, '/auth/register');
   }
 
   login(email: string, password: string): Observable<any> {
     return this.post({
       email,
       password
-    }, EAuthUrls.login);
+    }, '/auth/login');
   }
 
   autoLogin(): void {
@@ -38,20 +37,20 @@ export class AuthService extends BaseService {
   verifyEmail(key: string): Observable<boolean> {
     return this.post({
       key
-    }, EAuthUrls.confirmEmail);
+    }, '/auth/confirm');
   }
 
   sendChangePasswordEmail(email: string): Observable<boolean> {
     return this.post({
       email
-    }, EAuthUrls.sendEmail);
+    }, '/auth/sendForgot');
   }
 
   sendChangePasswordKey(email: string, key: string): Observable<boolean> {
     return this.post({
       email,
       key
-    }, EAuthUrls.sendKey);
+    }, '/auth/checkKey');
   }
 
   changePassword(email: string, key: string, password: string): Observable<boolean> {
@@ -59,7 +58,7 @@ export class AuthService extends BaseService {
       email,
       key,
       password
-    }, EAuthUrls.changePassword);
+    }, '/auth/changePassword');
   }
 
   isAuth(): boolean {

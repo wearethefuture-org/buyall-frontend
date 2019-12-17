@@ -3,7 +3,6 @@ import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { throwError as observableThrowError } from 'rxjs';
-import { EAuthUrls } from '../../enums/auth.e';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -24,7 +23,7 @@ export class BaseService {
 
     return this.http.get(this.apiUrl + (options || ''), {
       headers: this.headers
-    });
+    }).pipe(catchError(this.catchError.bind(this)));
   }
 
   public post(data?: object, options?: string): Observable<any> {
@@ -34,18 +33,38 @@ export class BaseService {
             .pipe(catchError(this.catchError.bind(this)));
   }
 
+  public put(data?: object, options?: string): Observable<any> {
+    this.setHeaders(options);
+
+    return this.http.put<any>(this.apiUrl + (options || ''), data, {headers: this.headers})
+            .pipe(catchError(this.catchError.bind(this)));
+  }
+
+  public delete(options?: string): Observable<any> {
+    this.setHeaders(options);
+
+    return this.http.delete<any>(this.apiUrl + (options || ''), {headers: this.headers})
+            .pipe(catchError(this.catchError.bind(this)));
+  }
+
   protected setHeaders(url: string): void {
-    if (url !== EAuthUrls.login && url !== EAuthUrls.register) {
+    if (url !== '/auth/login' && url !== '/auth/register') {
       let token = JSON.parse(localStorage.getItem('token'));
-      
+
       token = token ? token.token : '';
       this.headers = new HttpHeaders({Authorization: token});
     }
   }
 
   protected catchError(err: any): any {
-    if (err.status > 400 && err.status < 500) {
+    if (err.status === 401) {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
       this.router.navigate(['/auth', 'login']);
+    }
+
+    if (err.status === 403) {
+      this.router.navigate(['/']);
     }
 
     return observableThrowError(err.error || {});

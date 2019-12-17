@@ -1,22 +1,23 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ProductListComponent } from 'src/app/components/product-list/product-list.component';
-import { ProductDetailsComponent } from 'src/app/components/product-details/product-details.component';
-
-
 const routes: Routes = [
     {
       path: '',
-      component: ProductListComponent
+      pathMatch: 'full',
+      redirectTo: 'product'
     },
     {
       path: 'category',
       loadChildren: '../category/category.module#CategoryModule'
     },
     {
-      path: 'products/:id',
-      component: ProductDetailsComponent
+      path: 'sub-category',
+      loadChildren: '../sub-category/sub-category.module#SubCategoryModule'
+    },
+    {
+      path: 'product',
+      loadChildren: '../product/product.module#ProductModule'
     },
 ];
 
