@@ -13,7 +13,7 @@ import { ISetting } from 'src/app/core/interfaces/setting';
 @Component({
   selector: 'app-manage-subcategories-page',
   templateUrl: './manage-subcategories-page.component.html',
-  styleUrls: ['./manage-subcategories-page.component.css']
+  styleUrls: ['./manage-subcategories-page.component.scss']
 })
 export class ManageSubcategoriesPageComponent implements OnInit, OnDestroy {
   @ViewChild('editModalToggler', {static: false}) editModalToggler: ElementRef;

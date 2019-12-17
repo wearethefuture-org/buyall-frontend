@@ -9,7 +9,7 @@ import makePagination from 'src/app/core/helpers/makePagination';
 @Component({
   selector: 'app-sub-category',
   templateUrl: './sub-category.component.html',
-  styleUrls: ['./sub-category.component.css']
+  styleUrls: ['./sub-category.component.scss']
 })
 export class SubCategoryComponent implements OnInit, OnDestroy {
   subQueryParams: Subscription;

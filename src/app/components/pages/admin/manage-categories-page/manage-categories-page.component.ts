@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-manage-categories-page',
   templateUrl: './manage-categories-page.component.html',
-  styleUrls: ['./manage-categories-page.component.css']
+  styleUrls: ['./manage-categories-page.component.scss']
 })
 export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
   @ViewChild('editModalToggler', {static: false}) editModalToggler: ElementRef;

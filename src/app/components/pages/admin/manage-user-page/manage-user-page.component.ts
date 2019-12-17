@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-manage-user-page',
   templateUrl: './manage-user-page.component.html',
-  styleUrls: ['./manage-user-page.component.css']
+  styleUrls: ['./manage-user-page.component.scss']
 })
 export class ManageUserPageComponent implements OnInit, OnDestroy {
   @ViewChild('editModalToggler', {static: false}) editModalToggler: ElementRef;

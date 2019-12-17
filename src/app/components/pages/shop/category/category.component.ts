@@ -7,7 +7,7 @@ import { ICategory } from 'src/app/core/interfaces/category';
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
-  styleUrls: ['./category.component.css']
+  styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit, OnDestroy {
   subParams: Subscription;

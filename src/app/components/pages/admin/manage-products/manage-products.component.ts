@@ -15,7 +15,7 @@ import { IValue } from 'src/app/core/interfaces/value';
 @Component({
   selector: 'app-manage-products',
   templateUrl: './manage-products.component.html',
-  styleUrls: ['./manage-products.component.css']
+  styleUrls: ['./manage-products.component.scss']
 })
 export class ManageProductsComponent implements OnDestroy, OnInit {
   @ViewChild('modalToggler', {static: false}) modalToggler: ElementRef;
