@@ -31,4 +31,16 @@ export class ProductsService extends BaseService {
 
     return this.get(url);
   }
+
+  createProduct(product: IProduct): Observable<IProduct> {
+    return this.post(product, '/product/');
+  }
+
+  updateProduct(product: IProduct, id: number): Observable<boolean> {
+    return this.put(product, `/product/${id}`);
+  }
+
+  deleteProduct(id: number): Observable<boolean> {
+    return this.delete(`/product/${id}`);
+  }
 }

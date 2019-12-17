@@ -1,11 +1,17 @@
 /* Global Styles */
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 * {
   font-family: 'Roboto', Arial, sans-serif;
   color: #616161;
-  box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+*, 
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
@@ -19,7 +25,7 @@ body {
 }
 
 router-outlet + *  {
-  padding: 0 16px;
+  /* padding: 0 16px; */
 }
 
 /* Text */
@@ -72,15 +78,20 @@ label {
 
 /* Button */
 .button, button {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 16px;
-  border-radius: 2px;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: #1976d2;
-  color: white;
+  /* display: inline-flex; */
+  /* align-items: center; */
+  /* padding: 8px 16px; */
+  /* border-radius: 2px; */
+  /* font-size: 14px; */
+  /* cursor: pointer; */
+  /* background-color: #1976d2; */
+  /* color: white; */
   border: none;
+  background: transparent;
+}
+
+.button:focus, .btn:focus, button:focus {
+  outline: none !important;
 }
 
 .button:hover, button:hover {
@@ -137,6 +148,14 @@ app-top-bar h1 {
   margin-bottom: 8px;
   border-radius: 2px;
   background-color: #EEEEEE;
+}
+
+.modal {
+  z-index: 101;
+}
+
+.modal-backdrop {
+  z-index: 100;
 }
 
 

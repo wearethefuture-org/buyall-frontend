@@ -1,0 +1,75 @@
+* {
+    font-family: Montserrat, Helvetica Neue, Arial, sans-serif;
+}
+
+mat-icon {
+  font-family: 'Material Icons';
+}
+
+.content {
+    padding: 30px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.add-enum-type,
+.create-btn {
+  border-radius: 5px;
+  width: 150px;
+  background-color: #6bd098;
+  color: white;
+  padding: 5px;
+  margin-bottom: 15px;
+}
+
+.sub-categories-values,
+.sub-categories-description {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.modal-body > form div mat-form-field:first-of-type {
+  margin-right: 20px;
+}
+
+.mat-header-cell,
+.mat-cell {
+  text-align: center;
+  justify-content: center;
+}
+
+.characteristics-values {
+  display: grid; 
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.delete-characteristic-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.delete-characteristic {
+  color: white;
+  background-color: #c23616;
+  border-radius: 3px;
+}
+
+.enums {
+  margin-top: 20px;
+}
+
+.enum-type {
+  border: 1px solid silver;
+  border-top: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.enum-type:first-of-type {
+  border-top: 1px solid silver;
+}

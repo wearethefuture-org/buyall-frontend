@@ -1,0 +1,310 @@
+<div class="content">
+    <button class="create-btn" data-toggle="modal" data-target="#createSubCategoryModal">
+        Create new sub category
+    </button>
+
+    <button id="editModalToggle" data-toggle="modal" data-target="#editSubCategoryModal" style="display: none;" #editModalToggler></button>
+
+    <div class="mat-elevation-8">
+        <mat-table [dataSource]="tableBody" matSort>
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+                <mat-cell *matCellDef="let subCategory">{{ subCategory.id }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="categoryId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Category</mat-header-cell>
+                <mat-cell *matCellDef="let subCategory">{{ subCategory.categoryId | idToName:categories }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                <mat-cell *matCellDef="let subCategory">{{ subCategory.name }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                <mat-cell *matCellDef="let subCategory">{{ subCategory.description }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let subCategory">
+                    <button mat-icon-button (click)="showEditModal(subCategory)"><mat-icon>launch</mat-icon></button>
+                    <button mat-icon-button (click)="onSubCategoryDelete(subCategory)"><mat-icon color="warn">delete_outline</mat-icon></button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="tableHeaders"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: tableHeaders"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+    </div>
+</div>
+
+<div id="createSubCategoryModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" #createModalToggler>&times;</button>
+                <h4 class="modal-title">Create new sub category</h4>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="createSubCategoryForm">
+                    <div class="sub-categories-values">
+                        <mat-form-field>
+                            <input matInput placeholder="Name" formControlName="name">
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Category</mat-label>
+                            <select matNativeControl formControlName="categoryId" required>
+                                <option value="{{ category.id }}" *ngFor="let category of categories">{{ category.name }}</option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="sub-categories-description">
+                        <mat-form-field>
+                            <textarea matInput placeholder="Description" formControlName="description"></textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <button 
+                        class="create-btn" 
+                        (click)="addSetting(createSubCategoryForm)"
+                        type="button"
+                    >Add characteristic</button>
+
+                    <div 
+                        class="characteristics" 
+                        *ngIf="createSubCategoryForm.get('characteristicsSettings').value.length > 0"
+                    >
+                        <mat-accordion 
+                            formArrayName="characteristicsSettings"
+                            *ngFor="let characteristic of createSubCategoryForm.get('characteristicsSettings').controls;let i = index"
+                        >
+                            <mat-expansion-panel [formGroupName]="i">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{ characteristic.controls.name.value }}
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        {{ characteristic.controls.type.value }}
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+
+                                <div class="characteristics-values">
+                                    <mat-form-field>
+                                        <input matInput formControlName="name" placeholder="Name">
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <mat-label>Type</mat-label>
+                                        <select matNativeControl formControlName="type" required>
+                                            <option value="{{ type }}" *ngFor="let type of characteristicsTypes">{{ type }}</option>
+                                        </select>
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <input matInput formControlName="minOption" placeholder="Min option">
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <input matInput formControlName="maxOption" placeholder="Max option">
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <textarea matInput formControlName="description" placeholder="Description"></textarea>
+                                    </mat-form-field>
+
+                                    <div class="delete-characteristic-wrapper">
+                                        <button 
+                                            class="btn btn-danger" 
+                                            (click)="deleteSetting(createSubCategoryForm, characteristic)"
+                                            type="button"
+                                        >Delete</button>
+                                    </div>
+                                </div>
+
+                                <mat-accordion
+                                    class="enums"
+                                    *ngIf="characteristic.controls.type.value === 'enum'"
+                                >
+                                    <mat-expansion-panel>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                Enum types
+                                            </mat-panel-title>
+                                        </mat-expansion-panel-header>
+
+                                        <button 
+                                            class="add-enum-type" 
+                                            (click)="addOption(characteristic)"
+                                            type="button"
+                                        >Add enum type</button>
+
+                                        <div class="enum-type"
+                                            *ngFor="let option of characteristic.controls.options.controls;"
+                                        >
+                                            <mat-form-field>
+                                                <input matInput placeholder="Enum type" [formControl]="option">
+                                            </mat-form-field>
+
+                                            <button 
+                                                class="btn btn-danger btn-sm" 
+                                                type="button"
+                                                (click)="deleteOption(createSubCategoryForm, characteristic, option)"
+                                            >Delete</button>
+                                        </div>
+
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" (click)="onSubCategoryCreate()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editSubCategoryModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit sub category</h4>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editSubCategoryForm" *ngIf="editSubCategoryForm">
+                    <input formControlName="id" type="hidden">
+                    <div class="sub-categories-values">
+                        <mat-form-field>
+                            <input matInput placeholder="Name" formControlName="name">
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Category</mat-label>
+                            <select matNativeControl formControlName="categoryId" required>
+                                <option value="{{ category.id }}" *ngFor="let category of categories">{{ category.name }}</option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="sub-categories-description">
+                        <mat-form-field>
+                            <textarea matInput placeholder="Description" formControlName="description"></textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <button 
+                        class="create-btn" 
+                        (click)="addSetting(editSubCategoryForm)"
+                        type="button"
+                    >Add characteristic</button>
+
+                    <div 
+                        class="characteristics" 
+                        *ngIf="editSubCategoryForm.get('characteristicsSettings').value.length > 0"
+                    >
+                        <mat-accordion 
+                            formArrayName="characteristicsSettings"
+                            *ngFor="let characteristic of editSubCategoryForm.get('characteristicsSettings').controls;let i = index"
+                        >
+                            <mat-expansion-panel [formGroupName]="i">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{ characteristic.controls.name.value }}
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        {{ characteristic.controls.type.value }}
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+
+                                <div class="characteristics-values">
+                                    <mat-form-field>
+                                        <input matInput formControlName="name" placeholder="Name">
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <mat-label>Type</mat-label>
+                                        <select matNativeControl formControlName="type" required>
+                                            <option value="{{ type }}" *ngFor="let type of characteristicsTypes">{{ type }}</option>
+                                        </select>
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <input matInput formControlName="minOption" placeholder="Min option">
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <input matInput formControlName="maxOption" placeholder="Max option">
+                                    </mat-form-field>
+
+                                    <mat-form-field>
+                                        <textarea matInput formControlName="description" placeholder="Description"></textarea>
+                                    </mat-form-field>
+
+                                    <div class="delete-characteristic-wrapper">
+                                        <button 
+                                            class="btn btn-danger" 
+                                            (click)="deleteSetting(editSubCategoryForm, characteristic)"
+                                            type="button"
+                                        >Delete</button>
+                                    </div>
+                                </div>
+
+                                <mat-accordion
+                                    class="enums"
+                                    *ngIf="characteristic.controls.type.value === 'enum'"
+                                >
+                                    <mat-expansion-panel>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                Enum types
+                                            </mat-panel-title>
+                                        </mat-expansion-panel-header>
+
+                                        <button 
+                                            class="add-enum-type" 
+                                            (click)="addOption(characteristic)"
+                                            type="button"
+                                        >Add enum type</button>
+
+                                        <div class="enum-type"
+                                            *ngFor="let option of characteristic.controls.options.controls;"
+                                        >
+                                            <mat-form-field>
+                                                <input matInput placeholder="Enum type" [formControl]="option">
+                                            </mat-form-field>
+
+                                            <button 
+                                                class="btn btn-danger btn-sm" 
+                                                type="button"
+                                                (click)="deleteOption(editSubCategoryForm, characteristic, option)"
+                                            >Delete</button>
+                                        </div>
+
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button (click)="onSubCategoryEdit()">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>

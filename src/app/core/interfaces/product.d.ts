@@ -1,7 +1,15 @@
 export interface IProduct {
     id: number,
     name: string,
-    price: number,
+    subCategoryId: number,
     description: string,
-    img: string
+    amount: number,
+    discount: number,
+    weight: number,
+    price: number,
+    available: boolean,
+    isPromotion: boolean,
+    characteristicsValues: any[],
+    createdAt: string,
+    updatedAt: string
 }

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductsComponent } from 'src/app/components/products/products.component';
+import { ProductsComponent } from 'src/app/components/pages/shop/products/products.component';
 import { MatIconModule } from '@angular/material';
-import { PaginationComponent } from 'src/app/components/pagination/pagination.component';
+import { PaginationComponent } from 'src/app/components/common/pagination/pagination.component';
 import { RouterModule } from '@angular/router';
 
 

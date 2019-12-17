@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SubCategoryRoutingModule } from './sub-category-routing.module';
-import { SubCategoryComponent } from 'src/app/components/sub-category/sub-category.component';
+import { SubCategoryComponent } from 'src/app/components/pages/shop/sub-category/sub-category.component';
 import { SharedModule } from '../shared/shared.module';
 
 

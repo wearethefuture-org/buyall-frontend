@@ -22,4 +22,16 @@ export class CategoriesService extends BaseService {
   getCategoriesList(): Observable<ICategory[]> {
     return this.get('/categories');
   }
+
+  createCategory(category: ICategory): Observable<ICategory> {
+    return this.post(category, '/category/');
+  }
+
+  deleteCategory(id: number): Observable<boolean> {
+    return this.delete(`/category/${id}`);
+  }
+
+  editCategory(category: ICategory, id: number): Observable<boolean> {
+    return this.put(category, `/category/${id}`);
+  }
 }
