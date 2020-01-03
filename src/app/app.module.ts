@@ -20,6 +20,8 @@ import { AboutComponent } from './components/pages/site/about/about.component';
 import { TopbarLayoutComponent } from './components/layouts/topbar-layout/topbar-layout.component';
 import { SidebarLayoutComponent } from './components/layouts/sidebar-layout/sidebar-layout.component';
 import { SidebarComponent } from './components/common/sidebar/sidebar.component';
+import { ProfileComponent } from './components/pages/site/profile/profile.component';
+import { MatCardModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -33,7 +35,8 @@ import { SidebarComponent } from './components/common/sidebar/sidebar.component'
     MatSelectModule,
     MatButtonModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule
   ],
   declarations: [
     AppComponent,
@@ -44,7 +47,8 @@ import { SidebarComponent } from './components/common/sidebar/sidebar.component'
     AboutComponent,
     TopbarLayoutComponent,
     SidebarLayoutComponent,
-    SidebarComponent
+    SidebarComponent,
+    ProfileComponent
   ],
   bootstrap: [ AppComponent ]
 })

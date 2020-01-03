@@ -30,4 +30,8 @@ export class UserService extends BaseService {
   deleteUser(id: number): Observable<boolean> {
     return this.delete(`/user/${id}`);
   }
+
+  uploadImage(file, id: number) {
+    return this.post(file, `/user/${id}/image`);
+  }
 }

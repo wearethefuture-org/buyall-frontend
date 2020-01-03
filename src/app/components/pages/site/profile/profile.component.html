@@ -1,0 +1,6 @@
+<div class="wrapper">
+    <mat-card>
+        <input type="file" style="display: none;" (change)="onUpload($event.target)" #fileInput>
+        <button mat-raised-button color="primary" (click)="fileInput.click()">Upload</button>
+    </mat-card>
+</div>
