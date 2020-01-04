@@ -26,7 +26,7 @@ export class ProductsService extends BaseService {
     }
 
     if (limit) {
-      url += `limit=${limit}&`;
+      url += `limit=${limit}`;
     }
 
     return this.get(url);

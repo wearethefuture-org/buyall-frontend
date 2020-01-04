@@ -23,15 +23,11 @@ export class UserService extends BaseService {
     return this.post(user, '/user/');
   }
 
-  editUser(user: IUser, id: number): Observable<boolean> {
+  editUser(user: IUser | FormData, id: number): Observable<IUser> {
     return this.put(user, `/user/${id}`);
   }
 
   deleteUser(id: number): Observable<boolean> {
     return this.delete(`/user/${id}`);
-  }
-
-  uploadImage(file, id: number) {
-    return this.post(file, `/user/${id}/image`);
   }
 }
