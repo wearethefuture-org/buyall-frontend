@@ -1,0 +1,194 @@
+<div class="content">
+    <button class="create-btn" data-toggle="modal" data-target="#createUserModal" *ngIf="userRole === 'superadmin'">
+        Create new user
+    </button>
+
+    <button id="editModalToggle" data-toggle="modal" data-target="#editUserModal" #editModalToggler></button>
+
+    <app-admin-table 
+        *ngIf="users" 
+        [headers]="tableHeaders" 
+        [body]="users" 
+        (editEmmiter)="showEditModal($event)" 
+        (deleteEmmiter)="onUserDelete($event)" 
+        [canDelete]="userRole === 'superadmin'"
+        [canEdit]="true"
+    ></app-admin-table>
+</div>
+
+<div id="createUserModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create new user</h4>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="createUserForm">
+                    <div>
+                        <mat-form-field>
+                            <input matInput placeholder="First name" formControlName="firstName">
+                            <mat-icon matSuffix>person</mat-icon>
+
+                            <mat-error *ngIf="createUserForm.get('firstName').errors?.required && (createUserForm.get('firstName').touched)">
+                                First name is required.
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('firstName').errors?.maxlength && (createUserForm.get('firstName').touched)">
+                                First name must be no more than {{ createUserForm.get('firstName').errors.maxlength.requiredLength }}  characters.
+                            </mat-error>
+                        </mat-form-field>
+
+
+                        <mat-form-field>
+                            <input matInput placeholder="Last name" formControlName="lastName">
+                            <mat-icon matSuffix>person</mat-icon>
+
+                            <mat-error *ngIf="createUserForm.get('lastName').errors?.required && (createUserForm.get('lastName').touched)">
+                                Last name is required.
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('lastName').errors?.maxlength && (createUserForm.get('lastName').touched)">
+                                Last name must be no more than {{ createUserForm.get('lastName').errors.maxlength.requiredLength }}  characters.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field>
+                            <input matInput placeholder="Email" formControlName="email">
+                            <mat-icon matSuffix>mail</mat-icon>
+
+                            <mat-error *ngIf="createUserForm.get('email').errors?.required && (createUserForm.get('email').touched)">
+                                Email is required.
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('email').errors?.email && (createUserForm.get('email').touched)">
+                                Email is invalid.
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="dateBirthday" [matDatepicker]="createPicker" placeholder="Choose a date">
+                            <mat-datepicker-toggle matSuffix [for]="createPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #createPicker></mat-datepicker>
+
+                            <mat-error *ngIf="createUserForm.get('dateBirthday').errors?.required && (createUserForm.get('dateBirthday').touched) && 
+                            !createUserForm.get('dateBirthday').errors?.matDatepickerParse">
+                                Date is required.
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('dateBirthday').errors?.matDatepickerParse && (createUserForm.get('dateBirthday').touched || submitted)">
+                                Date is invalid.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field>
+                            <mat-label>User role</mat-label>
+                            <select matNativeControl formControlName="role" required>
+                                <option value="user">user</option>
+                                <option value="admin">admin</option>
+                                <option value="superadmin">superadmin</option>
+                            </select>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>User status</mat-label>
+                            <select matNativeControl formControlName="status" required>
+                                <option value="invited">invited</option>
+                                <option value="pending">pending</option>
+                                <option value="confirmed">confirmed</option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field>
+                            <input matInput placeholder="Password" formControlName="password" type="password">
+                            <mat-icon matSuffix>vpn_key</mat-icon>
+
+                            <mat-error *ngIf="createUserForm.get('password').errors?.required && (createUserForm.get('password').touched)">
+                                Password is required.
+                            </mat-error>
+                            <mat-error *ngIf="createUserForm.get('password').errors?.minlength && (createUserForm.get('password').touched)">
+                                Password must be at least {{ createUserForm.get('password').errors.minlength.requiredLength }} characters long.
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-checkbox formControlName="disabled">Disabled</mat-checkbox>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="" data-dismiss="modal" (click)="onUserCreate()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editUserModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit user</h4>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="editUserForm">
+                    <input formControlName="id" type="hidden">
+                    <div>
+                        <mat-form-field>
+                            <input matInput placeholder="First name" formControlName="firstName">
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput placeholder="Last name" formControlName="lastName">
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field>
+                            <input matInput placeholder="Email" formControlName="email">
+                            <mat-icon matSuffix>mail</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <input matInput formControlName="dateBirthday" [matDatepicker]="editPicker" placeholder="Choose a date">
+                            <mat-datepicker-toggle matSuffix [for]="editPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #editPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-form-field>
+                            <mat-label>User role</mat-label>
+                            <select matNativeControl formControlName="role" required>
+                                <option value="user">user</option>
+                                <option value="admin">admin</option>
+                                <option value="superadmin">superadmin</option>
+                            </select>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>User status</mat-label>
+                            <select matNativeControl formControlName="status" required>
+                                <option value="invited">invited</option>
+                                <option value="pending">pending</option>
+                                <option value="confirmed">confirmed</option>
+                            </select>
+                        </mat-form-field>
+                    </div>
+
+                    <div>
+                        <mat-checkbox formControlName="disabled">Disabled</mat-checkbox>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="" (click)="onUserEdit()" data-dismiss="modal">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>

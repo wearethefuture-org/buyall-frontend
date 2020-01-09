@@ -1,0 +1,76 @@
+<!-- <h2>Products</h2> -->
+<!-- <div class="row">
+<div *ngFor="let product of products" class="column">
+    <mat-card class="example-card">
+            <mat-card-header>
+                <mat-card-title>
+                    <h3>
+                        <a [title]="product.name + ' details'" [routerLink]="['/shop/products', product.id]">
+                            {{ product.name }}
+                        </a>
+                    </h3>
+                </mat-card-title>
+                <mat-card-subtitle>Subtitle</mat-card-subtitle>
+            </mat-card-header>
+            <img mat-card-image src="https://i1.rozetka.ua/goods/1881600/copy_metabo_0903063122_58c79bb98dd70_images_1881600692.jpg" class="img">
+            <mat-card-content>
+                <p *ngIf="product.description">
+                    Description: {{ product.description }}
+                </p>
+                <p *ngIf="product.price">
+                        Price: {{ product.price }}
+                    </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <button (click)="share()" type="button" class="button fancy-button">
+                        <i class="material-icons">share</i> Share
+                </button>
+                <button (click)="addToCart(product)" class="button fancy-button"><i class="material-icons">add_shopping_cart</i>Buy</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+
+</div> -->
+
+
+<div class="wrapper">
+    <aside class="list-group">
+        <a class="list-group-item active" [routerLink]="['/shop/category']">
+            Categories
+        </a>
+
+        <a 
+            class="list-group-item" 
+            *ngFor="let category of categories;let i = index" 
+        >
+            <div>
+                <span [routerLink]="['/shop/category', category.id]">{{ category.name }}</span>
+                <mat-icon 
+                    *ngIf="category.subCategories.length > 0"
+                    data-toggle="collapse" [attr.data-target]="'#subCategories' + i"
+                >
+                    add
+                </mat-icon>
+            </div>
+
+            <ul class="collapse" id="subCategories{{i}}" *ngIf="category.subCategories.length > 0">
+                <li *ngFor="let subCategory of category.subCategories">
+                    <a [routerLink]="['/shop/sub-category', subCategory.id]">
+                        {{ subCategory.name }}
+                    </a>
+                </li>
+            </ul>
+        </a>
+    </aside>
+
+    <main>
+        <app-products [products]="products" *ngIf="products"></app-products>
+
+        <app-pagination 
+            *ngIf="products"
+            [pages]="pages"     
+            [page]="page"
+        >
+        </app-pagination>
+    </main>
+</div>

@@ -1,0 +1,96 @@
+<mat-card class="register-card" *ngIf="!emailVerification">
+    <mat-card-content class="register-card__content">
+        <h2 class="register-card__title">Sign up</h2>
+
+        <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+            <div class="top">
+                <mat-form-field>
+                    <input matInput placeholder="First name" formControlName="firstName">
+                    <mat-icon matSuffix>person</mat-icon>
+
+                    <mat-error *ngIf="firstName.errors?.required && (firstName.touched || submitted)">
+                        First name is required.
+                    </mat-error>
+                    <mat-error *ngIf="firstName.errors?.maxlength && (firstName.touched || submitted)">
+                        First name must be no more than {{ firstName.errors.maxlength.requiredLength }}  characters.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput placeholder="Last name" formControlName="lastName">
+                    <mat-icon matSuffix>person</mat-icon>
+
+                    <mat-error *ngIf="lastName.errors?.required && (lastName.touched || submitted)">
+                        Last name is required.
+                    </mat-error>
+                    <mat-error *ngIf="lastName.errors?.maxlength && (lastName.touched || submitted)">
+                        Last name must be no more than {{ lastName.errors.maxlength.requiredLength }}  characters.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="Email" formControlName="email">
+                    <mat-icon matSuffix>mail</mat-icon>
+
+                    <mat-error *ngIf="email.errors?.required && (email.touched || submitted)">
+                        Email is required.
+                    </mat-error>
+                    <mat-error *ngIf="email.errors?.email && (email.touched || submitted)">
+                        Email is invalid.
+                    </mat-error>
+                    <mat-error *ngIf="email.errors?.emailTaken && (email.touched || submitted)">
+                        Email is taken.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput formControlName="dateBirthday" [matDatepicker]="picker" placeholder="Choose a date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+
+                    <mat-error *ngIf="dateBirthday.errors?.matDatepickerParse && (dateBirthday.touched || submitted)">
+                        Date is invalid.
+                    </mat-error>
+                    <mat-error *ngIf="dateBirthday.errors?.required && (dateBirthday.touched || submitted) && 
+                    !dateBirthday.errors?.matDatepickerParse">
+                        Date is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <mat-form-field>
+                    <input matInput placeholder="Password" formControlName="password" type="password">
+                    <mat-icon matSuffix>lock</mat-icon>
+
+                    <mat-error *ngIf="password.errors?.required && (password.touched || submitted)">
+                        Password is required.
+                    </mat-error>
+                    <mat-error *ngIf="password.errors?.minlength && (password.touched || submitted)">
+                        Password must be at least {{ password.errors.minlength.requiredLength }} characters long.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input matInput placeholder="Confirm password" formControlName="confirmPassword" type="password">
+                    <mat-icon matSuffix>vpn_key</mat-icon>
+
+                    <mat-error *ngIf="confirmPassword.errors?.required && (confirmPassword.touched || submitted)">
+                        Confrim password is required.
+                    </mat-error>
+                    <mat-error *ngIf="confirmPassword.errors?.matchField && (confirmPassword.touched || submitted)">
+                        Passwords don't match.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <button mat-button type="submit">Register</button>
+        </form>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="verification-card" *ngIf="emailVerification">
+    Verify your email address
+</mat-card>

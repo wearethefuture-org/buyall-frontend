@@ -1,0 +1,77 @@
+.example-card {
+    max-width: 300px;
+    box-shadow: 0 4px 8 px 0 rgba(0, 0, 0, 0.2);
+    padding: 36px;
+    text-align: center;
+    background-color: #f1f1f1;
+  }
+
+.img{
+  max-width: 250px;
+  max-height: 250px;
+}
+.column {
+    float: left;
+    width: 25%;
+    padding: 30px 10px 10px;
+  }
+  /* Remove extra left and right margins, due to padding */
+.row {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 800px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 300px;
+  }
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 200px auto;
+}
+
+
+.list-group-item.active {
+  background-image: none;
+  border-color: #7de8a1;
+  background-color: #7de8a1;
+  font-family: 'Roboto', Arial, sans-serif;
+  text-shadow: none;
+}
+
+.list-group-item > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-group-item > ul {
+  list-style: none;
+  padding: 0;
+  padding-left: 5px;
+}
+
+.list-group-item > ul li {
+  padding: 5px 0;
+}
+
+.list-group-item > ul li a {
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #616161;
+}
+
+main {
+  padding: 0 20px 20px 20px;
+}
+
+main app-pagination {
+  text-align: center;
+}

@@ -1,0 +1,40 @@
+<div class="products">
+    <div class="thumbnail" *ngFor="let product of products">
+        <div class="inner">
+            <div class="img-wrapper">
+                <img src="https://i1.rozetka.ua/goods/1286260/glenmorangie_5010494560282_images_1286260212.jpg" alt="..." height="160px">
+            </div>
+
+            <div class="caption">
+                <h3>{{ product.name }}</h3>
+
+                <div class="price" *ngIf="!product.isPromotion">
+                    <h3>{{ product.price }}</h3>
+                    <mat-icon>add_shopping_cart</mat-icon>
+                </div>
+
+                <div class="without-discount" *ngIf="product.isPromotion">
+                    {{ product.price }}
+                </div>
+                <div class="discount-price" *ngIf="product.isPromotion">
+                    <h3>{{ product.price - (product.price * product.discount / 100) }}</h3>
+                    <mat-icon>add_shopping_cart</mat-icon>
+                </div>
+
+                <div class="available">
+                    <span *ngIf="product.available">Есть в наличии</span>
+                    <span *ngIf="!product.available">Нету в наличии</span>
+                </div>
+
+                <ul *ngIf="product.characteristicsValues.length > 0">
+                    <li *ngFor="let value of product.characteristicsValues">
+                        <span>{{ value.name }}:</span>
+                        <span *ngIf="value.type == 'boolean' && value.booleanValue">Есть</span>
+                        <span *ngIf="value.type == 'boolean' && !value.booleanValue">Нету</span>
+                        <span *ngIf="value.type != 'boolean'">{{ value[value.type + 'Value'] }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div> 
+</div>
