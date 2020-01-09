@@ -34,3 +34,18 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+@media screen and (max-width: 610px) {
+    .register-card {
+        width: auto;
+    }
+
+    .register-form button[type=submit] {
+        padding: 0;
+    }
+
+    .register-form div {
+        flex-direction: column;
+        justify-content: center;
+    }
+}
