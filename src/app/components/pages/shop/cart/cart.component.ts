@@ -13,11 +13,11 @@ export class CartComponent implements OnInit {
   constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.items = this.cartService.getItems();
+    // this.items = this.cartService.getItems();
   }
 
-  clearCart(): IProduct[] {
-    this.items = this.cartService.clearCart();
-    return this.items;
-  }
+  // clearCart(): IProduct[] {
+  //   this.items = this.cartService.clearCart();
+  //   return this.items;
+  // }
 }

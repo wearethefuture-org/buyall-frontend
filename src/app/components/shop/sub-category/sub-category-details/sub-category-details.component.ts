@@ -1,17 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { IProduct } from 'src/app/core/interfaces/product';
+import { ActivatedRoute, Router, Params } from '@angular/router';
+import makePagination from 'src/app/core/helpers/makePagination';
 import { SubCategoryService } from 'src/app/core/services/sub-category/sub-category.service';
 import { ISubCategory } from 'src/app/core/interfaces/sub-category';
-import { IProduct } from 'src/app/core/interfaces/product';
-import makePagination from 'src/app/core/helpers/makePagination';
 
 @Component({
-  selector: 'app-sub-category',
-  templateUrl: './sub-category.component.html',
-  styleUrls: ['./sub-category.component.scss']
+  selector: 'app-sub-category-details',
+  templateUrl: './sub-category-details.component.html',
+  styleUrls: ['./sub-category-details.component.scss']
 })
-export class SubCategoryComponent implements OnInit, OnDestroy {
+export class SubCategoryDetailsComponent implements OnInit, OnDestroy {
   subQueryParams: Subscription;
   subRouteParams: Subscription;
   subProducts: Subscription;
@@ -33,7 +33,6 @@ export class SubCategoryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // need refactoring seperate this and make sync
     this.subRouteParams = this.route.params.subscribe((params: Params) => {
       const id = +params.id;
 

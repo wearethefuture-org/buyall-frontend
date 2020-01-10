@@ -1,8 +1,6 @@
 import { Component, OnDestroy, ViewChild, OnInit, ElementRef } from '@angular/core';
 import { IProduct } from 'src/app/core/interfaces/product';
 import { Subscription } from 'rxjs';
-import { SubCategoryService } from 'src/app/core/services/subCategory/sub-category.service';
-import { ISubCategory } from 'src/app/core/interfaces/subCategory';
 import { switchMap } from 'rxjs/operators';
 import { ProductsService } from 'src/app/core/services/products/products.service';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
@@ -11,6 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 import { FieldToObjectPipe } from 'src/app/core/pipes/fieldToObject/field-to-object.pipe';
 import { ISetting } from 'src/app/core/interfaces/setting';
 import { IValue } from 'src/app/core/interfaces/value';
+import { ISubCategory } from 'src/app/core/interfaces/sub-category';
+import { SubCategoryService } from 'src/app/core/services/sub-category/sub-category.service';
 
 @Component({
   selector: 'app-manage-products',

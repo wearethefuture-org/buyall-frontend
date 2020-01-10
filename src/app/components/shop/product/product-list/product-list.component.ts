@@ -76,9 +76,4 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.subCategories.unsubscribe();
     this.subParams.unsubscribe();
   }
-
-  addToCart(product: IProduct): void {
-    window.alert('Your product has been added to the cart!');
-    this.cartService.addToCart(product);
-  }
 }

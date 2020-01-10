@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SubCategoryComponent } from 'src/app/components/pages/shop/sub-category/sub-category.component';
+import { SubCategoryDetailsComponent } from 'src/app/components/shop/sub-category/sub-category-details/sub-category-details.component';
 
 
 const routes: Routes = [
   {
     path: ':id',
-    component: SubCategoryComponent
+    component: SubCategoryDetailsComponent
   }
 ];
 

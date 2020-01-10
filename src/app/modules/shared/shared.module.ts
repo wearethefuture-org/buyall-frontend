@@ -1,27 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductsComponent } from 'src/app/components/pages/shop/products/products.component';
 import { MatIconModule } from '@angular/material';
 import { PaginationComponent } from 'src/app/components/common/pagination/pagination.component';
 import { RouterModule } from '@angular/router';
+import { ProductCardComponent } from 'src/app/components/shop/product/product-card/product-card.component';
 
+// TODO: angular material module
+const SharedModules = [
+  CommonModule,
+  RouterModule,
+  MatIconModule
+]; 
 
+const SharedComponents = [
+  PaginationComponent,
+  ProductCardComponent
+]; 
 
 @NgModule({
-  declarations: [
-    ProductsComponent,
-    PaginationComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatIconModule
-  ],
+  declarations: [...SharedComponents],
+  imports: [...SharedModules],
   exports: [
-    ProductsComponent,
-    PaginationComponent,
-    RouterModule,
-    MatIconModule
+    ...SharedComponents,
+    ...SharedModules
   ]
 })
 export class SharedModule { }

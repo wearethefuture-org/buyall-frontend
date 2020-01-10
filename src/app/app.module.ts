@@ -20,6 +20,7 @@ import { AboutComponent } from './components/pages/site/about/about.component';
 import { TopbarLayoutComponent } from './components/layouts/topbar-layout/topbar-layout.component';
 import { SidebarLayoutComponent } from './components/layouts/sidebar-layout/sidebar-layout.component';
 import { SidebarComponent } from './components/common/sidebar/sidebar.component';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { SidebarComponent } from './components/common/sidebar/sidebar.component'
     MatSelectModule,
     MatButtonModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    SharedModule
   ],
   declarations: [
     AppComponent,
@@ -44,7 +46,7 @@ import { SidebarComponent } from './components/common/sidebar/sidebar.component'
     AboutComponent,
     TopbarLayoutComponent,
     SidebarLayoutComponent,
-    SidebarComponent
+    SidebarComponent,
   ],
   bootstrap: [ AppComponent ]
 })

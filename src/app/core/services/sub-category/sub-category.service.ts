@@ -16,8 +16,20 @@ export class SubCategoryService extends BaseService {
     http: HttpClient
   ) { super(router, http); }
 
-  getSubCategoryById(id: number): Observable<ISubCategory> {
-    return this.get(`/subCategory/${id}`);
+  getSubCategoriesList(): Observable<ISubCategory[]> {
+    return this.get('/subCategories');
+  }
+
+  createSubCategory(subCategory: ISubCategory): Observable<ISubCategory> {
+    return this.post(subCategory, '/subCategory');
+  }
+
+  deleteSubCategory(id: number): Observable<boolean> {
+    return this.delete(`/subCategory/${id}`);
+  }
+
+  editSubCategory(subCategory: ISubCategory, id: number): Observable<boolean> {
+    return this.put(subCategory, `/subCategory/${id}`);
   }
 
   getSubCategoryProducts(id: number, offset?: number, limit?: number): Observable<IProduct[]> {
@@ -32,5 +44,9 @@ export class SubCategoryService extends BaseService {
     }
 
     return this.get(url);
+  }
+
+  getSubCategoryById(id: number): Observable<ISubCategory> {
+    return this.get(`/subCategory/${id}`);
   }
 }

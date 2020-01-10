@@ -3,27 +3,34 @@ import { BaseService } from '../base/base.service';
 import { IProduct } from '../../interfaces/product';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { IOrder } from '../../interfaces/order';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CartService extends BaseService {
-  items: IProduct[] = [];
+export class CartService {
+  orders: IOrder[];
 
-  constructor(
-    public router: Router,
-    http: HttpClient
-  ) { super(router, http); }
-  addToCart(product: IProduct): void {
-    this.items.push(product);
+  constructor() {
+    this.orders = JSON.parse(localStorage.getItem('orders')) || [];    
   }
 
-  getItems(): IProduct[] {
-    return this.items;
+  add(product: IProduct): void {
+    const order = {
+      product,
+      amount: 0
+    };
+
+    this.orders.push(order);
+    localStorage.setItem('orders', JSON.stringify(this.orders));
   }
 
-  clearCart(): IProduct[] {
-    this.items = [];
-    return this.items;
+  getItems() {
+    // return this.items;
+  }
+
+  clearCart() {
+    // this.items = [];
+    // return this.items;
   }
 }
