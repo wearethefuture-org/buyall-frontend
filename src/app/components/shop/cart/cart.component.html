@@ -1,0 +1,49 @@
+<div class="header">
+  <h3>Cart</h3>
+
+  <mat-icon (click)="cartService.clear()">remove_shopping_cart</mat-icon>
+</div>
+
+<mat-card  class="order-card" *ngFor="let order of orders">
+  <div class="left">
+    <mat-icon (click)="cartService.remove(order.product)">remove_circle_outline</mat-icon>
+    
+    <div class="img-wrapper">
+      <img src="{{ order.product.img }}">
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="header">
+      <h2>{{ order.product.name }}</h2>    
+
+      <h4>Total:</h4>
+    </div>
+
+    <div class="description">
+      <div class="price">
+        <div class="product-price">
+          <div>
+            <span>{{ order.product.price }}</span>
+            $
+          </div>
+        </div>
+
+        <div class="order-amount">
+          <mat-icon (click)="cartService.decreaseAmount(order)" [ngClass]="{active: order.amount > 0}">remove</mat-icon>
+
+          <input [(ngModel)]="order.amount">
+
+          <mat-icon (click)="cartService.increaseAmount(order)">add</mat-icon>
+        </div>
+      </div>
+
+      <div class="total-price">
+        <div class="total">
+          <span>{{ order.amount * order.product.price }}</span>
+          $
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>

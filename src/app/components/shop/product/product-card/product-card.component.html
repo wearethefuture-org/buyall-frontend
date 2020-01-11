@@ -9,15 +9,18 @@
 
             <div class="price" *ngIf="!product.isPromotion">
                 <h3>{{ product.price }}</h3>
-                <mat-icon>add_shopping_cart</mat-icon>
+                <mat-icon (click)="cartService.add(product)" *ngIf="!cartService.isAdded(product)">add_shopping_cart</mat-icon>
+                <mat-icon (click)="cartService.remove(product)" *ngIf="cartService.isAdded(product)">remove_shopping_cart</mat-icon>
             </div>
 
             <div class="without-discount" *ngIf="product.isPromotion">
                 {{ product.price }}
             </div>
+
             <div class="discount-price" *ngIf="product.isPromotion">
                 <h3>{{ product.price - (product.price * product.discount / 100) }}</h3>
-                <mat-icon>add_shopping_cart</mat-icon>
+                <mat-icon (click)="cartService.add(product)" *ngIf="!cartService.isAdded(product)">add_shopping_cart</mat-icon>
+                <mat-icon (click)="cartService.remove(product)" *ngIf="cartService.isAdded(product)">remove_shopping_cart</mat-icon>
             </div>
 
             <div class="available">

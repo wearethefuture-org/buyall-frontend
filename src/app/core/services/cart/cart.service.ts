@@ -1,18 +1,22 @@
 import { Injectable } from '@angular/core';
-import { BaseService } from '../base/base.service';
 import { IProduct } from '../../interfaces/product';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { IOrder } from '../../interfaces/order';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  orders: IOrder[];
+  private ordersSubject: BehaviorSubject<IOrder[]>;
+  public orders$: Observable<IOrder[]>;
 
   constructor() {
-    this.orders = JSON.parse(localStorage.getItem('orders')) || [];    
+    this.ordersSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('orders')) || []);
+    this.orders$ = this.ordersSubject.asObservable();
+  }
+
+  get orders(): IOrder[] {
+    return this.ordersSubject.value;
   }
 
   add(product: IProduct): void {
@@ -25,12 +29,41 @@ export class CartService {
     localStorage.setItem('orders', JSON.stringify(this.orders));
   }
 
-  getItems() {
-    // return this.items;
+  remove(product: IProduct): void {
+    const orders = this.orders.filter(order => {
+      return JSON.stringify(order.product) !== JSON.stringify(product);
+    });
+
+    this.ordersSubject.next(orders);
+    localStorage.setItem('orders', JSON.stringify(orders));
   }
 
-  clearCart() {
-    // this.items = [];
-    // return this.items;
+  isAdded(product: IProduct): boolean {
+    for (let order of this.orders) {
+      if (JSON.stringify(order.product) === JSON.stringify(product)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  increaseAmount(order: IOrder): void {
+    order.amount += 1;
+    localStorage.setItem('orders', JSON.stringify(this.orders));
+  }
+
+  decreaseAmount(order: IOrder): void {
+    if (order.amount === 0) {
+      return;
+    }
+
+    order.amount -= 1;
+    localStorage.setItem('orders', JSON.stringify(this.orders));
+  }
+
+  clear(): void {
+    this.ordersSubject.next([]);
+    localStorage.removeItem('orders');
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/core/services/cart/cart.service';
-import { IProduct } from 'src/app/core/interfaces/product';
+import { IOrder } from 'src/app/core/interfaces/order';
 
 
 @Component({
@@ -9,15 +9,14 @@ import { IProduct } from 'src/app/core/interfaces/product';
   styleUrls: ['./cart.component.scss']
 })
 export class CartComponent implements OnInit {
-  items: IProduct[];
+  orders: IOrder[];
+
   constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
-    // this.items = this.cartService.getItems();
+    this.cartService.orders$
+      .subscribe((orders: IOrder[]) => {
+        this.orders = orders;
+      });
   }
-
-  // clearCart(): IProduct[] {
-  //   this.items = this.cartService.clearCart();
-  //   return this.items;
-  // }
 }
