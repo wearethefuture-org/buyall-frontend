@@ -19,6 +19,11 @@ export class CartService {
     return this.ordersSubject.value;
   }
 
+  set orders(orders: IOrder[]) {
+    this.ordersSubject.next(orders);
+    localStorage.setItem('orders', JSON.stringify(this.orders));
+  }
+
   add(product: IProduct): void {
     const order = {
       product,
