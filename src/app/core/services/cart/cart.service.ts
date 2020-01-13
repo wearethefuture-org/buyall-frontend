@@ -27,6 +27,7 @@ export class CartService {
   add(product: IProduct): void {
     const order = {
       product,
+      productId: product.id,
       amount: 0
     };
 

@@ -35,10 +35,16 @@ export class AuthService extends BaseService {
   }
 
   login(email: string, password: string): Observable<any> {
-    return this.post({
-      email,
-      password
-    }, '/auth/login');
+    const orders = this.cartService.orders;
+
+    return this.post({email, password, orders}, '/auth/login')
+      .pipe(map((res: AuthResponse) => {
+        console.log(res);
+        
+        this.cartService.orders = res.user.orders;
+        
+        return res;
+      }));
   }
 
   autoLogin(): void {
