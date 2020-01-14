@@ -1,0 +1,30 @@
+<div class="wrapper">
+    <mat-card class="profile-card" [formGroup]="form">
+        <div class="left">
+            <div class="header">Profile</div>
+
+            <mat-form-field appearance="outline">
+                <mat-label>First name</mat-label>
+                <input formControlName="firstName" matInput>
+            </mat-form-field> 
+
+            <mat-form-field appearance="outline">
+                <mat-label>Last name</mat-label>
+                <input formControlName="lastName" matInput>
+            </mat-form-field> 
+
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input formControlName="email" matInput>
+            </mat-form-field> 
+
+            <button mat-raised-button color="primary" (click)="onUpdate()">Update</button>
+        </div>
+
+        <div class="right">
+            <img src="{{ user.img.url }}" #img>
+            <input type="file" style="display: none;" (change)="onUpload($event.target)" #fileInput>
+            <button mat-raised-button color="primary" (click)="fileInput.click()">Upload</button>
+        </div>
+    </mat-card>
+</div>

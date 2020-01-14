@@ -1,0 +1,36 @@
+.wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.profile-card {
+    display: grid;
+    grid-template-columns: 70% 30%;
+
+    .header {
+        font-size: 24px;
+        font-weight: 400;
+        border-bottom: 1px solid silver;
+        margin-bottom: 15px;
+    }
+
+
+    .left {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .right {
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+
+        img {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    }
+}
