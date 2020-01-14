@@ -4,6 +4,7 @@ import ConfirmFieldMatchValidator from 'src/app/core/validators/confirm-field-ma
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { CartService } from 'src/app/core/services/cart/cart.service';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cartService: CartService
   ) { }
 
   ngOnInit(): void {
@@ -45,8 +47,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.submitted = true;
 
     if (this.registerForm.valid) {
-      this.subRegister = this.authService.register(this.registerForm.value)
+      const { value }= this.registerForm;
+      value.orders = this.cartService.orders;
+
+      this.subRegister = this.authService.register(value)
         .subscribe((data: any) => {
+          this.cartService.orders = data.user.orders;
           this.authService.setUser(data.user);
           this.authService.setToken(data.token);
           this.router.navigate(['/']);

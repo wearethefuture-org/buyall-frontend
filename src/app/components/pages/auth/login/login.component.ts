@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { CartService } from 'src/app/core/services/cart/cart.service';
+import { AuthResponse } from 'src/app/core/interfaces/responses';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +19,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cartService: CartService
   ) { }
 
   ngOnInit(): void {
@@ -39,9 +42,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.loginForm.valid) {
       const email = this.loginForm.get('email').value;
       const password = this.loginForm.get('password').value;
+      const orders = this.cartService.orders;
 
-      this.loginSub = this.authService.login(email, password)
-        .subscribe((data: any) => {
+      this.loginSub = this.authService.login(email, password, orders)
+        .subscribe((data: AuthResponse) => {
+          this.cartService.orders = data.user.orders;
           this.authService.setUser(data.user);
           this.authService.setToken(data.token);
           this.router.navigate(['/']);

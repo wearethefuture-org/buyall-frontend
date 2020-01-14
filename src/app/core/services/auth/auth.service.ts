@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { CartService } from '../cart/cart.service';
 import { map } from 'rxjs/operators';
 import { AuthResponse } from '../../interfaces/responses';
+import { IOrder } from '../../interfaces/order';
 
 
 @Injectable({
@@ -19,32 +20,15 @@ export class AuthService extends BaseService {
 
   constructor(
     public router: Router,
-    http: HttpClient,
-    private cartService: CartService
+    http: HttpClient
   ) { super(router, http); }
 
   register(user: IUser): Observable<AuthResponse> {
-    user.orders = this.cartService.orders;
-
-    return this.post(user, '/auth/register')
-      .pipe(map((res: AuthResponse) => {
-        this.cartService.orders = res.user.orders;
-        
-        return res;
-      }));
+    return this.post(user, '/auth/register');
   }
 
-  login(email: string, password: string): Observable<any> {
-    const orders = this.cartService.orders;
-
-    return this.post({email, password, orders}, '/auth/login')
-      .pipe(map((res: AuthResponse) => {
-        console.log(res);
-        
-        this.cartService.orders = res.user.orders;
-        
-        return res;
-      }));
+  login(email: string, password: string, orders: IOrder[]): Observable<any> {
+    return this.post({email, password, orders}, '/auth/login');
   }
 
   autoLogin(): void {
