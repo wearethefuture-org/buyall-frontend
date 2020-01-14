@@ -99,6 +99,10 @@ export class CartService extends BaseService {
   }
 
   increaseAmount(order: IOrder): void {
+    if (order.amount + 1 > order.product.amount) {
+      return;
+    }
+
     order.amount += 1;
 
     if (this.authService.isAuth()) {

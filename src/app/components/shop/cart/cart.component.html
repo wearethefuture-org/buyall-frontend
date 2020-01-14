@@ -34,7 +34,7 @@
 
           <input [(ngModel)]="order.amount">
 
-          <mat-icon (click)="cartService.increaseAmount(order)">add</mat-icon>
+          <mat-icon (click)="cartService.increaseAmount(order)" [ngClass]="{active: order.amount < order.product.amount}">add</mat-icon>
         </div>
       </div>
 
