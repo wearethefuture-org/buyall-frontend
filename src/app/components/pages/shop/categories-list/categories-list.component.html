@@ -1,6 +1,6 @@
 <div class="wrapper">
     <div class="thumbnail" *ngFor="let category of categories" [routerLink]="['/shop/category', category.id]">
-        <img src="https://video.rozetka.com.ua/img_superportal/sport-i-uvlechenija/1.4.png" alt="...">
+        <img src={{category.img}} alt="...">
         <div class="caption">
             <h3>{{ category.name }}</h3>
         </div>

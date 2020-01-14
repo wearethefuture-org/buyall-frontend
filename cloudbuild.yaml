@@ -1,0 +1,28 @@
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', 'https://github.com/${_GIT_USER}/${_REPO_NAME}']
+  
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build','-t', 'gcr.io/${_PROJECT}/${_CONTAINERNAME}:${_VERSION}','.']
+  
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/${_PROJECT}/${_CONTAINERNAME}:${_VERSION}']    
+
+  - name: 'gcr.io/cloud-builders/gke-deploy'
+    args:
+    - 'run'
+    - '--image=gcr.io/${_PROJECT}/${_CONTAINERNAME}:${_VERSION}'
+    - '--location=${_ZONE}'
+    - '--cluster=${_GKE_CLUSTER}'
+
+substitutions:
+  _PROJECT: tough-bearing-259612
+  _ZONE: europe-west1-b
+  _GKE_CLUSTER: standard-cluster-1
+  _PORT: '4200'
+
+  _CONTAINERNAME: fdeploy
+  _REPO_NAME: Fdeploy
+  _GIT_USER: Maxe1
+
+  _VERSION: v1.3
