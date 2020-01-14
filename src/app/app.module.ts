@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 
 import { HttpClientModule } from '@angular/common/http';
@@ -20,6 +20,9 @@ import { AboutComponent } from './components/pages/site/about/about.component';
 import { TopbarLayoutComponent } from './components/layouts/topbar-layout/topbar-layout.component';
 import { SidebarLayoutComponent } from './components/layouts/sidebar-layout/sidebar-layout.component';
 import { SidebarComponent } from './components/common/sidebar/sidebar.component';
+import { ProfileComponent } from './components/pages/site/profile/profile.component';
+import { MatCardModule, MatInputModule } from '@angular/material';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [
@@ -29,11 +32,15 @@ import { SidebarComponent } from './components/common/sidebar/sidebar.component'
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    CommonModule,
+    FormsModule,
     AppRoutingModule,
     MatSelectModule,
     MatButtonModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    MatInputModule,
+    MatCardModule
   ],
   declarations: [
     AppComponent,
@@ -44,7 +51,8 @@ import { SidebarComponent } from './components/common/sidebar/sidebar.component'
     AboutComponent,
     TopbarLayoutComponent,
     SidebarLayoutComponent,
-    SidebarComponent
+    SidebarComponent,
+    ProfileComponent
   ],
   bootstrap: [ AppComponent ]
 })

@@ -6,6 +6,7 @@ import {ContactUsComponent} from './components/pages/site/contact-us/contact-us.
 import {AboutComponent} from './components/pages/site/about/about.component';
 import { TopbarLayoutComponent } from './components/layouts/topbar-layout/topbar-layout.component';
 import { SidebarLayoutComponent } from './components/layouts/sidebar-layout/sidebar-layout.component';
+import { ProfileComponent } from './components/pages/site/profile/profile.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,10 @@ const routes: Routes = [
       {
         path: 'cart',
         component: CartComponent
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent 
       }
     ]
   },

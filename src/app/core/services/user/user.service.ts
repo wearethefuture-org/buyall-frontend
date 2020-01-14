@@ -23,7 +23,7 @@ export class UserService extends BaseService {
     return this.post(user, '/user/');
   }
 
-  editUser(user: IUser, id: number): Observable<boolean> {
+  editUser(user: IUser | FormData, id: number): Observable<IUser> {
     return this.put(user, `/user/${id}`);
   }
 

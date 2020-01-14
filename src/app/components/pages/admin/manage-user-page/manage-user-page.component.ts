@@ -105,7 +105,7 @@ export class ManageUserPageComponent implements OnInit, OnDestroy {
     }
 
     this.subEditUser = this.userService.editUser(this.editUserForm.value, this.editUserForm.value.id)
-      .subscribe((res: boolean) => {
+      .subscribe((res: IUser) => {
         if (res) {
           this.users = this.users.map((user: IUser) => {
             if (user.id === this.editUserForm.value.id) {
