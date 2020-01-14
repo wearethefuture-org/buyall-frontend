@@ -1,17 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SubCategoryRoutingModule } from './sub-category-routing.module';
-import { SubCategoryComponent } from 'src/app/components/pages/shop/sub-category/sub-category.component';
 import { SharedModule } from '../shared/shared.module';
+import { SubCategoryDetailsComponent } from 'src/app/components/shop/sub-category/sub-category-details/sub-category-details.component';
 
 
 @NgModule({
   declarations: [
-    SubCategoryComponent
+    SubCategoryDetailsComponent
   ],
   imports: [
-    CommonModule,
     SubCategoryRoutingModule,
     SharedModule
   ]

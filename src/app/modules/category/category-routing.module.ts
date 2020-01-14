@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CategoryComponent } from 'src/app/components/pages/shop/category/category.component';
-import { CategoriesListComponent } from 'src/app/components/pages/shop/categories-list/categories-list.component';
+import { CategoriesListComponent } from 'src/app/components/shop/category/categories-list/categories-list.component';
+import { CategoryDetailsComponent } from 'src/app/components/shop/category/category-details/category-details.component';
 
 
 const routes: Routes = [
@@ -11,7 +11,7 @@ const routes: Routes = [
     },
     {
         path: ':id',
-        component: CategoryComponent
+        component: CategoryDetailsComponent
     }
 ];
 

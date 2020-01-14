@@ -70,8 +70,14 @@
 
 main {
   padding: 0 20px 20px 20px;
-}
 
-main app-pagination {
-  text-align: center;
+  .products {
+    display: grid;
+    grid-gap: 15px;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  app-pagination {
+    text-align: center;
+  }
 }

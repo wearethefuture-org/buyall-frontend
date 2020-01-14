@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { CategoriesService } from 'src/app/core/services/categories/categories.service';
 import { ICategory } from 'src/app/core/interfaces/category';
+import { CategoriesService } from 'src/app/core/services/categories/categories.service';
+import { ActivatedRoute, Router, Params } from '@angular/router';
 
 @Component({
-  selector: 'app-category',
-  templateUrl: './category.component.html',
-  styleUrls: ['./category.component.scss']
+  selector: 'app-category-details',
+  templateUrl: './category-details.component.html',
+  styleUrls: ['./category-details.component.scss']
 })
-export class CategoryComponent implements OnInit, OnDestroy {
+export class CategoryDetailsComponent implements OnInit, OnDestroy {
   subParams: Subscription;
   subCategories: Subscription;
   category: ICategory;

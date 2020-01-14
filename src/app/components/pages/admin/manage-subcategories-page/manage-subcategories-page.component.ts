@@ -1,6 +1,4 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { ISubCategory } from 'src/app/core/interfaces/subCategory';
-import { SubCategoryService } from 'src/app/core/services/subCategory/sub-category.service';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { CategoriesService } from 'src/app/core/services/categories/categories.service';
@@ -9,6 +7,8 @@ import { switchMap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { ISetting } from 'src/app/core/interfaces/setting';
+import { ISubCategory } from 'src/app/core/interfaces/sub-category';
+import { SubCategoryService } from 'src/app/core/services/sub-category/sub-category.service';
 
 @Component({
   selector: 'app-manage-subcategories-page',

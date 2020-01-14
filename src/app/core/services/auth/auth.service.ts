@@ -5,6 +5,11 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { CartService } from '../cart/cart.service';
+import { map } from 'rxjs/operators';
+import { AuthResponse } from '../../interfaces/responses';
+import { IOrder } from '../../interfaces/order';
+
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +23,12 @@ export class AuthService extends BaseService {
     http: HttpClient
   ) { super(router, http); }
 
-  register(user: IUser): Observable<IUser> {
-      return this.post(user, '/auth/register');
+  register(user: IUser): Observable<AuthResponse> {
+    return this.post(user, '/auth/register');
   }
 
-  login(email: string, password: string): Observable<any> {
-    return this.post({
-      email,
-      password
-    }, '/auth/login');
+  login(email: string, password: string, orders: IOrder[]): Observable<any> {
+    return this.post({email, password, orders}, '/auth/login');
   }
 
   autoLogin(): void {
@@ -73,10 +75,12 @@ export class AuthService extends BaseService {
   getUser(): IUser {
     const user = JSON.parse(localStorage.getItem('user'));
 
-    if (user) {
-      this.user = user;
+    if (!user) {
+      return null;
     }
-    return user;
+
+    this.user = user;
+    return user
   }
 
   logOut(): void {

@@ -1,14 +1,17 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { CategoryRoutingModule } from './category-routing.module';
 
-import { CategoryComponent } from 'src/app/components/pages/shop/category/category.component';
-import { CategoriesListComponent } from 'src/app/components/pages/shop/categories-list/categories-list.component';
+import { CategoriesListComponent } from 'src/app/components/shop/category/categories-list/categories-list.component';
+import { CategoryDetailsComponent } from 'src/app/components/shop/category/category-details/category-details.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  imports: [CommonModule, CategoryRoutingModule],
+  imports: [
+    CategoryRoutingModule,
+    SharedModule
+  ],
   declarations: [
-    CategoryComponent,
+    CategoryDetailsComponent,
     CategoriesListComponent
   ]
 })

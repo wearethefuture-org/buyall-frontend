@@ -38,8 +38,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.subParams.unsubscribe();
   }
 
-  addToCart(product: IProduct): void {
-    window.alert('Your product has been added to the cart!');
-    this.cartService.addToCart(product);
-  }
+  // addToCart(product: IProduct): void {
+  //   window.alert('Your product has been added to the cart!');
+  //   this.cartService.addToCart(product);
+  // }
 }

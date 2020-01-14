@@ -1,0 +1,14 @@
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px;
+}
+
+.thumbnail {
+    cursor: pointer;
+    padding: 10px;
+}
+
+.thumbnail .caption {
+    text-align: center;
+}

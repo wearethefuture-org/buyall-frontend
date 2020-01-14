@@ -1,3 +1,5 @@
+import { IOrder } from "./order";
+
 export interface IUser {
     id: number,
     firstName: string,
@@ -8,6 +10,7 @@ export interface IUser {
     disabled: boolean,
     dateBirthday: string
     password: string,
+    orders: IOrder[]
     createdAt: string,
     updatedAt: string
 }
