@@ -1,20 +1,19 @@
-FROM node:10
+# base image
+FROM node:12.2.0
 
-RUN apt-get -y update && apt-get -y install bash git curl python yarn nano
+# set working directory
+WORKDIR /app
 
-RUN npm i -g pm2
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-RUN ls -l
+# install and cache app dependencies
+COPY package.json /app/package.json
+RUN npm install
+RUN npm install -g @angular/cli@7.3.9
 
-WORKDIR /usr/src/app
-COPY package*.json ./
+# add app
+COPY . /app
 
-RUN yarn install
-
-RUN pwd
-
-
-# RUN npm run db:migrate:dev && pm2 kill && pm2 start --env dev
-COPY . .
-CMD [ "npm", "start" ]
-#RUN pm2 kill && pm2 start --env dev
+# start app
+CMD ng serve --host 0.0.0.0
