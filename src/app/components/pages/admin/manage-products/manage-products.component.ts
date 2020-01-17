@@ -19,6 +19,7 @@ import { IValue } from 'src/app/core/interfaces/value';
 })
 export class ManageProductsComponent implements OnDestroy, OnInit {
   @ViewChild('modalToggler', {static: false}) modalToggler: ElementRef;
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   pageSizeOptions: number[] = [5, 10, 15, 25];
@@ -31,6 +32,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   subCategorySettings: ISetting[];
   valueSetting: ISetting;
   currentSubCategory: any = 'All';
+  images = [];
   edit = false;
   subGetProducts: Subscription;
   subCreateProduct: Subscription;
@@ -263,6 +265,17 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
 
         this.toastr.success('Product deleated');
       });
+  }
+
+  onUpload(target: HTMLInputElement) {
+    this.images.push(target.files[0]);
+    this.fileInput.nativeElement.value = '';
+  }
+
+  deleteImage(file) {
+    this.images = this.images.filter(img => {
+      return img !== file;
+    });
   }
 
   ngOnDestroy(): void {

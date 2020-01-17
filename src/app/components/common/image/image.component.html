@@ -1,0 +1,5 @@
+<img #img>
+<input type="file" style="display: none;" (change)="onUpdate($event.target)" #fileInput>
+<div class="buttons">
+    <button mat-icon-button (click)="onDelete()"><mat-icon color="warn">delete_outline</mat-icon></button>
+</div>

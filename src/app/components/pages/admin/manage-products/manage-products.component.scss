@@ -58,12 +58,38 @@ mat-icon {
 
 .product-controls .checkboxes {
     padding-left: 15px;
-    display: grid;
-    grid-template-rows: 1fr 1fr;
+    // display: grid;
+    display: flex;
+
+    // grid-template-rows: 1fr 1fr;
 }
 
 .value-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+}
+
+.image {
+    height: 250px;
+}
+
+.add-image {
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid silver;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color:#D3D3D3;
+    }
 }
