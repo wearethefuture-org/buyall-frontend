@@ -211,7 +211,17 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
       return;
     }
 
-    this.subCreateProduct = this.productsService.createProduct(this.productForm.value)
+    const { value } = this.productForm;
+
+    const body = new FormData();
+
+    body.append('product', JSON.stringify(value));
+
+    this.images.forEach(img => {
+      body.append('files', img);
+    });
+
+    this.subCreateProduct = this.productsService.createProduct(body)
       .subscribe((product: IProduct) => {
         this.products.push(product);
 
@@ -270,6 +280,12 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   onUpload(target: HTMLInputElement) {
     this.images.push(target.files[0]);
     this.fileInput.nativeElement.value = '';
+  }
+
+  updateImage({index, file}) {
+    this.images = this.images.map((img, i) => {
+      return index === i ? file : img;
+    });
   }
 
   deleteImage(file) {

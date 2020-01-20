@@ -245,7 +245,14 @@
 
                 <div class="gallery">
                     <div class="image" *ngFor="let img of images;let i = index">
-                        <app-image [file]="img" (delete)="deleteImage($event)"></app-image>
+                        <app-image 
+                            [index]="i"
+                            [file]="img"
+                            (update)="updateImage($event)"
+                            (delete)="deleteImage($event)"
+                            [updatable]="true"
+                            [removable]="true"
+                        ></app-image>
                     </div>
 
                     <a class="add-image" (click)="fileInput.click()">
