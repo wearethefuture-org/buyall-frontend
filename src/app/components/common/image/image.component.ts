@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, AfterViewInit, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 
 @Component({
   selector: 'app-image',
   templateUrl: './image.component.html',
   styleUrls: ['./image.component.scss']
 })
-export class ImageComponent implements OnInit {
+export class ImageComponent implements AfterViewInit {
   @Input() index;
   @Input() file;
   @Input() updatable;
@@ -17,7 +17,12 @@ export class ImageComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    if (this.file.url) {
+      this.img.nativeElement.src = this.url;
+      return;
+    }
+
     const reader = new FileReader();
 
     reader.readAsDataURL(this.file);
@@ -44,5 +49,9 @@ export class ImageComponent implements OnInit {
 
   onDelete() {
     this.delete.emit(this.file);
+  }
+
+  get url() {
+    return this.file.url;
   }
 }

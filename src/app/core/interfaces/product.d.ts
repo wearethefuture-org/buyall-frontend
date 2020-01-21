@@ -1,3 +1,5 @@
+import { IFile } from "./file";
+
 export interface IProduct {
     id: number,
     name: string,
@@ -10,6 +12,8 @@ export interface IProduct {
     available: boolean,
     isPromotion: boolean,
     characteristicsValues: any[],
+    previewImage: IFile;
+    images: IFile[];
     createdAt: string,
     updatedAt: string
 }

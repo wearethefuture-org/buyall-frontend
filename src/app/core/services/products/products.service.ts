@@ -36,7 +36,7 @@ export class ProductsService extends BaseService {
     return this.post(product, '/product/');
   }
 
-  updateProduct(product: IProduct, id: number): Observable<boolean> {
+  updateProduct(product: IProduct | FormData, id: number): Observable<IProduct> {
     return this.put(product, `/product/${id}`);
   }
 

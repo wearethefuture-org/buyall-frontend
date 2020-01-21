@@ -35,6 +35,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   currentSubCategory: any = 'All';
   images = [];
   previewImage;
+  mustBeDeletedImages = [];
   edit = false;
   subGetProducts: Subscription;
   subCreateProduct: Subscription;
@@ -205,8 +206,12 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
 
     this.productForm = this.fb.group(body);
 
-    this.modalToggler.nativeElement.click();
     this.edit = true;
+    this.previewImage = product.previewImage;
+    this.images = product.images;
+    this.mustBeDeletedImages = [];
+
+    this.modalToggler.nativeElement.click();
   }
 
   onCreateProduct(): void {
@@ -246,18 +251,36 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
       return;
     }
 
-    this.subEditProduct = this.productsService.updateProduct(this.productForm.value, this.productForm.value.id)
-      .subscribe((res: boolean) => {
-        if (!res) {
-          return;
-        }
+    const { value } = this.productForm;
 
-        this.products = this.products.map((product: IProduct) => {
-          if (product.id === this.productForm.value.id) {
-            return this.productForm.value;
+    const body = new FormData();
+
+    body.append('product', JSON.stringify(value));
+
+    if (this.previewImage && !this.previewImage.url) {
+      body.append('previewImage', this.previewImage);
+    }
+
+    this.images.forEach(img => {
+      if (img.url) {
+        return;
+      }
+
+      body.append('images', img);
+    });
+
+    this.mustBeDeletedImages.forEach(img => {
+      body.append('mustBeDeletedImages', JSON.stringify(img));
+    });
+
+    this.subEditProduct = this.productsService.updateProduct(body, value.id)
+      .subscribe((product: IProduct) => {
+        this.products = this.products.map((p: IProduct) => {
+          if (product.id === p.id) {
+            return product;
           }
 
-          return product;
+          return p;
         });
 
         this.onSelectSearchSubCategory();
@@ -290,10 +313,18 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   }
 
   updatePreviewImage({file}) {
+    if (this.previewImage.url) {
+      this.mustBeDeletedImages.push(this.previewImage);
+    }
+
     this.previewImage = file;
   }
 
   deletePreviewImage() {
+    if (this.previewImage.url) {
+      this.mustBeDeletedImages.push(this.previewImage);
+    }
+
     this.previewImage = null;
   }
 
@@ -304,12 +335,20 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
 
   updateImage({index, file}) {
     this.images = this.images.map((img, i) => {
+      if (img.url && index === i) {
+        this.mustBeDeletedImages.push(img);
+      }
+
       return index === i ? file : img;
     });
   }
 
   deleteImage(file) {
     this.images = this.images.filter(img => {
+      if (img.url && img === file) {
+        this.mustBeDeletedImages.push(img);
+      }
+
       return img !== file;
     });
   }
