@@ -98,25 +98,50 @@
             <div class="modal-body">
                 <form [formGroup]="productForm" *ngIf="productForm">
                     <div class="product-controls">
-                        <mat-form-field>
-                            <input matInput formControlName="name" placeholder="Name">
-                        </mat-form-field>
+                        <input type="file" style="display: none;" (change)="onUploadPreview($event.target)" #fileInputPreview>
 
-                        <mat-form-field>
-                            <mat-label>Sub category</mat-label>
-                            <select 
-                                matNativeControl 
-                                formControlName="subCategoryId" 
-                                (change)="onSelectProductSubCategory()"
-                            >
-                                <option 
-                                    value="{{ subCategory.id }}" 
-                                    *ngFor="let subCategory of subCategories"
+                        <app-image 
+                            *ngIf="previewImage"
+                            [file]="previewImage"
+                            (update)="updatePreviewImage($event)"
+                            (delete)="deletePreviewImage($event)"
+                            [updatable]="true"
+                            [removable]="true"
+                        ></app-image>
+
+                        <a class="add-image" (click)="fileInputPreview.click()" *ngIf="!previewImage">
+                            <mat-icon>add_circle_outline</mat-icon>
+                        </a>
+
+                        <div class="main-controls">
+                            <mat-form-field>
+                                <input matInput formControlName="name" placeholder="Name">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Sub category</mat-label>
+                                <select 
+                                    matNativeControl 
+                                    formControlName="subCategoryId" 
+                                    (change)="onSelectProductSubCategory()"
                                 >
-                                    {{ subCategory.name }}
-                                </option>
-                            </select>
-                        </mat-form-field>
+                                    <option 
+                                        value="{{ subCategory.id }}" 
+                                        *ngFor="let subCategory of subCategories"
+                                    >
+                                        {{ subCategory.name }}
+                                    </option>
+                                </select>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput formControlName="weight" placeholder="Weight">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput formControlName="price" placeholder="Price">
+                            </mat-form-field>
+                        </div>
 
                         <mat-form-field>
                             <input matInput formControlName="amount" placeholder="Amount">
@@ -124,14 +149,6 @@
 
                         <mat-form-field>
                             <input matInput formControlName="discount" placeholder="Discount">
-                        </mat-form-field>
-
-                        <mat-form-field>
-                            <input matInput formControlName="weight" placeholder="Weight">
-                        </mat-form-field>
-
-                        <mat-form-field>
-                            <input matInput formControlName="price" placeholder="Price">
                         </mat-form-field>
 
                         <mat-form-field>

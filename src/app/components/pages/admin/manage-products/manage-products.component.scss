@@ -50,6 +50,12 @@ mat-icon {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 15px;
+
+    .main-controls {
+        > * {
+            width: 100%;
+        }
+    }
 }
 
 .create-value-controls select {

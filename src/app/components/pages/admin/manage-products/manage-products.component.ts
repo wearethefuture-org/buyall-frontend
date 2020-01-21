@@ -19,6 +19,7 @@ import { IValue } from 'src/app/core/interfaces/value';
 })
 export class ManageProductsComponent implements OnDestroy, OnInit {
   @ViewChild('modalToggler', {static: false}) modalToggler: ElementRef;
+  @ViewChild('fileInputPreview', {static: false}) fileInputPreview: ElementRef;
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -33,6 +34,7 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   valueSetting: ISetting;
   currentSubCategory: any = 'All';
   images = [];
+  previewImage;
   edit = false;
   subGetProducts: Subscription;
   subCreateProduct: Subscription;
@@ -153,8 +155,11 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
       characteristicsValues: this.fb.array([])
     });
 
-    this.modalToggler.nativeElement.click();
+    this.images = [];
+    this.previewImage = null;
     this.edit = false;
+
+    this.modalToggler.nativeElement.click();
   }
 
   showEditModal(product: IProduct): void {
@@ -217,8 +222,10 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
 
     body.append('product', JSON.stringify(value));
 
+    body.append('previewImage', this.previewImage);
+
     this.images.forEach(img => {
-      body.append('files', img);
+      body.append('images', img);
     });
 
     this.subCreateProduct = this.productsService.createProduct(body)
@@ -275,6 +282,19 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
 
         this.toastr.success('Product deleated');
       });
+  }
+
+  onUploadPreview(target: HTMLInputElement) {
+    this.previewImage = target.files[0];
+    this.fileInputPreview.nativeElement.value = '';
+  }
+
+  updatePreviewImage({file}) {
+    this.previewImage = file;
+  }
+
+  deletePreviewImage() {
+    this.previewImage = null;
   }
 
   onUpload(target: HTMLInputElement) {
