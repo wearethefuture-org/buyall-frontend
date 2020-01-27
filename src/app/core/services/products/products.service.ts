@@ -32,11 +32,11 @@ export class ProductsService extends BaseService {
     return this.get(url);
   }
 
-  createProduct(product: IProduct): Observable<IProduct> {
+  createProduct(product: IProduct | FormData): Observable<IProduct> {
     return this.post(product, '/product/');
   }
 
-  updateProduct(product: IProduct, id: number): Observable<boolean> {
+  updateProduct(product: IProduct | FormData, id: number): Observable<IProduct> {
     return this.put(product, `/product/${id}`);
   }
 

@@ -22,6 +22,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { IdToNamePipe } from 'src/app/core/pipes/id-to-name/id-to-name.pipe';
 import { FieldToObjectPipe } from 'src/app/core/pipes/fieldToObject/field-to-object.pipe';
+import { ImageComponent } from 'src/app/components/common/image/image.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { FieldToObjectPipe } from 'src/app/core/pipes/fieldToObject/field-to-obj
     ManageSubcategoriesPageComponent,
     ManageProductsComponent,
     AdminTableComponent,
+    ImageComponent,
     IdToNamePipe,
     FieldToObjectPipe
   ],

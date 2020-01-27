@@ -1,0 +1,6 @@
+<img #img>
+<input type="file" style="display: none;" (change)="onUpdate($event.target)" #fileInput>
+<div class="buttons">
+    <button mat-icon-button *ngIf="updatable" (click)="fileInput.click()" type="button"><mat-icon>launch</mat-icon></button>
+    <button mat-icon-button (click)="onDelete()" *ngIf="removable" type="button"><mat-icon color="warn">delete_outline</mat-icon></button>
+</div>
