@@ -41,6 +41,7 @@ glyphicon glyphicon-user"></span><span class="caret"></span></a>
                 <li><a [routerLink]="['/auth', 'login']" *ngIf="!isAuth">Sign in</a></li>
                 <li><a [routerLink]="['/auth', 'register']" *ngIf="!isAuth">Sign up</a></li>
                 <li><a [routerLink]="['/profile']" *ngIf="isAuth">Profile</a></li>
+                <li><a [routerLink]="['/admin']" *ngIf="isAuth && (userRole === 'admin' || userRole === 'superadmin')">Admin</a></li>
                 <li><a (click)="onLogOut()" *ngIf="isAuth">Log out</a></li>
               </ul>
             </li>

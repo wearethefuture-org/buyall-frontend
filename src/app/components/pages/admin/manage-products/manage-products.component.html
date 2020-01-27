@@ -98,25 +98,50 @@
             <div class="modal-body">
                 <form [formGroup]="productForm" *ngIf="productForm">
                     <div class="product-controls">
-                        <mat-form-field>
-                            <input matInput formControlName="name" placeholder="Name">
-                        </mat-form-field>
+                        <input type="file" style="display: none;" (change)="onUploadPreview($event.target)" #fileInputPreview>
 
-                        <mat-form-field>
-                            <mat-label>Sub category</mat-label>
-                            <select 
-                                matNativeControl 
-                                formControlName="subCategoryId" 
-                                (change)="onSelectProductSubCategory()"
-                            >
-                                <option 
-                                    value="{{ subCategory.id }}" 
-                                    *ngFor="let subCategory of subCategories"
+                        <app-image 
+                            *ngIf="previewImage"
+                            [file]="previewImage"
+                            (update)="updatePreviewImage($event)"
+                            (delete)="deletePreviewImage($event)"
+                            [updatable]="true"
+                            [removable]="true"
+                        ></app-image>
+
+                        <a class="add-image" (click)="fileInputPreview.click()" *ngIf="!previewImage">
+                            <mat-icon>add_circle_outline</mat-icon>
+                        </a>
+
+                        <div class="main-controls">
+                            <mat-form-field>
+                                <input matInput formControlName="name" placeholder="Name">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Sub category</mat-label>
+                                <select 
+                                    matNativeControl 
+                                    formControlName="subCategoryId" 
+                                    (change)="onSelectProductSubCategory()"
                                 >
-                                    {{ subCategory.name }}
-                                </option>
-                            </select>
-                        </mat-form-field>
+                                    <option 
+                                        value="{{ subCategory.id }}" 
+                                        *ngFor="let subCategory of subCategories"
+                                    >
+                                        {{ subCategory.name }}
+                                    </option>
+                                </select>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput formControlName="weight" placeholder="Weight">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput formControlName="price" placeholder="Price">
+                            </mat-form-field>
+                        </div>
 
                         <mat-form-field>
                             <input matInput formControlName="amount" placeholder="Amount">
@@ -127,20 +152,18 @@
                         </mat-form-field>
 
                         <mat-form-field>
-                            <input matInput formControlName="weight" placeholder="Weight">
-                        </mat-form-field>
-
-                        <mat-form-field>
-                            <input matInput formControlName="price" placeholder="Price">
-                        </mat-form-field>
-
-                        <mat-form-field>
                             <textarea matInput formControlName="description" placeholder="Description"></textarea>
                         </mat-form-field>
 
                         <div class="checkboxes">
-                            <mat-checkbox formControlName="available" color="primary">Available</mat-checkbox>
-                            <mat-checkbox formControlName="isPromotion" color="primary">Promotion</mat-checkbox>
+                            <div>
+                                <mat-checkbox formControlName="available" color="primary">Available</mat-checkbox>
+                                <mat-checkbox formControlName="isPromotion" color="primary">Promotion</mat-checkbox>
+                            </div>
+
+                            <button class="create-btn" data-toggle="modal" data-target="#imagesModal" type="button">
+                                Images
+                            </button>
                         </div>
                     </div>
 
@@ -220,6 +243,39 @@
             <div class="modal-footer">
                 <button (click)="onCreateProduct()" *ngIf="!edit">Create</button>
                 <button (click)="onEditProduct()" *ngIf="edit">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="imagesModal" class="modal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Image gallery</h4>
+            </div>
+
+            <div class="modal-body">
+                <input type="file" style="display: none;" (change)="onUpload($event.target)" #fileInput>
+
+                <div class="gallery">
+                    <div class="image" *ngFor="let img of images;let i = index">
+                        <app-image 
+                            [index]="i"
+                            [file]="img"
+                            (update)="updateImage($event)"
+                            (delete)="deleteImage($event)"
+                            [updatable]="true"
+                            [removable]="true"
+                        ></app-image>
+                    </div>
+
+                    <a class="add-image" (click)="fileInput.click()">
+                        <mat-icon>add_circle_outline</mat-icon>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

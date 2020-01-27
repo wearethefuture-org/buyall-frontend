@@ -19,6 +19,8 @@ import { IValue } from 'src/app/core/interfaces/value';
 })
 export class ManageProductsComponent implements OnDestroy, OnInit {
   @ViewChild('modalToggler', {static: false}) modalToggler: ElementRef;
+  @ViewChild('fileInputPreview', {static: false}) fileInputPreview: ElementRef;
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   pageSizeOptions: number[] = [5, 10, 15, 25];
@@ -31,6 +33,9 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
   subCategorySettings: ISetting[];
   valueSetting: ISetting;
   currentSubCategory: any = 'All';
+  images = [];
+  previewImage;
+  mustBeDeletedImages = [];
   edit = false;
   subGetProducts: Subscription;
   subCreateProduct: Subscription;
@@ -151,8 +156,11 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
       characteristicsValues: this.fb.array([])
     });
 
-    this.modalToggler.nativeElement.click();
+    this.images = [];
+    this.previewImage = null;
     this.edit = false;
+
+    this.modalToggler.nativeElement.click();
   }
 
   showEditModal(product: IProduct): void {
@@ -198,8 +206,12 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
 
     this.productForm = this.fb.group(body);
 
-    this.modalToggler.nativeElement.click();
     this.edit = true;
+    this.previewImage = product.previewImage;
+    this.images = product.images;
+    this.mustBeDeletedImages = [];
+
+    this.modalToggler.nativeElement.click();
   }
 
   onCreateProduct(): void {
@@ -209,7 +221,19 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
       return;
     }
 
-    this.subCreateProduct = this.productsService.createProduct(this.productForm.value)
+    const { value } = this.productForm;
+
+    const body = new FormData();
+
+    body.append('product', JSON.stringify(value));
+
+    body.append('previewImage', this.previewImage);
+
+    this.images.forEach(img => {
+      body.append('images', img);
+    });
+
+    this.subCreateProduct = this.productsService.createProduct(body)
       .subscribe((product: IProduct) => {
         this.products.push(product);
 
@@ -227,18 +251,36 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
       return;
     }
 
-    this.subEditProduct = this.productsService.updateProduct(this.productForm.value, this.productForm.value.id)
-      .subscribe((res: boolean) => {
-        if (!res) {
-          return;
-        }
+    const { value } = this.productForm;
 
-        this.products = this.products.map((product: IProduct) => {
-          if (product.id === this.productForm.value.id) {
-            return this.productForm.value;
+    const body = new FormData();
+
+    body.append('product', JSON.stringify(value));
+
+    if (this.previewImage && !this.previewImage.url) {
+      body.append('previewImage', this.previewImage);
+    }
+
+    this.images.forEach(img => {
+      if (img.url) {
+        return;
+      }
+
+      body.append('images', img);
+    });
+
+    this.mustBeDeletedImages.forEach(img => {
+      body.append('mustBeDeletedImages', JSON.stringify(img));
+    });
+
+    this.subEditProduct = this.productsService.updateProduct(body, value.id)
+      .subscribe((product: IProduct) => {
+        this.products = this.products.map((p: IProduct) => {
+          if (product.id === p.id) {
+            return product;
           }
 
-          return product;
+          return p;
         });
 
         this.onSelectSearchSubCategory();
@@ -263,6 +305,52 @@ export class ManageProductsComponent implements OnDestroy, OnInit {
 
         this.toastr.success('Product deleated');
       });
+  }
+
+  onUploadPreview(target: HTMLInputElement) {
+    this.previewImage = target.files[0];
+    this.fileInputPreview.nativeElement.value = '';
+  }
+
+  updatePreviewImage({file}) {
+    if (this.previewImage.url) {
+      this.mustBeDeletedImages.push(this.previewImage);
+    }
+
+    this.previewImage = file;
+  }
+
+  deletePreviewImage() {
+    if (this.previewImage.url) {
+      this.mustBeDeletedImages.push(this.previewImage);
+    }
+
+    this.previewImage = null;
+  }
+
+  onUpload(target: HTMLInputElement) {
+    this.images.push(target.files[0]);
+    this.fileInput.nativeElement.value = '';
+  }
+
+  updateImage({index, file}) {
+    this.images = this.images.map((img, i) => {
+      if (img.url && index === i) {
+        this.mustBeDeletedImages.push(img);
+      }
+
+      return index === i ? file : img;
+    });
+  }
+
+  deleteImage(file) {
+    this.images = this.images.filter(img => {
+      if (img.url && img === file) {
+        this.mustBeDeletedImages.push(img);
+      }
+
+      return img !== file;
+    });
   }
 
   ngOnDestroy(): void {

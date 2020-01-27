@@ -18,4 +18,8 @@ export class TopBarComponent {
   get isAuth(): boolean {
     return this.authService.isAuth();
   }
+
+  get userRole(): string {
+    return this.authService.user.role;
+  }
 }
