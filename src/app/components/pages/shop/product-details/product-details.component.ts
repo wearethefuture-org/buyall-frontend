@@ -1,30 +1,43 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-//import { products } from '../products';
-import { CartService } from '../cart.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { CartService } from 'src/app/core/services/cart/cart.service';
+import { Subscription } from 'rxjs';
+import { ProductsService } from 'src/app/core/services/products/products.service';
+import { IProduct } from 'src/app/core/interfaces/product';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.css']
+  styleUrls: ['./product-details.component.scss']
 })
 
-export class ProductDetailsComponent implements OnInit {
-  product;
+export class ProductDetailsComponent implements OnInit, OnDestroy {
+  subParams: Subscription;
+  subProduct: Subscription;
+  product: IProduct;
+  constructor(
+    private route: ActivatedRoute,
+    private cartService: CartService,
+    private productsService: ProductsService
+  ) {}
 
-  constructor(private route: ActivatedRoute, private cartService: CartService) { }
+  ngOnInit(): void {
+    this.subParams = this.route.params.subscribe((params: Params) => {
+      const id = +params.id;
 
-  ngOnInit() {  
-    //this.products = this.cartService.getProductsList(); 
-    this.cartService.getProductsList().subscribe(( products: any[])=>{
-      this.route.paramMap.subscribe(params => {
-        this.product = products[+params.get('id')];
-      })
-    })
+      this.subProduct = this.productsService.getProductById(id)
+        .subscribe((product: IProduct) => {
+          this.product = product;
+        });
+    });
   }
 
-  addToCart(product) {
+  ngOnDestroy(): void {
+    this.subProduct.unsubscribe();
+    this.subParams.unsubscribe();
+  }
+
+  addToCart(product: IProduct): void {
     window.alert('Your product has been added to the cart!');
     this.cartService.addToCart(product);
   }
