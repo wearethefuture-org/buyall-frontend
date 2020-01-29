@@ -1,8 +1,13 @@
 <div *ngIf="product" class="detailsWrap">
-  <div class="modalImgBlock">
+  <div *ngIf="imgSlider" class="modalImgBlock">
     <div class="imgSlidex">
+      <button (click)="imgShowSlide()"><i class="glyphicon glyphicon-remove-circle"></i></button>
+      <button class="prev" (click)="plusSlide()"><i class="glyphicon glyphicon-chevron-left"></i></button>
+      <button class="next" (click)="minuseSlide()"><i class="glyphicon glyphicon-chevron-right"></i></button>
       <div class="slide">
-        <img src="http://placehold.it/740x640/626262" alt="">
+        <img *ngIf="slideImg==0" src="http://placehold.it/740x640/626262" alt="">
+        <img *ngIf="slideImg==1" src="http://placehold.it/740x640/333" alt="">
+        <img *ngIf="slideImg==2" src="http://placehold.it/740x640/888" alt="">
       </div>
     </div>
   </div>
@@ -35,12 +40,14 @@
     <div role="tabpanel" id="all" class="tab-pane detailsMain active">
       <div class="row">
         <div class="col-md-1 allImg">
-        <img src="http://placehold.it/55x55/626262" alt="">
-        <img src="http://placehold.it/55x55/333" alt="">
-        <img src="http://placehold.it/55x55/888" alt="">
+        <img src="http://placehold.it/55x55/626262" (click) ="setImgNumbe(0)" alt="">
+        <img src="http://placehold.it/55x55/333" (click) ="setImgNumbe(1)" alt="">
+        <img src="http://placehold.it/55x55/888" (click) ="setImgNumbe(2)" alt="">
       </div>
       <div class="col-md-5 curImg">
-          <img src="http://placehold.it/740x640/626262" alt="">
+          <img *ngIf="curImg==0" src="http://placehold.it/740x640/626262" (click)="imgShowSlide()" alt="">
+          <img *ngIf="curImg==1" src="http://placehold.it/740x640/3333" (click)="imgShowSlide()" alt="">
+          <img *ngIf="curImg==2" src="http://placehold.it/740x640/888" (click)="imgShowSlide()" alt="">
       </div>
       <div class="col-md-6">
           <p>Color</p>
@@ -164,36 +171,12 @@
           <div class="row">
             <div class="row">
               <div class="col-md-10">
-                <div class="row">
+                <div *ngFor="let item of product.characteristicsValues; let i=index;" class="row">
                   <div class="col-sm-8">
-                    <p>Weight</p>
+                    <p>{{item.name}}</p>
                   </div>
                   <div class="col-sm-4">
-                    <p>{{ product.weight}}</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-8">
-                    <p>Discount</p>
-                  </div>
-                  <div class="col-sm-4">
-                    <p>{{ product.discount}}</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-8">
-                    <p>Amount</p>
-                  </div>
-                  <div class="col-sm-4">
-                    <p>{{ product.amount}}</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-sm-8">
-                    <p>Promotion</p>
-                  </div>
-                  <div class="col-sm-4">
-                    <p>{{ product.is_promotion}}</p>
+                    <p> {{item[item.type+'Value']}}</p>
                   </div>
                 </div>
               </div>

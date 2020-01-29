@@ -15,11 +15,16 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   subParams: Subscription;
   subProduct: Subscription;
   product: IProduct;
+  curImg: number=0;
+  slides= document.getElementsByClassName("slide");
+  slideImg: number=0;
+  imgSlider: boolean=false;
   constructor(
     private route: ActivatedRoute,
     private cartService: CartService,
     private productsService: ProductsService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.subParams = this.route.params.subscribe((params: Params) => {
@@ -31,7 +36,26 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         });
     });
   }
-
+  setImgNumbe(imgNumber: number): void{
+    this.curImg=imgNumber;
+  }
+  imgShowSlide():void{
+    this.imgSlider=!this.imgSlider;
+  }
+  plusSlide(){
+    this.slideImg+=1
+    if(this.slideImg>2){
+      this.slideImg=0
+    }
+    console.log(this.slideImg)
+  }
+  minuseSlide(){
+    this.slideImg-=1
+    if(this.slideImg<0){
+      this.slideImg=2
+    }
+    console.log(this.slideImg)
+  }
   ngOnDestroy(): void {
     this.subProduct.unsubscribe();
     this.subParams.unsubscribe();
