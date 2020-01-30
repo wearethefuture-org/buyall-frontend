@@ -1,16 +1,24 @@
-
 <div class="wrapper">
-    <app-sidebar></app-sidebar>
+    <mat-sidenav-container>
 
-    <div class="main-panel">
-        <div class="inner">
-            <button mat-icon-button class="hamburger">
-                <mat-icon>menu</mat-icon>
-            </button>
+        <mat-sidenav 
+            #sidebar
+            [mode]="mobileQuery.matches ? 'over' : 'side'"
+            [opened]="!mobileQuery.matches"
+        >
+            <app-sidebar></app-sidebar>
+        </mat-sidenav>
 
-            <div style="height: 100%;">
-                    <router-outlet></router-outlet>
+        <mat-sidenav-content>
+            <div class="inner">
+                <button mat-icon-button class="hamburger" (click)="sidebar.toggle()">
+                    <mat-icon>menu</mat-icon>
+                </button>
+
+                <div style="height: 100%;">
+                        <router-outlet></router-outlet>
+                </div>
             </div>
-        </div>
-    </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
 </div>
