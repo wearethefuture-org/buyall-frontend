@@ -40,14 +40,12 @@
     <div role="tabpanel" id="all" class="tab-pane detailsMain active">
       <div class="row">
         <div class="col-md-1 allImg">
-        <img src="http://placehold.it/55x55/626262" (click) ="setImgNumbe(0)" alt="">
-        <img src="http://placehold.it/55x55/333" (click) ="setImgNumbe(1)" alt="">
-        <img src="http://placehold.it/55x55/888" (click) ="setImgNumbe(2)" alt="">
-      </div>
+          <img *ngFor="let item of allImg; let i=index" src="{{item}}" [class.active]="item == activeItem" (click)="setImgNumber(i, item)" alt="">
+        </div>
       <div class="col-md-5 curImg">
-          <img *ngIf="curImg==0" src="http://placehold.it/740x640/626262" (click)="imgShowSlide()" alt="">
-          <img *ngIf="curImg==1" src="http://placehold.it/740x640/3333" (click)="imgShowSlide()" alt="">
-          <img *ngIf="curImg==2" src="http://placehold.it/740x640/888" (click)="imgShowSlide()" alt="">
+          <div *ngFor="let item of allImg; let i=index" >
+            <img *ngIf="curImg==i" src="{{item}}" (click)="imgShowSlide()" alt="">
+          </div>
       </div>
       <div class="col-md-6">
           <p>Color</p>
@@ -68,11 +66,11 @@
           <span *ngIf="product.available" class="available"> <i class="glyphicon glyphicon-ok"></i> Are available</span>
           <span *ngIf="!product.available" class="available not"> <i class="glyphicon glyphicon-remove"></i> Not available</span>
           <div class="buys borderDiv">
-              <span class="price">{{ product.price | currency }} ₴</span>
+              <span class="price">{{ product.price | currency }}</span>
               <button class="btn" (click)="addToCart(product)"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
           </div>
           <div class="credit borderDiv">
-            <span>from <b> 247 ₴ / month </b> when purchasing goods on credit or paying in installments</span>
+            <span>from <b> 247 $ / month </b> when purchasing goods on credit or paying in installments</span>
             <button>Read more</button>
           </div>
           <div class="borderDiv">
@@ -92,12 +90,12 @@
             <div class="row">
               <div class="col-xs-5">Shipment at own expense from New Mail</div>
               <div class="col-xs-5"><span class="bold">We will ship on February 1</span></div>
-              <div class="col-xs-2">80 ₴</div>
+              <div class="col-xs-2">80 $</div>
             </div>
             <div class="row">
               <div class="col-xs-5">Courier to your address</div>
               <div class="col-xs-5"><span class="bold">Delivery February 2 from 10:00</span></div>
-              <div class="col-xs-2">59 ₴</div>
+              <div class="col-xs-2">59 $</div>
             </div>
           </div>
       </div>
@@ -194,11 +192,11 @@
             <span *ngIf="product.available" class="available"> <i class="glyphicon glyphicon-ok"></i> Are available</span>
             <span *ngIf="!product.available" class="available not"> <i class="glyphicon glyphicon-remove"></i> Not available</span>
             <div class="buys borderDiv">
-                <span class="price">{{ product.price | currency }} ₴</span>
+                <span class="price">{{ product.price | currency }}</span>
                 <button class="btn" (click)="addToCart(product)"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
             </div>
             <div class="credit borderDiv">
-              <span>from <b> 247 ₴ / month </b> when purchasing goods on credit or paying in installments</span>
+              <span>from <b> 247 $ / month </b> when purchasing goods on credit or paying in installments</span>
               <button>Read more</button>
             </div>
             <div class="borderDiv">
@@ -212,8 +210,8 @@
     <div role="tabpanel" id="photo" class="tab-pane detailsMain">
       <div class="row">
         <div class="col-md-7">
-          <img src="http://placehold.it/740x640/626262" alt="">
-          <img src="http://placehold.it/740x640/ff6262" alt="">
+          <img src="http://placehold.it/740x1/fff" alt="">
+          <img *ngFor="let item of allImg" src="{{item}}" alt="">
         </div>
         <div class="col-md-5">
           <div class="staticBlock">
@@ -221,11 +219,11 @@
             <span *ngIf="product.available" class="available"> <i class="glyphicon glyphicon-ok"></i> Are available</span>
             <span *ngIf="!product.available" class="available not"> <i class="glyphicon glyphicon-remove"></i> Not available</span>
             <div class="buys borderDiv">
-                <span class="price">{{ product.price | currency }} ₴</span>
+                <span class="price">{{ product.price | currency }}</span>
                 <button class="btn" (click)="addToCart(product)"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
             </div>
             <div class="credit borderDiv">
-              <span>from <b> 247 ₴ / month </b> when purchasing goods on credit or paying in installments</span>
+              <span>from <b> 247 $ / month </b> when purchasing goods on credit or paying in installments</span>
               <button>Read more</button>
             </div>
             <div class="borderDiv">
@@ -281,11 +279,11 @@
             <span *ngIf="product.available" class="available"> <i class="glyphicon glyphicon-ok"></i> Are available</span>
             <span *ngIf="!product.available" class="available not"> <i class="glyphicon glyphicon-remove"></i> Not available</span>
             <div class="buys borderDiv">
-                <span class="price">{{ product.price | currency }} ₴</span>
+                <span class="price">{{ product.price | currency }}</span>
                 <button class="btn" (click)="addToCart(product)"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
             </div>
             <div class="credit borderDiv">
-              <span>from <b> 247 ₴ / month </b> when purchasing goods on credit or paying in installments</span>
+              <span>from <b> 247 $ / month </b> when purchasing goods on credit or paying in installments</span>
               <button>Read more</button>
             </div>
             <div class="borderDiv">

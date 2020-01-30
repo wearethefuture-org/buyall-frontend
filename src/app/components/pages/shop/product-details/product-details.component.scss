@@ -1,38 +1,46 @@
 .detailsWrap{
     width: 100%;
     .modalImgBlock{
+        height: 80vh;
         position: fixed;
-        top: 10%;
-        bottom: 10%;
+        top: 15%;
         left: 5%;
         right: 5%;
         background: white;
         z-index: 1000;
-        .slide{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
         button{
             position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 2.3em;
-        }
-        .glyphicon-remove-circle{
-            color: #e20505;
+            top:20px;
+            right: 20px;
+            .glyphicon-remove-circle{
+                font-size: 2em;
+                color: #bd0909;
+            }
         }
         .prev{
-            font-size: 2em;
             position: absolute;
             top: 48%;
-            left: 15px;
+            left: 20px;
+            font-size: 2em;
         }
         .next{
-            font-size: 2em;
             position: absolute;
             top: 48%;
-            right: 15px;
+            right: 20px;
+            font-size: 2em;
+        }
+        .imgSlidex{
+            width: 100%;
+            height: 100%;
+            .slide{
+                height: 80vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                img{
+                    height: 95%;
+                }
+            }
         }
     }
     h3{
@@ -168,9 +176,14 @@
                 transition: 0.5s all ease;
                 width: 55px;
                 margin-bottom: 20px;
+                cursor: pointer;
             }
             img:hover{
-                border: 1px solid #039603;
+                border: 1px solid #7de8a1;
+                width: 58px;
+            }
+            img.active{
+                border: 3px solid #7de8a1;
                 width: 58px;
             }
         }
@@ -178,6 +191,7 @@
             position: relative;
             img{
                 width: 100%;
+                cursor: pointer;
             }
         }
         .productColors{
@@ -252,6 +266,21 @@
             }
             img{
                 flex-grow: 1;
+            }
+        }
+    }
+}
+@media (max-width: 900px){
+    .detailsWrap{
+        .modalImgBlock{
+            .imgSlidex{
+                .slide{
+                    width: 100%;
+                    img{
+                        height: auto;
+                        width: 85%;
+                    }
+                }
             }
         }
     }

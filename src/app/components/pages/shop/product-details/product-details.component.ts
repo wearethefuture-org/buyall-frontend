@@ -19,12 +19,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   slides= document.getElementsByClassName("slide");
   slideImg: number=0;
   imgSlider: boolean=false;
+  allImg: string[]=new Array();
+  activeItem: string;
   constructor(
     private route: ActivatedRoute,
     private cartService: CartService,
     private productsService: ProductsService
-  ) {
-  }
+  ) {  }
 
   ngOnInit(): void {
     this.subParams = this.route.params.subscribe((params: Params) => {
@@ -33,28 +34,32 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       this.subProduct = this.productsService.getProductById(id)
         .subscribe((product: IProduct) => {
           this.product = product;
+          for (let item of product.images) {
+            this.allImg.push(item.url)
+          }
+          this.activeItem=product.previewImage.url;
+          console.log(this.allImg)
         });
     });
   }
-  setImgNumbe(imgNumber: number): void{
+  setImgNumber(imgNumber: number, item: string): void{
     this.curImg=imgNumber;
+    this.activeItem=item;
   }
   imgShowSlide():void{
     this.imgSlider=!this.imgSlider;
   }
   plusSlide(){
-    this.slideImg+=1
+    this.slideImg+=1;
     if(this.slideImg>2){
-      this.slideImg=0
+      this.slideImg=0;
     }
-    console.log(this.slideImg)
   }
   minuseSlide(){
-    this.slideImg-=1
+    this.slideImg-=1;
     if(this.slideImg<0){
-      this.slideImg=2
+      this.slideImg=2;
     }
-    console.log(this.slideImg)
   }
   ngOnDestroy(): void {
     this.subProduct.unsubscribe();
