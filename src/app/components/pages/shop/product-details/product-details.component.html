@@ -5,9 +5,9 @@
       <button class="prev" (click)="plusSlide()"><i class="glyphicon glyphicon-chevron-left"></i></button>
       <button class="next" (click)="minuseSlide()"><i class="glyphicon glyphicon-chevron-right"></i></button>
       <div class="slide">
-        <img *ngIf="slideImg==0" src="http://placehold.it/740x640/626262" alt="">
-        <img *ngIf="slideImg==1" src="http://placehold.it/740x640/333" alt="">
-        <img *ngIf="slideImg==2" src="http://placehold.it/740x640/888" alt="">
+        <div *ngFor="let item of allImg; let i=index" >
+          <img *ngIf="slideImg==i" src="{{item}}" alt="">
+        </div>
       </div>
     </div>
   </div>
