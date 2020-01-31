@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { CategoriesService } from 'src/app/core/services/categories/categories.service';
 import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-manage-categories-page',
@@ -13,6 +14,12 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
   @ViewChild('editModalToggler', {static: false}) editModalToggler: ElementRef;
+  @ViewChild('createModalToggler', {static: false}) createModalToggler: ElementRef;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  tableBody: MatTableDataSource<ICategory>;
+  pageSizeOptions: number[] = [5, 10, 15, 25];
+  tableHeaders: string[] = ['id', 'name', 'description', 'actions'];
   categories: ICategory[];
   createCategoryForm: FormGroup;
   editCategoryForm: FormGroup;
@@ -36,7 +43,8 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
     this.editCategoryForm = this.fb.group({
       id: [null],
       name: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
-      description: [null, Validators.compose([Validators.required, Validators.maxLength(255)])]
+      description: [null, Validators.compose([Validators.required, Validators.maxLength(255)])],
+      img: [null]
     });
 
     this.subGetCategoriesList = this.categoriesService.getCategoriesList()
@@ -51,12 +59,17 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
       }))
       .subscribe((categories: ICategory[]) => {
         this.categories = categories;
+
+        this.tableBody = new MatTableDataSource(categories);
+        this.tableBody.sort = this.sort;
+        this.tableBody.paginator = this.paginator;
       });
   }
 
   onCategoryCreate(): void {
-    if (this.editCategoryForm.invalid) {
+    if (this.createCategoryForm.invalid) {
       this.toastr.error('Invalid credentials');
+      this.createCategoryForm.markAllAsTouched();
       return;
     }
 
@@ -64,6 +77,7 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
       .subscribe((category: ICategory) => {
         this.categories.push(category);
         this.createCategoryForm.reset();
+        this.createModalToggler.nativeElement.click();
       });
   }
 
@@ -81,6 +95,7 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
   onCategoryEdit(): void {
     if (this.editCategoryForm.invalid) {
       this.toastr.error('Invalid credentials');
+      this.editCategoryForm.markAllAsTouched();
       return;
     }
 
@@ -93,6 +108,8 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
             }
             return category;
           });
+
+          this.editModalToggler.nativeElement.click();
         }
       });
   }
@@ -100,10 +117,6 @@ export class ManageCategoriesPageComponent implements OnInit, OnDestroy {
   showEditModal(category: ICategory): void {
     this.editCategoryForm.setValue(category);
     this.editModalToggler.nativeElement.click();
-  }
-
-  get tableHeaders(): string[] {
-    return Object.keys(this.categories[0]);
   }
 
   ngOnDestroy(): void {

@@ -1,13 +1,35 @@
 .wrapper {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
     top: 0;
-    height: 100vh;
-}
+    bottom: 0;
+    left: 0;
+    right: 0;
 
-.main-panel {
-    position: relative;
-    background-color: #f4f3ef;
-    width: calc(100% - 260px);
-    float: right;
-    height: 100vh;
+    mat-sidenav-container {
+        flex: 1;
+        
+        mat-sidenav {
+            flex: 1 0 auto;
+        }
+    }
+
+    mat-sidenav-content {
+        .inner {
+            display: flex;
+
+            .hamburger {
+                margin: {
+                    top: 5px;
+                    left: 5px;
+                };
+            }
+
+            .content {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
 }
