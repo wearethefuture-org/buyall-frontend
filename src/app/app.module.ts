@@ -23,6 +23,7 @@ import { SidebarComponent } from './components/common/sidebar/sidebar.component'
 import { ProfileComponent } from './components/pages/site/profile/profile.component';
 import { MatCardModule, MatInputModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { CommonModule } from '@angular/common';
     MatMenuModule,
     MatIconModule,
     MatInputModule,
-    MatCardModule
+    MatCardModule,
+    SharedModule
   ],
   declarations: [
     AppComponent,

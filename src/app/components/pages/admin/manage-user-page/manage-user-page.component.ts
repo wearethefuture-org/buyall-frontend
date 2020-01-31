@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-manage-user-page',
@@ -14,7 +15,13 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./manage-user-page.component.scss']
 })
 export class ManageUserPageComponent implements OnInit, OnDestroy {
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild('editModalToggler', {static: false}) editModalToggler: ElementRef;
+  pageSizeOptions: number[] = [5, 10, 15, 25];
+  tableHeaders: string[] = ['id', 'firstName', 'lastName', 'email', 
+  'status', 'role', 'disabled', 'dateBirthday', 'actions'];
+  tableBody: MatTableDataSource<IUser>;
   users: IUser[];
   createUserForm: FormGroup;
   editUserForm: FormGroup;
@@ -58,16 +65,23 @@ export class ManageUserPageComponent implements OnInit, OnDestroy {
         map((users: IUser[]) => {
           users.map((user: IUser) => {
             delete user.password;
+            delete user.imgId;
             delete user.createdAt;
             delete user.updatedAt;
             user.dateBirthday = moment(user.dateBirthday).format('YYYY-MM-DD');
+
             return user;
           });
+
           return users;
         })
       )
       .subscribe((users: IUser[]) => {
         this.users = users;
+
+        this.tableBody = new MatTableDataSource(users);
+        this.tableBody.sort = this.sort;
+        this.tableBody.paginator = this.paginator;
       });
   }
 
@@ -124,10 +138,6 @@ export class ManageUserPageComponent implements OnInit, OnDestroy {
 
   get userRole(): string {
     return this.authService.getUser().role;
-  }
-
-  get tableHeaders(): string[] {
-    return Object.keys(this.users[0]);
   }
 
   ngOnDestroy(): void {

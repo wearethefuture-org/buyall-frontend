@@ -16,7 +16,7 @@ export class UserService extends BaseService {
   ) { super(router, http); }
 
   getUserList(): Observable<IUser[]> {
-    return this.get('/users');
+    return this.get('/user');
   }
 
   createUser(user: IUser): Observable<IUser> {

@@ -15,7 +15,6 @@ import { MatFormFieldModule,
   MatIconModule,
   MatSortModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AdminTableComponent } from 'src/app/components/pages/admin/admin-table/admin-table.component';
 import { ManageProductsComponent } from 'src/app/components/pages/admin/manage-products/manage-products.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -31,7 +30,6 @@ import { ImageComponent } from 'src/app/components/common/image/image.component'
     ManageCategoriesPageComponent,
     ManageSubcategoriesPageComponent,
     ManageProductsComponent,
-    AdminTableComponent,
     ImageComponent,
     IdToNamePipe,
     FieldToObjectPipe

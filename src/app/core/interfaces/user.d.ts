@@ -8,6 +8,7 @@ export interface IUser {
     disabled: boolean,
     dateBirthday: string
     password: string,
+    imgId: number,
     img: {
         id?: number,
         name?: string,
