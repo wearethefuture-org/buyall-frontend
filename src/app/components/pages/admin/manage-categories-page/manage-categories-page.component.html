@@ -1,19 +1,41 @@
 <div class="content">
-    <button class="create-btn" data-toggle="modal" data-target="#createCategoryModal">
+    <button class="create-btn" data-toggle="modal" data-target="#createCategoryModal" #createModalToggler>
         Create new category
     </button>
 
     <button id="editModalToggle" data-toggle="modal" data-target="#editCategoryModal" #editModalToggler></button>
 
-    <app-admin-table
-        *ngIf="categories"
-        [headers]="tableHeaders"
-        [body]="categories" 
-        (editEmmiter)="showEditModal($event)" 
-        (deleteEmmiter)="onCategoryDelete($event)" 
-        [canDelete]="true"
-        [canEdit]="true"
-    ></app-admin-table>
+    <div class="mat-elevation-8">
+        <mat-table [dataSource]="tableBody" matSort>
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Id</mat-header-cell>
+                <mat-cell *matCellDef="let category">{{ category.id }}</mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                <mat-cell *matCellDef="let category">{{ category.name }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                <mat-cell *matCellDef="let category">{{ category.description }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let category">
+                    <button mat-icon-button (click)="showEditModal(category)"><mat-icon>launch</mat-icon></button>
+                    <button mat-icon-button (click)="onDeleteProduct(category)"><mat-icon color="warn">delete_outline</mat-icon></button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="tableHeaders"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: tableHeaders"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+    </div>
 </div>
 
 <div id="createCategoryModal" class="modal fade" role="dialog">
@@ -21,7 +43,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Create new user</h4>
+                <h4 class="modal-title">Create new category</h4>
             </div>
             <div class="modal-body">
                 <form [formGroup]="createCategoryForm">
@@ -37,7 +59,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="" data-dismiss="modal" (click)="onCategoryCreate()">Create</button>
+                <button type="button" (click)="onCategoryCreate()">Create</button>
             </div>
         </div>
     </div>
@@ -48,7 +70,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Edit user</h4>
+                <h4 class="modal-title">Edit category</h4>
             </div>
             <div class="modal-body">
                 <form [formGroup]="editCategoryForm">
@@ -66,7 +88,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="" (click)="onCategoryEdit()" data-dismiss="modal">Edit</button>
+                <button type="button" (click)="onCategoryEdit()">Edit</button>
             </div>
         </div>
     </div>
