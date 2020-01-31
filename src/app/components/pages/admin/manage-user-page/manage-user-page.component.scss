@@ -7,10 +7,12 @@
 }
 
 .content {
-    padding: 30px;
+    padding: 30px 30px 0 0px;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+
+    > * {
+        margin-right: 30px;
+    }
 }
 
 .create-btn {
@@ -63,4 +65,28 @@ form div:last-of-type {
 .mat-calendar {
   position: absolute !important;
   z-index: 99999 !important;
+}
+
+
+@media screen and (max-width: 1300px) {
+  .mat-table {
+      overflow-x: scroll;
+    }
+
+  .mat-cell,
+  .mat-header-cell {
+    word-wrap: initial;
+    display: table-cell;
+    padding: 0px 10px;
+    line-break: unset;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+
+  .mat-row,
+  .mat-header-row {
+    display: table-row;
+  }
 }
