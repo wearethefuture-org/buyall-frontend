@@ -1,3 +1,168 @@
+$headerBg: #dcf093;
+$headerBg1: #aedf73;
+$headerBg2: #dcf093;
+*{
+    margin: 0px;
+    padding: 0px;
+}
+    .navbar, .fixed-top{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        color: #757575;
+        background: linear-gradient(to top, $headerBg, $headerBg1, $headerBg2);
+        font-weight: 600;
+        z-index: 1000;
+        .container-fluid{
+            position: relative;
+            max-width: 1800px;
+            margin: 0 auto;
+            .navbar-toggler{
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                right: 0px;
+                top: 10px;
+                display: none;
+            }
+            .navbar-brand{
+                width: 200px;
+                display: flex;
+                margin-left: 20px;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                img{
+                    height: 70px;
+                }
+            }
+            .row{
+                height: 85px;
+                margin: 0;
+                width: 100%;
+                display: flex;
+                align-items: center;
+                .col-md-8{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                }
+                a{
+                    color: #757575;
+                    text-transform: uppercase;
+                }
+                .navbar-nav{
+                    height: auto;
+                    list-style: none;
+                    display: flex;
+                    flex-direction: row;
+                    float: right;
+                    li{
+                        padding: 0px 20px;
+                    }
+                }
+            }
+            #pcRow{
+                border-bottom: 1px solid #757575;
+                height: 40px;
+                #hideMobile{
+                    font-size: 14px;
+                }
+                .col-md-10{
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: start;
+                    .col-md-4{
+                        padding: 7px 20px;
+                        height: 35px;
+                    }
+                }
+                .col-md-12{
+                    float: right; 
+                    display: flex;
+                    flex-direction: row-reverse;
+                    align-items: end;
+                    justify-content: end;
+                    .col-xs-3{
+                        height: 40px;
+                        padding: 10px 10px;
+                        border-left: 1px solid #757575;
+                        font-size: 12px;
+                        .margLink{
+                            padding-top: 10px;
+                        }
+                    }
+                }
+                .col-md-4{
+                    border-right: 1px solid #757575;
+                }
+            }
+        }
+    }
+    .container{
+        margin-top: 180px;
+    }
+
+    @media (max-width: 780px){
+            .navbar, .fixed-top{
+                .container-fluid{
+                    position: relative;
+                    margin: 0px;
+                    padding: 0px;
+                    .navbar-toggler{
+                        position: absolute;
+                        width: 70px;
+                        height: 70px;
+                        right: 0px;
+                        top: 80px;
+                        font-size: 1.5em;
+                        display: block;
+                    }
+                    .row{
+                        width: 100%;
+                        a{
+                            color: #757575;
+                            text-transform: uppercase;
+                        }
+                        #mainMenu{
+                            display: none;
+                            position: absolute;
+                            height: 100vh;
+                            width: 80%;
+                            background: linear-gradient(to top, $headerBg, $headerBg1, $headerBg2);
+                            top: 172px;
+                            right: -31px;
+                            .navbar-nav{
+                                width: 100%;
+                                display: flex;
+                                flex-direction: column;
+                                li{
+                                    padding: 0px 20px;
+            
+                                }
+                            }
+                            .menuIcons{
+                                flex-direction: row;
+                                margin: 20px;
+                                justify-content: center;
+                            }
+                        }
+                    }
+                    #pcRow{
+                        height: 80px;
+                        .col-md-12{
+                            flex-flow: row wrap;
+                        }
+                    }
+                    #hideMobile{
+                        display: none;
+                    }
+                }
+            }
+        }
+/*
 .user {
     display: flex;
     align-items: center;
@@ -88,6 +253,7 @@ body{
 /* Credit to bootsnipp.com for the css for the color graph
  ESTO SOLO ES PARA EL FORMULARIO DE LOGIN
 */
+/*
 .colorgraph {
     height: 5px;
     border-top: 0;
@@ -98,3 +264,4 @@ body{
     background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
     background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
 }
+*/
