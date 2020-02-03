@@ -1,13 +1,20 @@
 <div *ngIf="product" class="detailsWrap">
   <div *ngIf="imgSlider" class="modalImgBlock">
     <div class="imgSlidex">
-      <button (click)="imgShowSlide()"><i class="glyphicon glyphicon-remove-circle"></i></button>
-      <button class="prev" (click)="plusSlide()"><i class="glyphicon glyphicon-chevron-left"></i></button>
-      <button class="next" (click)="minuseSlide()"><i class="glyphicon glyphicon-chevron-right"></i></button>
+      <button (click)="imgShowSlide()">
+        <i class="glyphicon glyphicon-remove-circle"></i>
+      </button>
+      <button 
+      class="prev" 
+      (click)="plusSlide()">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+      </button>
+      <button class="next" 
+      (click)="minuseSlide()">
+        <i class="glyphicon glyphicon-chevron-right"></i>
+      </button>
       <div class="slide">
-        <div *ngFor="let item of allImg; let i=index" >
-          <img *ngIf="slideImg==i" src="{{item}}" alt="">
-        </div>
+        <img src="{{allImg[slideImg].url}}">
       </div>
     </div>
   </div>
@@ -40,26 +47,27 @@
     <div role="tabpanel" id="all" class="tab-pane detailsMain active">
       <div class="row">
         <div class="col-md-1 allImg">
-          <img *ngFor="let item of allImg; let i=index" src="{{item}}" [class.active]="item == activeItem" (click)="setImgNumber(i, item)" alt="">
+          <img *ngFor="let item of allImg; let i=index"
+           src="{{item.url}}" 
+           [class.active]="item.url == activeItem" 
+           (click)="setImgNumber(i, item.url)">
         </div>
       <div class="col-md-5 curImg">
-          <div *ngFor="let item of allImg; let i=index" >
-            <img *ngIf="curImg==i" src="{{item}}" (click)="imgShowSlide()" alt="">
-          </div>
+          <img src="{{allImg[curImg].url}}" (click)="imgShowSlide()">
       </div>
       <div class="col-md-6">
           <p>Color</p>
           <div class="productColors">
               <button class="color action">
-                  <img src="http://placehold.it/55x55/626262" alt="">
+                  <img src="http://placehold.it/55x55/626262">
                   <span>Grey</span>
               </button>
               <button class="color">
-                  <img src="http://placehold.it/55x55/44ce72" alt="">
+                  <img src="http://placehold.it/55x55/44ce72">
                   <span>Green</span>
               </button>
               <button class="color">
-                  <img src="http://placehold.it/55x55/ce4444" alt="">
+                  <img src="http://placehold.it/55x55/ce4444">
                   <span>Red</span>
               </button>
           </div>
@@ -75,7 +83,7 @@
           </div>
           <div class="borderDiv">
             <p>Product Seller: <b> Rozetka </b></p>
-            <img src="http://placehold.it/150x40/ce4444" alt="">
+            <img src="http://placehold.it/150x40/ce4444">
           </div>
           <br>
           <div class="row rowBorder">
@@ -139,7 +147,7 @@
       </div>
       <div class="col-md-6">
         <div class="row">
-          <button><img src="http://placehold.it/55x55/dd3535" alt="Prizent"></button>
+          <button><img src="http://placehold.it/55x55/dd3535"></button>
         </div>
         <div class="row rowBorder">
             <div class="row">
@@ -164,7 +172,7 @@
       <div class="row">
         <div class="col-md-7">
           <div class="row">
-            <img src="http://placehold.it/740x1/ffffff" alt="">
+            <img src="http://placehold.it/740x1/ffffff">
           </div>
           <div class="row">
             <div class="row">
@@ -201,7 +209,7 @@
             </div>
             <div class="borderDiv">
               <p>Product Seller: <b> Rozetka </b></p>
-              <img src="http://placehold.it/150x40/ce4444" alt="">
+              <img src="http://placehold.it/150x40/ce4444">
             </div>
           </div>
         </div>
@@ -210,8 +218,8 @@
     <div role="tabpanel" id="photo" class="tab-pane detailsMain">
       <div class="row">
         <div class="col-md-7">
-          <img src="http://placehold.it/740x1/fff" alt="">
-          <img *ngFor="let item of allImg" src="{{item}}" alt="">
+          <img src="http://placehold.it/740x1/fff">
+          <img *ngFor="let item of allImg" src="{{item}}">
         </div>
         <div class="col-md-5">
           <div class="staticBlock">
@@ -228,7 +236,7 @@
             </div>
             <div class="borderDiv">
               <p>Product Seller: <b> Rozetka </b></p>
-              <img src="http://placehold.it/150x40/ce4444" alt="">
+              <img src="http://placehold.it/150x40/ce4444">
             </div>
           </div>
         </div>
@@ -239,7 +247,7 @@
         <div class="col-md-7">
           <div class="row">
             <h3>Customer Reviews About Product {{ product.name }}</h3>
-            <img src="http://placehold.it/740x1/ffffff" alt="">
+            <img src="http://placehold.it/740x1/ffffff">
           </div>
           <div class="row">
             <div class="comment">
@@ -288,7 +296,7 @@
             </div>
             <div class="borderDiv">
               <p>Product Seller: <b> Rozetka </b></p>
-              <img src="http://placehold.it/150x40/ce4444" alt="">
+              <img src="http://placehold.it/150x40/ce4444">
             </div>
           </div>
         </div>

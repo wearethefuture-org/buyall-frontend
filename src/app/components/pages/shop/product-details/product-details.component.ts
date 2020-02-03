@@ -4,6 +4,7 @@ import { CartService } from 'src/app/core/services/cart/cart.service';
 import { Subscription } from 'rxjs';
 import { ProductsService } from 'src/app/core/services/products/products.service';
 import { IProduct } from 'src/app/core/interfaces/product';
+import { IFile } from 'src/app/core/interfaces/file';
 
 @Component({
   selector: 'app-product-details',
@@ -19,7 +20,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   slides= document.getElementsByClassName("slide");
   slideImg: number=0;
   imgSlider: boolean=false;
-  allImg: string[]=new Array();
+  allImg: IFile[];
   activeItem: string;
   constructor(
     private route: ActivatedRoute,
@@ -34,31 +35,28 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       this.subProduct = this.productsService.getProductById(id)
         .subscribe((product: IProduct) => {
           this.product = product;
-          for (let item of product.images) {
-            this.allImg.push(item.url)
-          }
-          this.activeItem=product.previewImage.url;
+          this.allImg = [product.previewImage, ...product.images]
           console.log(this.allImg)
         });
     });
   }
   setImgNumber(imgNumber: number, item: string): void{
-    this.curImg=imgNumber;
-    this.activeItem=item;
+    this.curImg = imgNumber;
+    this.activeItem = item;
   }
   imgShowSlide():void{
-    this.imgSlider=!this.imgSlider;
+    this.imgSlider =! this.imgSlider;
   }
   plusSlide(){
-    this.slideImg+=1;
-    if(this.slideImg>2){
-      this.slideImg=0;
+    this.slideImg += 1;
+    if(this.slideImg > this.allImg.length){
+      this.slideImg = 0;
     }
   }
   minuseSlide(){
     this.slideImg-=1;
-    if(this.slideImg<0){
-      this.slideImg=2;
+    if(this.slideImg < 0){
+      this.slideImg = this.allImg.length-1;
     }
   }
   ngOnDestroy(): void {
