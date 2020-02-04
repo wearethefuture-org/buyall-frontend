@@ -49,11 +49,11 @@
         <div class="col-md-1 allImg">
           <img *ngFor="let item of allImg; let i=index"
            src="{{item.url}}" 
-           [class.active]="item.url == activeItem" 
-           (click)="setImgNumber(i, item.url)">
+           [class.active]="item.url == activeImg.url" 
+           (click)="setImgNumber(i)">
         </div>
       <div class="col-md-5 curImg">
-          <img src="{{allImg[curImg].url}}" (click)="imgShowSlide()">
+          <img src="{{activeImg.url}}" (click)="imgShowSlide()">
       </div>
       <div class="col-md-6">
           <p>Color</p>
@@ -219,7 +219,7 @@
       <div class="row">
         <div class="col-md-7">
           <img src="http://placehold.it/740x1/fff">
-          <img *ngFor="let item of allImg" src="{{item}}">
+          <img *ngFor="let item of allImg" src="{{item.url}}">
         </div>
         <div class="col-md-5">
           <div class="staticBlock">

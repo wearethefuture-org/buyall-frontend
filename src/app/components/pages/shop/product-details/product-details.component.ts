@@ -16,12 +16,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   subParams: Subscription;
   subProduct: Subscription;
   product: IProduct;
-  curImg: number=0;
-  slides= document.getElementsByClassName("slide");
   slideImg: number=0;
   imgSlider: boolean=false;
   allImg: IFile[];
-  activeItem: string;
+  activeImg: IFile;
   constructor(
     private route: ActivatedRoute,
     private cartService: CartService,
@@ -37,26 +35,28 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
           this.product = product;
           this.allImg = [product.previewImage, ...product.images]
           console.log(this.allImg)
+          this.activeImg=product.previewImage
+          console.log(this.activeImg)
         });
     });
   }
-  setImgNumber(imgNumber: number, item: string): void{
-    this.curImg = imgNumber;
-    this.activeItem = item;
+  setImgNumber(imgNumber: number): void{
+    this.activeImg = this.allImg[imgNumber];
+    console.log(this.activeImg)
   }
   imgShowSlide():void{
     this.imgSlider =! this.imgSlider;
   }
-  plusSlide(){
+  minuseSlide(){
     this.slideImg += 1;
-    if(this.slideImg > this.allImg.length){
+    if(this.slideImg >= this.allImg.length){
       this.slideImg = 0;
     }
   }
-  minuseSlide(){
+  plusSlide(){
     this.slideImg-=1;
-    if(this.slideImg < 0){
-      this.slideImg = this.allImg.length-1;
+    if(this.slideImg <= 0){
+      this.slideImg = this.allImg.length;
     }
   }
   ngOnDestroy(): void {

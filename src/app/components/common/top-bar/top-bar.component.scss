@@ -52,16 +52,6 @@ $headerBg2: #dcf093;
                     color: #757575;
                     text-transform: uppercase;
                 }
-                .navbar-nav{
-                    height: auto;
-                    list-style: none;
-                    display: flex;
-                    flex-direction: row;
-                    float: right;
-                    li{
-                        padding: 0px 20px;
-                    }
-                }
             }
             #pcRow{
                 border-bottom: 1px solid #757575;
@@ -99,6 +89,19 @@ $headerBg2: #dcf093;
                     border-right: 1px solid #757575;
                 }
             }
+            .mainMenu{
+                transition: 1s all ease;
+                .navbar-nav{
+                    height: auto;
+                    list-style: none;
+                    display: flex;
+                    flex-direction: row;
+                    float: right;
+                    li{
+                        padding: 0px 20px;
+                    }
+                }
+            }
         }
     }
     .container{
@@ -107,6 +110,9 @@ $headerBg2: #dcf093;
 
     @media (max-width: 780px){
             .navbar, .fixed-top{
+                position: fixed;
+                top: 0;
+                left: 0;
                 .container-fluid{
                     position: relative;
                     margin: 0px;
@@ -126,21 +132,20 @@ $headerBg2: #dcf093;
                             color: #757575;
                             text-transform: uppercase;
                         }
-                        #mainMenu{
-                            display: none;
+                        .mainMenu{
                             position: absolute;
-                            height: 100vh;
+                            height: 100em;
                             width: 80%;
                             background: linear-gradient(to top, $headerBg, $headerBg1, $headerBg2);
-                            top: 172px;
+                            top: 164px;
                             right: -31px;
+                            transform: scaleY(0);
                             .navbar-nav{
                                 width: 100%;
                                 display: flex;
                                 flex-direction: column;
                                 li{
-                                    padding: 0px 20px;
-            
+                                    padding: 10px;
                                 }
                             }
                             .menuIcons{
@@ -148,6 +153,9 @@ $headerBg2: #dcf093;
                                 margin: 20px;
                                 justify-content: center;
                             }
+                        }
+                        .showMenu{
+                            transform: scaleY(1) !important;
                         }
                     }
                     #pcRow{

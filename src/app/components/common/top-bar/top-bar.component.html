@@ -1,6 +1,6 @@
 <nav class="navbar fixed-top">
   <div class="container-fluid">
- <button class="navbar-toggler" id="show_sidebar"><i class="glyphicon glyphicon-align-justify"></i></button>
+ <button class="navbar-toggler" (click)="menuTrigger()"><i class="glyphicon glyphicon-align-justify"></i></button>
  <div class="row" id="pcRow">
      <div class="col-md-6" id="hideMobile">
          <div class="col-md-10">
@@ -57,21 +57,21 @@
  </div>
      <div class="row">
          <div class="col-md-2">
-             <a href="#" class="navbar-brand"><img src="./assets/logo1.png" alt=""> <span>Buyall</span></a>
+             <a [routerLink]="['/']" class="navbar-brand"><img src="./assets/logo1.png" alt=""> <span>Buyall</span></a>
          </div>
-         <div class="col-md-10" id=mainMenu>
+         <div class="col-md-10 mainMenu" [ngClass]="{showMenu: menuToombler}">
              <ul class="navbar-nav menuIcons">
                  <li class="nav-item">
                      <a class="nav-link" [routerLink]="['/cart']"><i class="glyphicon glyphicon-shopping-cart"></i></a>
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="#"><i class="glyphicon glyphicon-heart"></i></a>
+                     <a class="nav-link" [routerLink]="['/']"><i class="glyphicon glyphicon-heart"></i></a>
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="#"><i class="glyphicon glyphicon-eye-open"></i></a>
+                     <a class="nav-link" [routerLink]="['/']"><i class="glyphicon glyphicon-eye-open"></i></a>
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="#"><i class="glyphicon glyphicon-search"></i></a>
+                     <a class="nav-link" [routerLink]="['/']"><i class="glyphicon glyphicon-search"></i></a>
                  </li>
              </ul>
              <ul class="navbar-nav">
@@ -84,13 +84,8 @@
                  <li class="nav-item">
                      <a class="nav-link disabled" [routerLink]="['/contact']">Contacts</a>
                  </li>
-                 <li class="nav-item dropdown">
-                     <a class="nav-link dropdown-toggle" [routerLink]="['/shop', 'category']" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category</a>
-                     <div class="dropdown-menu" aria-labelledby="dropdown01">
-                         <a class="dropdown-item" href="#">Action</a>
-                         <a class="dropdown-item" href="#">Another action</a>
-                         <a class="dropdown-item" href="#">Something else here</a>
-                     </div>
+                 <li class="nav-item">
+                     <a class="nav-link disabled" [routerLink]="['/shop', 'category']">Category</a>
                  </li>
              </ul>
          </div>
