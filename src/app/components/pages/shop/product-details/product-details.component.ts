@@ -34,31 +34,33 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         .subscribe((product: IProduct) => {
           this.product = product;
           this.allImg = [product.previewImage, ...product.images]
-          console.log(this.allImg)
           this.activeImg=product.previewImage
-          console.log(this.activeImg)
         });
     });
   }
+
   setImgNumber(imgNumber: number): void{
     this.activeImg = this.allImg[imgNumber];
-    console.log(this.activeImg)
   }
+
   imgShowSlide():void{
     this.imgSlider =! this.imgSlider;
   }
+
   minuseSlide(){
     this.slideImg += 1;
     if(this.slideImg >= this.allImg.length){
       this.slideImg = 0;
     }
   }
+
   plusSlide(){
     this.slideImg-=1;
     if(this.slideImg <= 0){
       this.slideImg = this.allImg.length;
     }
   }
+  
   ngOnDestroy(): void {
     this.subProduct.unsubscribe();
     this.subParams.unsubscribe();

@@ -2,7 +2,7 @@
     <div class="thumbnail" *ngFor="let product of products">
         <div class="inner">
             <div class="img-wrapper">
-                <img src="{{ product.previewImage.url }}" height="160px">
+                <a [routerLink]="['/shop/product/'+product.id]"><img src="{{ product.previewImage.url }}" height="160px"></a>
             </div>
 
             <div class="caption">

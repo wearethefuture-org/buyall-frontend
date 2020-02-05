@@ -1,12 +1,13 @@
 .products {
   display: grid;
   grid-gap: 15px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: minmax(320px, 1fr) minmax(320px, 1fr) minmax(320px, 1fr);
 }
 
 .thumbnail {
   padding: 10px;
   position: relative;
+  transition: 1s all ease;
 }
 
 .thumbnail .img-wrapper {
