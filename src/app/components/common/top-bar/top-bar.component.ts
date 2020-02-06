@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
   styleUrls: ['./top-bar.component.scss']
 })
 export class TopBarComponent {
+  menuToombler: boolean=false
   constructor(
     private authService: AuthService
   ) { }
@@ -21,5 +22,9 @@ export class TopBarComponent {
 
   get userRole(): string {
     return this.authService.user.role;
+  }
+  menuTrigger(): void{
+    this.menuToombler =! this.menuToombler;
+    console.log(this.menuToombler);
   }
 }
