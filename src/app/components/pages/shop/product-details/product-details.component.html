@@ -1,11 +1,306 @@
-<h2>Product Details</h2>
-
-<div *ngIf="product">
-  <h3>{{ product.name }}</h3>
-  <img src={{product.img}}>
-  <h4>{{ product.price | currency }}</h4>
-  <p>{{ product.description }}</p>
-
-
-  <button (click)="addToCart(product)">Buy</button>
+<div *ngIf="product" class="detailsWrap">
+  <div *ngIf="imgSlider" class="modalImgBlock">
+    <div class="imgSlidex">
+      <button (click)="imgShowSlide()">
+        <i class="glyphicon glyphicon-remove-circle"></i>
+      </button>
+      <button 
+      class="prev" 
+      (click)="plusSlide()">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+      </button>
+      <button class="next" 
+      (click)="minuseSlide()">
+        <i class="glyphicon glyphicon-chevron-right"></i>
+      </button>
+      <div class="slide">
+        <img src="{{allImg[slideImg].url}}">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <h3>Product {{ product.name }} </h3>
+  </div>
+  <div class="row detailsMarks">
+      <div class="col-md-10">
+        <i class="glyphicon glyphicon-star"></i>
+        <i class="glyphicon glyphicon-star"></i>
+        <i class="glyphicon glyphicon-star"></i>
+        <i class="glyphicon glyphicon-star"></i>
+        <span class="commitCount"><a href="#">35 Reviews</a></span>
+      </div>
+      <div class="col-md-2">
+          <p class="textRight">Code: {{product.id}}</p>
+      </div>
+  </div>
+  <div class="row">
+      <nav>
+        <ul class="nav nav-tabs detailsNav" role="tablist">
+          <li class="active"><a data-toggle="tab" role="tab" href="#all">All informations</a></li>
+          <li><a data-toggle="tab" role="tab" href="#quality">Characteristic</a></li>
+          <li><a data-toggle="tab" role="tab" href="#photo">Photos</a></li>
+          <li><a data-toggle="tab" role="tab" href="#reviews">Reviews 35</a></li>
+        </ul>
+      </nav>
+  </div>
+  <div class="tab-content">
+    <div role="tabpanel" id="all" class="tab-pane detailsMain active">
+      <div class="row">
+        <div class="col-md-1 allImg">
+          <img *ngFor="let item of allImg; let i=index"
+           src="{{item.url}}" 
+           [class.active]="item.url == activeImg.url" 
+           (click)="setImgNumber(i)">
+        </div>
+      <div class="col-md-5 curImg">
+          <img src="{{activeImg.url}}" (click)="imgShowSlide()">
+      </div>
+      <div class="col-md-6">
+          <p>Color</p>
+          <div class="productColors">
+              <button class="color action">
+                  <img src="http://placehold.it/55x55/626262">
+                  <span>Grey</span>
+              </button>
+              <button class="color">
+                  <img src="http://placehold.it/55x55/44ce72">
+                  <span>Green</span>
+              </button>
+              <button class="color">
+                  <img src="http://placehold.it/55x55/ce4444">
+                  <span>Red</span>
+              </button>
+          </div>
+          <span *ngIf="product.available" class="available"> <i class="glyphicon glyphicon-ok"></i> Are available</span>
+          <span *ngIf="!product.available" class="available not"> <i class="glyphicon glyphicon-remove"></i> Not available</span>
+          <div class="buys borderDiv">
+              <span class="price">{{ product.price | currency }}</span>
+              <button class="btn" (click)="addToCart(product)"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
+          </div>
+          <div class="credit borderDiv">
+            <span>from <b> 247 $ / month </b> when purchasing goods on credit or paying in installments</span>
+            <button>Read more</button>
+          </div>
+          <div class="borderDiv">
+            <p>Product Seller: <b> Rozetka </b></p>
+            <img src="http://placehold.it/150x40/ce4444">
+          </div>
+          <br>
+          <div class="row rowBorder">
+            <div class="row">
+              <p>Delivery to: Kiev</p>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">Shipment at own expense from shop</div>
+              <div class="col-xs-5"><span class="bold">Pick up February 1 from 10:00</span></div>
+              <div class="col-xs-2">Is free</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">Shipment at own expense from New Mail</div>
+              <div class="col-xs-5"><span class="bold">We will ship on February 1</span></div>
+              <div class="col-xs-2">80 $</div>
+            </div>
+            <div class="row">
+              <div class="col-xs-5">Courier to your address</div>
+              <div class="col-xs-5"><span class="bold">Delivery February 2 from 10:00</span></div>
+              <div class="col-xs-2">59 $</div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 hidden-xs">
+        <div class="row rowBorder">
+          <div class="row">
+            <div class="col-sm-8">
+              <p>Weight</p>
+            </div>
+            <div class="col-sm-4">
+              <p>{{ product.weight}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <p>Discount</p>
+            </div>
+            <div class="col-sm-4">
+              <p>{{ product.discount}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <p>Amount</p>
+            </div>
+            <div class="col-sm-4">
+              <p>{{ product.amount}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <p>Promotion</p>
+            </div>
+            <div class="col-sm-4">
+              <p>{{ product.is_promotion}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <button><img src="http://placehold.it/55x55/dd3535"></button>
+        </div>
+        <div class="row rowBorder">
+            <div class="row">
+              <p>Payment</p>
+            </div>
+            <div class="row">Google Pay, Cashless, Visa / MasterCard, Cash, PrivatPay, Instant installment plan, Credit, Partial payment</div>
+        </div>
+        <div class="row rowBorder">
+          <div class="row">
+            <p>Warranty</p>
+          </div>
+          <div class="row">
+            18 months <br>
+            The seller guarantees the packaging of the ordered goods, which will ensure the integrity and
+             safety of its presentation
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div role="tabpanel" id="quality" class="tab-pane detailsMain">
+      <div class="row">
+        <div class="col-md-7">
+          <div class="row">
+            <img src="http://placehold.it/740x1/ffffff">
+          </div>
+          <div class="row">
+            <div class="row">
+              <div class="col-md-10">
+                <div *ngFor="let item of product.characteristicsValues; let i=index;" class="row">
+                  <div class="col-sm-8">
+                    <p>{{item.name}}</p>
+                  </div>
+                  <div class="col-sm-4">
+                    <p> {{item[item.type+'Value']}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2"></div>
+            </div>
+            <div class="row">
+              <h5>Description:</h5>
+              <p>{{ product.description}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="staticBlock">
+            <div class="borderDiv"><h3>Product {{ product.name }}</h3></div>
+            <span *ngIf="product.available" class="available"> <i class="glyphicon glyphicon-ok"></i> Are available</span>
+            <span *ngIf="!product.available" class="available not"> <i class="glyphicon glyphicon-remove"></i> Not available</span>
+            <div class="buys borderDiv">
+                <span class="price">{{ product.price | currency }}</span>
+                <button class="btn" (click)="addToCart(product)"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
+            </div>
+            <div class="credit borderDiv">
+              <span>from <b> 247 $ / month </b> when purchasing goods on credit or paying in installments</span>
+              <button>Read more</button>
+            </div>
+            <div class="borderDiv">
+              <p>Product Seller: <b> Rozetka </b></p>
+              <img src="http://placehold.it/150x40/ce4444">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" id="photo" class="tab-pane detailsMain">
+      <div class="row">
+        <div class="col-md-7">
+          <img src="http://placehold.it/740x1/fff">
+          <img *ngFor="let item of allImg" src="{{item.url}}">
+        </div>
+        <div class="col-md-5">
+          <div class="staticBlock">
+            <div class="borderDiv"><h3>Product {{ product.name }}</h3></div>
+            <span *ngIf="product.available" class="available"> <i class="glyphicon glyphicon-ok"></i> Are available</span>
+            <span *ngIf="!product.available" class="available not"> <i class="glyphicon glyphicon-remove"></i> Not available</span>
+            <div class="buys borderDiv">
+                <span class="price">{{ product.price | currency }}</span>
+                <button class="btn" (click)="addToCart(product)"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
+            </div>
+            <div class="credit borderDiv">
+              <span>from <b> 247 $ / month </b> when purchasing goods on credit or paying in installments</span>
+              <button>Read more</button>
+            </div>
+            <div class="borderDiv">
+              <p>Product Seller: <b> Rozetka </b></p>
+              <img src="http://placehold.it/150x40/ce4444">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" id="reviews" class="tab-pane detailsMain">
+      <div class="row">
+        <div class="col-md-7">
+          <div class="row">
+            <h3>Customer Reviews About Product {{ product.name }}</h3>
+            <img src="http://placehold.it/740x1/ffffff">
+          </div>
+          <div class="row">
+            <div class="comment">
+              <div class="row user">
+                <h4><i class="glyphicon glyphicon-comment"></i> User Name</h4>
+              </div>
+              <div class="row">
+                <i class="glyphicon glyphicon-star"></i>
+                <i class="glyphicon glyphicon-star"></i>
+                <i class="glyphicon glyphicon-star"></i>
+              </div>
+              <div class="row">
+                <h5>Advantages:</h5>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus delectus culpa corporis, 
+                  neque quae asperiores consequatur laudantium dolorem odit necessitatibus.</p>
+              </div>
+              <div class="row">
+                <h5>Disadvantages:</h5>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus delectus culpa corporis, 
+                  neque quae asperiores consequatur laudantium dolorem odit necessitatibus.</p>
+              </div>
+              <div class="row">
+                <div class="col-xs-9">
+                  <button> <i class="glyphicon glyphicon-pencil"></i> Reply</button>
+                </div>
+                <div class="col-xs-3">
+                  <button> <i class="glyphicon glyphicon-thumbs-up"></i></button>
+                  <button> <i class="glyphicon glyphicon-thumbs-down"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="staticBlock">
+            <div class="borderDiv"><h3>Product {{ product.name }}</h3></div>
+            <span *ngIf="product.available" class="available"> <i class="glyphicon glyphicon-ok"></i> Are available</span>
+            <span *ngIf="!product.available" class="available not"> <i class="glyphicon glyphicon-remove"></i> Not available</span>
+            <div class="buys borderDiv">
+                <span class="price">{{ product.price | currency }}</span>
+                <button class="btn" (click)="addToCart(product)"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
+            </div>
+            <div class="credit borderDiv">
+              <span>from <b> 247 $ / month </b> when purchasing goods on credit or paying in installments</span>
+              <button>Read more</button>
+            </div>
+            <div class="borderDiv">
+              <p>Product Seller: <b> Rozetka </b></p>
+              <img src="http://placehold.it/150x40/ce4444">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
