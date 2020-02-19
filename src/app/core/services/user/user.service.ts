@@ -18,6 +18,9 @@ export class UserService extends BaseService {
   getUserList(): Observable<IUser[]> {
     return this.get('/users');
   }
+  getUserById(id: number): Observable<IUser>{
+    return this.get(`/user/${id}`);
+  }
 
   createUser(user: IUser): Observable<IUser> {
     return this.post(user, '/user/');

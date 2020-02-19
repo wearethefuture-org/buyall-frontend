@@ -1,4 +1,5 @@
 import { IFile } from "./file";
+import { IComment } from "./comments";
 
 export interface IProduct {
     id: number,
@@ -15,5 +16,6 @@ export interface IProduct {
     previewImage: IFile;
     images: IFile[];
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
+    comments: IComment[]
 }

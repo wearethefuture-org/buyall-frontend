@@ -250,9 +250,9 @@
             <img src="http://placehold.it/740x1/ffffff">
           </div>
           <div class="row">
-            <div class="comment">
+            <div *ngFor="let item of allComments" class="comment">
               <div class="row user">
-                <h4><i class="glyphicon glyphicon-comment"></i> User Name</h4>
+                <h4><i class="glyphicon glyphicon-comment"></i> {{item.user.firstName}} {{item.user.lastName}}</h4>
               </div>
               <div class="row">
                 <i class="glyphicon glyphicon-star"></i>
@@ -261,13 +261,7 @@
               </div>
               <div class="row">
                 <h5>Advantages:</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus delectus culpa corporis, 
-                  neque quae asperiores consequatur laudantium dolorem odit necessitatibus.</p>
-              </div>
-              <div class="row">
-                <h5>Disadvantages:</h5>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus delectus culpa corporis, 
-                  neque quae asperiores consequatur laudantium dolorem odit necessitatibus.</p>
+                <p>{{ item.message }}</p>
               </div>
               <div class="row">
                 <div class="col-xs-9">

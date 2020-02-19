@@ -3,8 +3,10 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { CartService } from 'src/app/core/services/cart/cart.service';
 import { Subscription } from 'rxjs';
 import { ProductsService } from 'src/app/core/services/products/products.service';
+import { UserService } from 'src/app/core/services/user/user.service';
 import { IProduct } from 'src/app/core/interfaces/product';
 import { IFile } from 'src/app/core/interfaces/file';
+import { IComment } from 'src/app/core/interfaces/comments';
 
 @Component({
   selector: 'app-product-details',
@@ -20,10 +22,12 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   imgSlider: boolean=false;
   allImg: IFile[];
   activeImg: IFile;
+  allComments: IComment[];
   constructor(
     private route: ActivatedRoute,
     private cartService: CartService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private userServices: UserService,
   ) {  }
 
   ngOnInit(): void {
@@ -33,9 +37,11 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       this.subProduct = this.productsService.getProductById(id)
         .subscribe((product: IProduct) => {
           this.product = product;
+          this.allComments = product.comments
           this.allImg = [product.previewImage, ...product.images]
           this.activeImg=product.previewImage
         });
+        
     });
   }
 
